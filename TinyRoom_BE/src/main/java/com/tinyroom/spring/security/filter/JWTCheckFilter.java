@@ -33,6 +33,10 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 		if(path.startsWith("/members/")) {
 			return true;
 		}
+		if(path.startsWith("/posts/")) {
+			return true;
+		}
+		
 		
 		// 위의 경로 이외에는 정상적으로 필터를 거친다
 		return false;

@@ -12,7 +12,7 @@ import lombok.extern.log4j.Log4j2;
 @RestController
 public class TestController {
 	// ROLE_ADMIN 권한을 가진 사용자만 접근할 수 있는 메서드
-    @PreAuthorize("hasAnyRole('ROLE_USER')")	// 메서드 접근 권한 설정
+    @PreAuthorize("hasAnyRole('USER')")	// 메서드 접근 권한 설정
     @GetMapping("/test")	// GET 요청을 처리하고 "/member/test" 경로에 매핑
     public String test(HttpServletRequest request) {
     	
