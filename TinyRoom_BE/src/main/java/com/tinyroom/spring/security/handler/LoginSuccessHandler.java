@@ -46,7 +46,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		accessTokenCookie.setHttpOnly(true);	// JavaScript에서 접근 불가 -> 자동으로 Cookie Header에 추가됨
 		accessTokenCookie.setSecure(false);	// Https 아니어도 전송 가능
 		accessTokenCookie.setPath("/");	// 쿠키의 경로 설정
-		accessTokenCookie.setMaxAge(60 * 10);	// 유효 기간(10분)
+//		accessTokenCookie.setMaxAge(60 * 10);	// 유효 기간(10분)
+		accessTokenCookie.setMaxAge(20);
+		accessTokenCookie.setAttribute("SameSite", "Lax");	// SameSite 설정
 		
 		// AccessToken 쿠키 설정
 		Cookie refreshTokenCookie = new Cookie("RccessToken", refreshToken);
@@ -54,6 +56,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		accessTokenCookie.setSecure(false);	// Https 아니어도 전송 가능
 		accessTokenCookie.setPath("/");	// 쿠키의 경로 설정
 		accessTokenCookie.setMaxAge(60 * 60 * 24);	// 유효 기간(1일)
+		accessTokenCookie.setAttribute("SameSite", "Lax");	// SameSite 설정
 		
 		
 		// 쿠키를 응답에 추가
