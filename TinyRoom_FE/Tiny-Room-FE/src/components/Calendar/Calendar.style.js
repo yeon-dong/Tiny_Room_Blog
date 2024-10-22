@@ -18,4 +18,8 @@ export const CalendarDate = styled.div`
   font-weight: bold;
 `;
 
-export const CalendarBody = styled.div``;
+export const CalendarBody = styled.div`
+  border-radius: 10px;
+  border: 1px solid black;
+  height: 250px;
+`;

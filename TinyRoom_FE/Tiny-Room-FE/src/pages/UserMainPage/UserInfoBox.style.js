@@ -11,9 +11,11 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 60px;
 `;
 
 export const ProfileBox = styled.div`
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
