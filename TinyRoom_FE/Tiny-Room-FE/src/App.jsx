@@ -10,6 +10,7 @@ import NewPostContent from "./pages/UserMainPage/NewPostContent/NewPostContent.j
 import SignUpPage3 from "./pages/SignUpPage3/SignUpPage3.jsx";
 import NeighbourContent from "./pages/UserMainPage/NeighbourContent/NeighbourContent.jsx";
 import { createTheme, ThemeProvider } from "@mui/material";
+import MyPageContent from "./pages/UserMainPage/MyPageContent/MyPageContent.jsx";
 
 const theme = createTheme({
   palette: {
@@ -30,6 +31,7 @@ function App() {
               <Route path="post/:postId" element={<PostDetailContent />} />
               <Route path="post/new" element={<NewPostContent />} />
               <Route path="neighbour" element={<NeighbourContent />} />
+              <Route path="mypage" element={<MyPageContent />} />
             </Route>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
