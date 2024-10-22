@@ -1,5 +1,6 @@
 import Dropdown from "../../../components/Dropdown/Dropdown";
 import MainButton from "../../../components/MainButton/MainButton";
+import MyEditor from "../../../components/MyEditor/MyEditor";
 import {
   BackButton,
   ButtonBox,
@@ -26,7 +27,9 @@ const NewPostContent = () => {
         </DropdownWrapper>
         <TitleInput placeholder="제목을 입력해주세요." />
       </TitleBox>
-      <EditorWrapper></EditorWrapper>
+      <EditorWrapper>
+        <MyEditor />
+      </EditorWrapper>
       <ButtonBox>
         <MainButton>목록</MainButton>
         <MainButton>작성 완료</MainButton>

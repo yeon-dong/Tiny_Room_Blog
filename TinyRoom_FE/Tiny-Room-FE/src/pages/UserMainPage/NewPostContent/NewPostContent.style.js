@@ -33,6 +33,7 @@ export const TitleBox = styled.div`
   background-color: var(--gray3);
   border-radius: 0 0 10px 10px;
   padding: 10px 30px;
+  margin-bottom: 20px;
 `;
 
 export const DropdownWrapper = styled.div`
@@ -53,6 +54,8 @@ export const TitleInput = styled.input`
 export const EditorWrapper = styled.div`
   width: 100%;
   height: 600px;
+  padding-bottom: 42px;
+  margin-bottom: 20px;
 `;
 
 export const ButtonBox = styled.div`

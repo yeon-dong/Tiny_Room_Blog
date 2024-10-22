@@ -41,6 +41,7 @@ export const ItemBox = styled.div`
   box-shadow: 0 2px 4px var(--gray6);
   border-radius: 10px;
   padding: 20px 0;
+  z-index: 10;
 `;
 
 export const MenuItem = styled.div`
