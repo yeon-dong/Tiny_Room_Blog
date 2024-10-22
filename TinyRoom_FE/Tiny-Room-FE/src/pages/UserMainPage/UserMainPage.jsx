@@ -11,12 +11,12 @@ import {
   BlogNameText,
   UserInfoContainer,
   BlogNameBox,
-  UserTinyRoom,
   ContainerBox,
   MenuBox,
   LogoutButton,
 } from "./UserMainPage.style";
 import UserInfoBox from "./UserInfoBox";
+import { Outlet } from "react-router-dom";
 
 function UserMainPage() {
   return (
@@ -41,7 +41,7 @@ function UserMainPage() {
                 <LogoutButton>로그아웃</LogoutButton>
               </UserBlogHeaderContainer>
               <UserBlogBox>
-                <UserTinyRoom src="/images/Group 38.png" />
+                <Outlet />
               </UserBlogBox>
             </UserBlogContainer>
           </Container>
