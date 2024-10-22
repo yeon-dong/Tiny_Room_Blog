@@ -25,7 +25,7 @@ export const Shadow = styled.div`
   left: 0;
   top: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: 5;
 `;
 
@@ -33,17 +33,27 @@ export const KitchenImg = styled.img`
   position: absolute;
   left: 0;
   top: 0;
-  width: 210px;
+  width: 240px;
   height: 400px;
   cursor: pointer;
   ${(p) => (p.isHovered ? "z-index: 10;" : "")}
 `;
 
-export const KitchenImg2 = styled.img`
+export const InteriorImg = styled.img`
   position: absolute;
-  left: 190px;
+  left: 240px;
   top: 0;
-  width: 210px;
+  width: 160px;
+  height: 400px;
+  cursor: pointer;
+  ${(p) => (p.isHovered ? "z-index: 10;" : "")}
+`;
+
+export const ElectronicsImg = styled.img`
+  position: absolute;
+  left: 580px;
+  top: 0;
+  width: 220px;
   height: 400px;
   cursor: pointer;
   ${(p) => (p.isHovered ? "z-index: 10;" : "")}

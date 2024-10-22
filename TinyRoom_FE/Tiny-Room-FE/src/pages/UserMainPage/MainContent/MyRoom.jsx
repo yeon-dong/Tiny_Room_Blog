@@ -1,8 +1,9 @@
 import { useCallback, useState } from "react";
 import {
   Container,
+  ElectronicsImg,
+  InteriorImg,
   KitchenImg,
-  KitchenImg2,
   RoomImg,
   Shadow,
 } from "./MyRoom.style";
@@ -10,10 +11,10 @@ import {
 const MyRoom = () => {
   const roomData = {
     room: 3,
-    kitchen: 0,
+    kitchen: 2,
+    interior: 2,
     living: 0,
-    interior: 0,
-    work: 0,
+    electronics: 0,
   };
 
   const [hoveredPart, setHoveredPart] = useState(0);
@@ -33,7 +34,7 @@ const MyRoom = () => {
         />
       )}
       <KitchenImg
-        src="/images/kitchen_test.png"
+        src={`/images/kitchen${roomData.kitchen}.png`}
         alt="Kitchen"
         onMouseEnter={(e) => {
           handleMouseEnter(1);
@@ -44,9 +45,9 @@ const MyRoom = () => {
         }}
         isHovered={hoveredPart === 1}
       />
-      <KitchenImg2
-        src="/images/kitchen_test.png"
-        alt="Kitchen"
+      <InteriorImg
+        src={`/images/interior${roomData.interior}.png`}
+        alt="Interior"
         onMouseEnter={(e) => {
           handleMouseEnter(2);
         }}
@@ -54,6 +55,17 @@ const MyRoom = () => {
           setHoveredPart(0);
         }}
         isHovered={hoveredPart === 2}
+      />
+      <ElectronicsImg
+        src={`/images/electronics${roomData.electronics}.png`}
+        alt="Electronics"
+        onMouseEnter={(e) => {
+          handleMouseEnter(4);
+        }}
+        onMouseLeave={() => {
+          setHoveredPart(0);
+        }}
+        isHovered={hoveredPart === 4}
       />
     </Container>
   );
