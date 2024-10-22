@@ -4,13 +4,13 @@ import {
   BoardFooter,
   BoardHeader,
   Container,
-  UserTinyRoom,
 } from "./MainContent.style";
+import MyRoom from "./MyRoom";
 
 const MainContent = () => {
   return (
     <Container>
-      <UserTinyRoom src="/images/Group 38.png" />
+      <MyRoom />
       <BoardBox>
         <BoardHeader>최신 게시글</BoardHeader>
         <BoardContent></BoardContent>
