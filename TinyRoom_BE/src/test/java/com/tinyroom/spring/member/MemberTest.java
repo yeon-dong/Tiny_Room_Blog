@@ -33,12 +33,8 @@ public class MemberTest {
 					.email("user"+ i +"@han.com")
 					.pw(passwordEncoder.encode("1234"))
 					.nickname("user"+i)
+					.type("ROLE_USER")
 					.build();
-			member.addRole(MemberRole.USER);
-			
-			if(i > 8) {
-				member.addRole(MemberRole.ADMIN);
-			}
 			
 			memberRepository.save(member);
 		}
