@@ -1,5 +1,7 @@
 package com.tinyroom.spring.member.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tinyroom.spring.member.dao.MemberDao;
 import com.tinyroom.spring.member.domain.Member;
-import com.tinyroom.spring.member.domain.MemberRole;
 import com.tinyroom.spring.member.dto.MemberDto;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,9 @@ import lombok.extern.log4j.Log4j2;
 @Transactional
 public class MemberService {
 	
+	// 프로필 이미지를 저장할 경로
+	private final String FOLDER_PATH = "c:\\profile_images\\";
+	
 	// MemberDao 사용하기 위해 MemberDao 자동으로 주입
 	@Autowired
 	private MemberDao dao;
@@ -33,7 +38,15 @@ public class MemberService {
 	private PasswordEncoder passwordEncoder;
 	
 	// 회원가입
-	public void register(Map<String, String> map) {
+	public String register(Map<String, String> map, MultipartFile profile_img) throws IOException {
+		
+		log.info("upload file : " + profile_img.getOriginalFilename());
+		
+		String filePath = FOLDER_PATH + profile_img.getOriginalFilename();
+		
+		profile_img.transferTo(new File(filePath));
+		
+		
 		// Member 엔티티 생성
 		Member member = Member.builder()
 				.email(map.get("email"))
@@ -41,10 +54,20 @@ public class MemberService {
 				.name(map.get("name"))
 				.nickname(map.get("nickname"))
 				.phone_number(map.get("phone_number"))
+				.profile_img(filePath)
+				.is_active(1)
+				.type("ROLE_USER")
+				.description(map.get("description"))
 				.build();
 		
 		// 생성한 엔티티를 dao로 넘겨서 데이터 저장
 		dao.save(member);
+		
+		if(filePath != null) {
+			return "file uploaded success!!!!" + filePath;
+		}
+		
+		return null;
 	}
 
 	// id로 검색
