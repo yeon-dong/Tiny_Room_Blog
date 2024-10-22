@@ -1,3 +1,4 @@
+import MyPagination from "../../../components/Pagination/MyPagination";
 import {
   Container,
   NeighbourList,
@@ -15,7 +16,9 @@ const NeighbourContent = () => {
         <NeighbourItem />
         <NeighbourItem />
       </NeighbourList>
-      <PaginationWrapper></PaginationWrapper>
+      <PaginationWrapper>
+        <MyPagination />
+      </PaginationWrapper>
     </Container>
   );
 };
