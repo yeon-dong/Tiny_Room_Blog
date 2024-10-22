@@ -32,7 +32,7 @@ const NewPostContent = () => {
       </EditorWrapper>
       <ButtonBox>
         <MainButton>목록</MainButton>
-        <MainButton>작성 완료</MainButton>
+        <MainButton strong>작성 완료</MainButton>
       </ButtonBox>
     </Container>
   );
