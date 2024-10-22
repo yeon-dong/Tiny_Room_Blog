@@ -15,6 +15,10 @@ import {
   ContainerBox,
   MenuBox,
   LogoutButton,
+  BoardBox,
+  BoardHeader,
+  BoardContent,
+  BoardFooter,
 } from "./UserMainPage.style";
 import UserInfoBox from "./UserInfoBox";
 
@@ -42,6 +46,11 @@ function UserMainPage() {
               </UserBlogHeaderContainer>
               <UserBlogBox>
                 <UserTinyRoom src="/images/Group 38.png" />
+                <BoardBox>
+                  <BoardHeader>최신 게시글</BoardHeader>
+                  <BoardContent></BoardContent>
+                  <BoardFooter></BoardFooter>
+                </BoardBox>
               </UserBlogBox>
             </UserBlogContainer>
           </Container>
