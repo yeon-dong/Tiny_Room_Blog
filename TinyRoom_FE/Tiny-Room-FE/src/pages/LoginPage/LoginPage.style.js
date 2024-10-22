@@ -39,6 +39,7 @@ export const FormContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-bottom: 49px;
+  position: relative;
 `;
 
 export const LoginInput_ID = styled.input`
@@ -107,4 +108,13 @@ export const SignUpText = styled(Link)`
   &:hover {
     font-weight: bold;
   }
+`;
+
+export const LoginErrorMsg = styled.p`
+  font-size: 15px;
+  font-weight: normal;
+  color: #ef4444;
+  position: absolute;
+  left: 51px;
+  bottom: -23px;
 `;
