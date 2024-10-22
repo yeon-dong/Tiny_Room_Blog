@@ -31,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
+@CrossOrigin(origins = "*")
 @RestController	// RESTful 웹 서비스의 컨트롤러임을 나타내는 어노테이션
 public class MemberController {
     
