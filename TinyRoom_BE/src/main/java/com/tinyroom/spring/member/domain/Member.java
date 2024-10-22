@@ -39,6 +39,8 @@ public class Member {
 	private String name;
 	// nickname -> 회원 닉네임
 	private String nickname;
+	// phone_number -> 회원 전화번호
+	private String phone_number;
 	// profile_img	-> 프로필 이미지
 	private String profile_img;
 	// description -> 소개글
