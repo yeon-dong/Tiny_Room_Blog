@@ -15,6 +15,7 @@ import com.tinyroom.spring.security.util.JWTUtil;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
@@ -45,17 +46,34 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 			log.info("###############dododoFilter#####################");
 			log.info("###############dododoFilter#####################");
 			
+			// request에서 cookie들을 가져와 배열에 담음
+			Cookie[] cookies = request.getCookies();
+	    	
+			// accessToken, refreshToken을 담을 변수
+			String accessToken = null;
+    		String refreshToken = null;
+			
+			// cookies 배열이 비어있지 않다면 cookies 배열 탐색해서 AccessToken, RefreshToken에 해당하는 값 변수에 대입 
+	    	if(cookies != null) {
+	    		for(Cookie cookie : cookies) {
+	    			if("AccessToken".equals(cookie.getName())) {
+	    				accessToken = cookie.getValue();
+	    			} else if("RefreshToken".equals(cookie.getName())) {
+	    				refreshToken = cookie.getValue();
+	    			}
+	    		}
+	    	}
 			// 프론트 쪽에서 Header에 AccessToken을 담아서 보낼텐데 지금은 Key를 "Authorization"으로 설정하여
 			// 여기에 AccessToken을 담아서 보내낟고 가정하고 이렇게 작성함
 			// (이 부분은 추후에 프론트 쪽과 맞춰봐야할 듯)
-			String authHeaderStr = request.getHeader("Authorization");
+//			String authHeaderStr = request.getHeader("Authorization");
 			
 			
 			try {
 				// 일반적으로 'Authorization' 헤더에는 다음과 같은 형식의 값이 포함됨 
 				// Authorization: Bearer <token> -> 여기에서 'Bearer ' 부분이 7자이므로
 				// 이를 제외한 JWT 토큰 부분을 가져오는 코드
-				String accessToken = authHeaderStr.substring(7);
+//				String accessToken = authHeaderStr.substring(7);
 				
 				// 토큰 유효성 검사 후 결과를 Map에 저장(유효성 검사 메서드에서 반환 타입이 Map)
 				Map<String, Object> claims =  JWTUtil.validateToken(accessToken);
