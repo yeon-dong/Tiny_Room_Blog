@@ -5,6 +5,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +17,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tinyroom.spring.member.domain.Member;
 import com.tinyroom.spring.member.domain.MemberRole;
 import com.tinyroom.spring.member.dto.MemberDto;
 import com.tinyroom.spring.member.dto.MemberLoginRequestDto;
 import com.tinyroom.spring.member.service.MemberService;
-import com.tinyroom.spring.security.util.JWTUtil;
+import com.tinyroom.spring.security.TokenProvider;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +32,17 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController	// RESTful 웹 서비스의 컨트롤러임을 나타내는 어노테이션
-@RequestMapping("/members")	// "/members"로 시작하는 경로에 대한 요청을 처리하는 클래스(누구나 접근 가능한 경로)
 public class MemberController {
     
 	// MemberService의 메서드를 사용하기 위해 MemberService 자동으로 주입
 	@Autowired
-	private MemberService memberService;
+	private MemberService service;
+	
+	@Autowired
+	private TokenProvider provider;
+	
+	@Autowired
+	private AuthenticationManagerBuilder abuilder;
 	
 	// 회원가입 기능(form 형태로 데이터를 받아온다는 가정에서 @RequestParam으로 인자 받아옴)
 	@PostMapping("/register")
@@ -41,7 +51,8 @@ public class MemberController {
 			@RequestParam("pw") String pw,
 			@RequestParam("name") String name,
 			@RequestParam("nickname") String nickname,
-			@RequestParam("phone_number") String phone_number
+			@RequestParam("phone_number") String phone_number,
+			@RequestParam("profile_img") MultipartFile profil_img
 			) {
 		// 회원가입에 필요한 정보를 담을 Map
 		Map<String, String> member = new HashMap<>();
@@ -57,6 +68,42 @@ public class MemberController {
 		log.info("************************* register controller *******************************");
 		
 		// MemberService의 회원가입 메서드 실행(member Map 을 인자로 넘김)
-		memberService.register(member);
+		service.register(member);
+	}
+	
+	@PostMapping("/login")
+	public Map<String, String> login(@RequestParam("username") String id, @RequestParam("password") String pwd) {
+		//인증에 사용할 객체. Username / Password 를 비교하여 인증하는 클래스
+		UsernamePasswordAuthenticationToken authtoken = new UsernamePasswordAuthenticationToken(id, pwd);
+		
+		//authenticate() 인증 메서드. 인증한 결과를 Authentication에 담아 반환
+		Authentication auth = abuilder.getObject().authenticate(authtoken);
+		
+		//isAuthenticated(): 인증결과 반환(true/false)
+		boolean flag = auth.isAuthenticated();
+		System.out.println("인증결과:" + flag);
+		Map map = new HashMap<>();
+		if (flag) {
+			//인증 성공시 토큰 생성
+			String token = provider.getToken(service.getMember(id));
+			//토큰을 요청자에게 전달
+			map.put("token", token);
+			map.put("id", id);
+			String type = provider.getRoles(token);
+			map.put("type", type);
+		}
+		map.put("flag", flag + "");
+		return map;
+	}
+	
+	//내정보확인
+	@GetMapping("/auth/member")
+	public Map get() {
+		Map map = new HashMap<>();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String id = auth.getName(); // username 추출
+		MemberDto dto = service.getMember(id);
+		map.put("dto", dto);
+		return map;
 	}
 }

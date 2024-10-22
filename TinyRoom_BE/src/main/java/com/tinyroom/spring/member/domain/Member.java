@@ -48,19 +48,5 @@ public class Member {
 	// is_active -> 활성화 여부(삭제 여부) : 삭제했을 때 db에서 실제로 삭제되는 것이 아니라 상태값으로 관리
 	private int is_active; //삭제 계정 판단 여부
 	
-	// member_role_list 테이블 생성
-	// 회원의 Role(권한)을 저장하는 컬렉션
-	@ElementCollection(fetch = FetchType.LAZY)	// 권한 목록을 지연 로딩으로 설정
-	@Builder.Default	// 빌더 패턴 사용 시 기본값 설정
-	private List<MemberRole> memberRoleList = new ArrayList<>();	// 기본값으로 빈 ArrayList 초기화
-	
-	// 권한 목록에 권한 추가하는 메서드
-	public void addRole(MemberRole memberRole) {
-		memberRoleList.add(memberRole);	// 주어진 역할을 목록에 추가
-	}
-	
-	// 역할 목록을 비우는 메서드
-	public void clearRoles() {
-		memberRoleList.clear();	// 역할 목록을 비움
-	}
+	private String type;	// 역할 user
 }
