@@ -24,6 +24,14 @@ export const SignUpBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+`;
+
+export const SignUpInnerBox = styled.div`
+  height: 633px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const SignUpText = styled.div`
@@ -38,7 +46,7 @@ export const SignUpInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: 184px;
+  margin-bottom: 174px;
 `;
 
 export const SignUpInputWrap = styled.div`
@@ -110,12 +118,21 @@ export const CheckText = styled.div`
 `;
 
 export const NextBtn = styled.button`
-  background-color: var(--primary-color3);
+  background-color: ${(props) =>
+    props.isClickable ? "var(--primary-color)" : "var(--primary-color3)"};
   font-size: 18px;
   font-weight: bold;
   color: white;
   height: 60px;
   width: 530px;
   border-radius: 10px;
-  cursor: not-allowed;
+  cursor: ${(props) => (props.isClickable ? "pointer" : "not-allowed")};
+  transition: background-color 0.3s;
+`;
+
+export const SignUpStep = styled.img`
+  width: 56px;
+  height: 12px;
+  position: absolute;
+  bottom: 20px;
 `;
