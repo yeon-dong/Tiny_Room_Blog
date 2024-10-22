@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.tinyroom.spring.member.dao.MemberDao;
 import com.tinyroom.spring.member.domain.Member;
-import com.tinyroom.spring.member.domain.MemberRole;
 
 import lombok.extern.log4j.Log4j2;
 
