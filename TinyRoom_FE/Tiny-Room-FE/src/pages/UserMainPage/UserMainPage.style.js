@@ -101,15 +101,7 @@ export const UserBlogBox = styled.div`
   background-color: white;
   width: 840px;
   border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   height: 100%;
   overflow-y: auto;
-`;
-
-export const UserTinyRoom = styled.img`
-  margin-top: 12px;
-  width: 760px;
-  height: 387px;
+  padding: 20px;
 `;

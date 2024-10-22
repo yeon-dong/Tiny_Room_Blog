@@ -1,4 +1,5 @@
 import {
+  CalendarBody,
   CalendarDate,
   CalendarHeader,
   CalendarTitle,
@@ -12,6 +13,7 @@ const Calendar = () => {
         <CalendarTitle>Today is ...</CalendarTitle>
         <CalendarDate>09/27</CalendarDate>
       </CalendarHeader>
+      <CalendarBody />
     </Container>
   );
 };
