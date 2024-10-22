@@ -14,6 +14,7 @@ import com.tinyroom.spring.member.dto.MemberDto;
 import com.tinyroom.spring.security.util.JWTUtil;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
@@ -39,10 +40,32 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		// accessToken, refreshToken 생성
 		String accessToken = JWTUtil.generateToken(claims, 10);
 		String refreshToken = JWTUtil.generateToken(claims, 60*24);
-			
+		
+		// AccessToken 쿠키 설정
+		Cookie accessTokenCookie = new Cookie("AccessToken", accessToken);
+		accessTokenCookie.setHttpOnly(true);	// JavaScript에서 접근 불가 -> 자동으로 Cookie Header에 추가됨
+		accessTokenCookie.setSecure(false);	// Https 아니어도 전송 가능
+		accessTokenCookie.setPath("/");	// 쿠키의 경로 설정
+//		accessTokenCookie.setMaxAge(60 * 10);	// 유효 기간(10분)
+		accessTokenCookie.setMaxAge(20);
+		accessTokenCookie.setAttribute("SameSite", "Lax");	// SameSite 설정
+		
+		// AccessToken 쿠키 설정
+		Cookie refreshTokenCookie = new Cookie("RccessToken", refreshToken);
+		accessTokenCookie.setHttpOnly(true);	// JavaScript에서 접근 불가 -> 자동으로 Cookie Header에 추가됨
+		accessTokenCookie.setSecure(false);	// Https 아니어도 전송 가능
+		accessTokenCookie.setPath("/");	// 쿠키의 경로 설정
+		accessTokenCookie.setMaxAge(60 * 60 * 24);	// 유효 기간(1일)
+		accessTokenCookie.setAttribute("SameSite", "Lax");	// SameSite 설정
+		
+		
+		// 쿠키를 응답에 추가
+		response.addCookie(accessTokenCookie);
+		response.addCookie(refreshTokenCookie);
+		
 		// 생성된 토큰을 클레임에 추가
-		claims.put("accessToken",accessToken);
-		claims.put("refreshToken", refreshToken);
+//		claims.put("accessToken",accessToken);
+//		claims.put("refreshToken", refreshToken);
 		
 		// Json 변환을 위한 Gson 객체 생성
 		Gson gson = new Gson();
