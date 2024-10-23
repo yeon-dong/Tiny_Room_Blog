@@ -110,6 +110,7 @@ public class PostController {
 		return responseDto;
 	}
 	
+
 	//내가 쓴 글 수정
 	@PutMapping("/postUpdate") 
 	public Map<String, String> modify(

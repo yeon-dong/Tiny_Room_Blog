@@ -22,7 +22,7 @@ import lombok.extern.log4j.Log4j2;
 
 public interface MemberService {
 	
-	public String registerMember(Map<String, String> map, MultipartFile profile_img) throws IOException;
+	public boolean registerMember(Map<String, String> map, MultipartFile profile_img) throws IOException;
 	public String updateMember(MemberDto dto, MultipartFile profile_img) throws IOException;
 	public MemberDto getMember(String id);
       

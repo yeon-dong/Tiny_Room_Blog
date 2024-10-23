@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage/MainPage.jsx";
 import UserMainPage from "./pages/UserMainPage/UserMainPage.jsx";
-import MainContent from "./pages/UserMainPage/MainContent.jsx";
+import MainContent from "./pages/UserMainPage/MainContent/MainContent.jsx";
 import PostDetailContent from "./pages/UserMainPage/PostDetailContent.jsx";
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 import SignUpPage from "./pages/SignUpPage/SignUpPage.jsx";
