@@ -25,18 +25,12 @@ public class PostSearchImpl extends QuerydslRepositorySupport implements PostSea
 
 	@Override
 	public Page<Post> search1(PageRequestDto pageRequestDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-//	@Override
-//	public Page<Post> search1(PageRequestDto pageRequestDto) {
-//		log.info("search1#######################");
+		log.info("search1#######################");
 //		
 //		QPost post = Qpost.todoEntity;
-//		JPQLQuery<TodoEntity> query = from(todoEntity);
+//		JPQLQuery<PostEntity> query = from(PostEntity);
 //		
-////		query.where(todoEntity.title.contains("test"));
+//		query.where(todoEntity.title.contains("test"));
 //		
 //		Pageable pageable = PageRequest.of(pageRequestDto.getPage()-1, pageRequestDto.getSize(),Sort.by("tno").descending());
 //		query.offset(pageable.getOffset());
@@ -46,9 +40,7 @@ public class PostSearchImpl extends QuerydslRepositorySupport implements PostSea
 //		long total =  query.fetchCount();
 //		
 //		return new PageImpl<>(list,pageable,total);
-//
-//	}
-//
-
+		return null;
+	}
 	
 }

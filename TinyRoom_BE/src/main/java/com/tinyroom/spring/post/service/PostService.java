@@ -17,7 +17,7 @@ public interface PostService {
 	public PostDto get(int post_id);
 	public void modify(PostDto postDto);
 	public void remove(int post_id);
-	public int postWrite(Map<String, Object> post);
+	public int postWrite(Post post);
 	
 	public PageResponseDto<PostDto> getList(PageRequestDto pageRequestDto);
 	

@@ -18,9 +18,11 @@ import {
   SignUpStep,
   SignUpText,
 } from "./SignUpPage.style";
+import useStore from "../../stores/store.js"; // Zustand 스토어 import
 
 function SignUpPage() {
   const navigate = useNavigate();
+  const { setSignUpEmail, setSignUpPassword, setSignUpPhone } = useStore();
   const [idPlaceholder, setIdPlaceholder] = useState("이메일 주소");
   const [pwPlaceholder, setPwPlaceholder] = useState("비밀번호");
   const [phonePlaceholder, setPhonePlaceholder] = useState("휴대폰 전화번호");
@@ -45,6 +47,10 @@ function SignUpPage() {
   const handleNextBtnClick = () => {
     if (checkBtnSrc === "/images/Check Mark2.svg") {
       if (validateInputs()) {
+        setSignUpEmail(email);
+        setSignUpPassword(password);
+        setSignUpPhone(phone);
+        //zustand에 저장
         setTimeout(() => {
           navigate("/signup2");
         }, 200);
@@ -111,8 +117,8 @@ function SignUpPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   onFocus={() => setIdPlaceholder("")}
                   onBlur={() => setIdPlaceholder("이메일 주소")}
-                  isEmailValid={isEmailValid}
-                  isPasswordValid={isPasswordValid}
+                  $isEmailValid={isEmailValid}
+                  $isPasswordValid={isPasswordValid}
                 />
               </SignUpInputWrap>
               <SignUpInputWrap>
@@ -131,8 +137,8 @@ function SignUpPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   onFocus={() => setPwPlaceholder("")}
                   onBlur={() => setPwPlaceholder("비밀번호")}
-                  isPasswordValid={isPasswordValid}
-                  isPhoneValid={isPhoneValid}
+                  $isPasswordValid={isPasswordValid}
+                  $isPhoneValid={isPhoneValid}
                 />
               </SignUpInputWrap>
               <SignUpInputWrap>
@@ -151,7 +157,7 @@ function SignUpPage() {
                   onChange={(e) => setPhone(e.target.value)}
                   onFocus={() => setPhonePlaceholder("")}
                   onBlur={() => setPhonePlaceholder("휴대폰 전화번호")}
-                  isPhoneValid={isPhoneValid} //border props 넘겨주기
+                  $isPhoneValid={isPhoneValid} //border props 넘겨주기
                 />
               </SignUpInputWrap>
               {errorMsg.length > 0 && (
@@ -169,7 +175,7 @@ function SignUpPage() {
               <CheckText>인증 약관 전체 동의</CheckText>
             </BottomContainer>
             <NextBtn
-              isClickable={checkBtnSrc === "/images/Check Mark2.svg"} // props 전달
+              $isClickable={checkBtnSrc === "/images/Check Mark2.svg"} // props 전달
               onClick={handleNextBtnClick}
             >
               다음

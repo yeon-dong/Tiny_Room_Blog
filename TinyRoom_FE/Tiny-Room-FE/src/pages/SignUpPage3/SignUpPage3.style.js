@@ -111,19 +111,30 @@ export const BlogThemaText = styled.p`
 `;
 
 export const SingUpFinshBtn = styled.button`
-  background-color: var(--primary-color3);
+  background-color: ${(props) =>
+    props.$isNextBtnEnabled ? "var(--primary-color)" : "var(--primary-color3)"};
   font-size: 18px;
   font-weight: bold;
   color: white;
   width: 530px;
   height: 60px;
   border-radius: 10px;
-  cursor: not-allowed;
+  cursor: ${(props) => (props.$isNextBtnEnabled ? "pointer" : "not-allowed")};
 `;
 
 export const SignUpInfoWrapThemaText = styled.div`
   width: 470px;
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 142px;
+  margin-bottom: ${(props) => (props.$isThemaChecked ? "202px" : "142px")};
+  position: relative;
+`;
+
+export const ThemaShowImg = styled.img`
+  border-radius: 10px;
+  width: 200px;
+  height: 142px;
+  position: absolute;
+  top: 0;
+  left: 95px;
 `;
