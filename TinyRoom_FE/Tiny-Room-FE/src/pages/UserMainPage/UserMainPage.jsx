@@ -16,16 +16,16 @@ import {
   LogoutButton,
 } from "./UserMainPage.style";
 import UserInfoBox from "./UserInfoBox";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 function UserMainPage() {
-  const loc = useLocation();
+  const location = useLocation();
+  const userId = location.pathname.split("/")[1];
+  const navigate = useNavigate();
 
   const [blogData, setBlogData] = useState(null);
 
   const getBlogData = useCallback(async () => {
-    const userId = loc.pathname.substring(1);
-
     // const response = await axios.get(`/blog/${userId}`);
 
     // TODO: 더미데이터
@@ -53,13 +53,17 @@ function UserMainPage() {
     getBlogData();
   }, []);
 
+  const handleBlogTitleClick = useCallback(() => {
+    navigate(`/${userId}`);
+  }, []);
+
   return (
     <>
       <Wrapper>
         <ContainerBox>
           <Container>
             <UserInfoContainer>
-              <BlogNameBox>
+              <BlogNameBox onClick={handleBlogTitleClick}>
                 <BlogNameText>{blogData?.blog.title}</BlogNameText>
                 <UserBlogNameLine src="/images/very_cute_kitty.gif" />
               </BlogNameBox>

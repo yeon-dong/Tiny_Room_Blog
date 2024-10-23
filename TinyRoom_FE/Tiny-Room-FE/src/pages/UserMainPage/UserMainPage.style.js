@@ -49,6 +49,7 @@ export const BlogNameBox = styled.div`
   align-items: center;
   position: relative;
   flex: 0 0 48px;
+  cursor: pointer;
 `;
 
 export const BlogNameText = styled.div`
