@@ -41,11 +41,11 @@ function LoginPage() {
         setErrorMessage(""); // 성공 시 에러 메시지 초기화
         navigate("/");
       } else {
-        setErrorMessage("로그인 실패");
+        setErrorMessage("아이디 또는 비밀번호가 일치하지 않습니다.");
       }
     } catch (error) {
       console.error("로그인 실패:", error);
-      setErrorMessage("아이디 또는 비밀번호가 일치하지 않습니다."); // 에러 메시지 설정
+      setErrorMessage("로그인 실패"); // 에러 메시지 설정
     }
   };
 

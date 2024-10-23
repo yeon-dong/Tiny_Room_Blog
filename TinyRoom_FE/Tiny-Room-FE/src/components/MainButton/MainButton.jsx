@@ -1,7 +1,7 @@
 import { Container } from "./MainButton.style";
 
-const MainButton = ({ children }) => {
-  return <Container>{children}</Container>;
+const MainButton = ({ strong, children }) => {
+  return <Container strong={strong}>{children}</Container>;
 };
 
 export default MainButton;
