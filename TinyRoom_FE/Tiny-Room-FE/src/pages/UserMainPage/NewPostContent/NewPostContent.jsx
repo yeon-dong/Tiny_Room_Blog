@@ -31,6 +31,8 @@ const NewPostContent = () => {
   const isUpdate = location.pathname.split("/").length === 5;
   const postId = isUpdate ? location.pathname.split("/")[4] : -1;
 
+  const at = localStorage.getItem("at");
+
   const [categoryIdx, setCategoryIdx] = useState(-1);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -102,10 +104,7 @@ const NewPostContent = () => {
             post_img: "image_url_or_path.jpg", // TODO
           },
           {
-            headers: {
-              auth_token:
-                "eyJyZWdEYXRlIjoxNzI5NjcyNzY4NTI2LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlJPTEVfVVNFUiIsInVzZXJuYW1lIjoidXNlcjBAaGFuLmNvbSIsImV4cCI6MTcyOTY3NjM2OH0.ZATc-MgQmX5JvMgaGrOnt74xj23JaO5WnyFSFZ_hAoI",
-            },
+            headers: { auth_token: at },
           }
         );
       } catch (e) {

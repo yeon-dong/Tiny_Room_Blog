@@ -1,7 +1,11 @@
-import MainButton from "../../../components/MainButton/MainButton";
-import RoundedButton from "../../../components/RoundedButton/RoundedButton";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import CommentBox from "./CommentBox";
 import NewCommentBox from "./NewCommentBox";
+import MainButton from "../../../components/MainButton/MainButton";
+import RoundedButton from "../../../components/RoundedButton/RoundedButton";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import dayjs from "dayjs";
 import {
   BackButton,
   Container,
@@ -16,32 +20,116 @@ import {
   PostHeaderDivLine,
   PostInfoBox,
   PostTitle,
+  PostUpdatedAt,
   PostWeekday,
 } from "./PostDetailContent.style";
+import Viewer from "../../../components/MyEditor/Viewer";
 
 const PostDetailContent = () => {
+  const location = useLocation();
+  const postId = location.pathname.split("/")[3];
+
+  const at = localStorage.getItem("at");
+
+  const [postData, setPostData] = useState(null);
+  const [hasHeart, setHeart] = useState(false);
+  const { comment, heartCount, post } = useMemo(() => {
+    if (postData === null) return {};
+    else {
+      return postData;
+    }
+  }, [postData]);
+
+  const getPostData = useCallback(async () => {
+    const response = await axios.get(
+      `http://127.0.0.1:8080/posts/postDetail?post_id=${postId}`
+    );
+
+    setPostData(response.data);
+  }, []);
+
+  const checkHeart = useCallback(async () => {
+    // const response = await axios.get(
+    //   `http://localhost:8080/hearts/view?post_id=${postId}`,
+    //   {
+    //     headers: { auth_token: at },
+    //   }
+    // );
+
+    setHeart(true);
+  }, []);
+
+  const addHeart = useCallback(async () => {
+    const response = await axios.get(
+      `http://localhost:8080/hearts/add?post_id=${postId}`,
+      {
+        headers: { auth_token: at },
+      }
+    );
+
+    console.log(response);
+  }, []);
+
+  const deleteHeart = useCallback(async () => {
+    const response = await axios.delete(
+      `http://localhost:8080/hearts/delete?post_id=${postId}`,
+      {
+        headers: { auth_token: at },
+      }
+    );
+
+    console.log(response);
+  }, []);
+
+  useEffect(() => {
+    getPostData();
+
+    // TODO if loged in,
+    if (true) {
+      checkHeart();
+    }
+  }, []);
+
+  const handleHeartClick = useCallback(() => {
+    if (hasHeart) {
+      deleteHeart();
+    } else {
+      addHeart();
+    }
+  }, [hasHeart]);
+
   return (
     <Container>
       <Header>
         <BackButton>
           <img src="/images/arrow_back.svg" alt="BackButton" />
         </BackButton>
-        홈 인테리어
+        {post?.category.category_name}
       </Header>
       <PostHeader>
         <PostDateBox>
-          <PostDate>10.20</PostDate>
-          <PostWeekday>Sat</PostWeekday>
+          <PostDate>{post ? dayjs(post.date).format("M.D") : ""}</PostDate>
+          <PostWeekday>
+            {post ? dayjs(post.date).format("ddd") : ""}
+          </PostWeekday>
         </PostDateBox>
         <PostHeaderDivLine />
-        <PostTitle>포스트 제목</PostTitle>
+        <PostTitle>{post?.title}</PostTitle>
       </PostHeader>
-      <PostContent></PostContent>
+      <PostContent>
+        <PostUpdatedAt>{post?.w_date} 최근 작성</PostUpdatedAt>
+        <Viewer value={post?.content} />
+      </PostContent>
       <PostFooter>
         <PostInfoBox>
-          <RoundedButton icon="heart_empty.svg">좋아요 78</RoundedButton>
+          <RoundedButton
+            icon={hasHeart ? "heart.svg" : `heart_empty.svg`}
+            onClick={handleHeartClick}
+          >
+            좋아요 {heartCount}
+          </RoundedButton>
           <RoundedButton disabled icon="chat.svg">
-            댓글 3
+            댓글 {comment?.length}
           </RoundedButton>
         </PostInfoBox>
         <PostControlBox>
