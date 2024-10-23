@@ -23,13 +23,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tinyroom.spring.blog.dto.BlogDto;
+import com.tinyroom.spring.blog.service.BlogService;
 import com.tinyroom.spring.member.domain.Member;
 import com.tinyroom.spring.member.dto.MemberDto;
 import com.tinyroom.spring.member.service.MemberService;
-import com.tinyroom.spring.member.service.MemberServiceImpl;
+import com.tinyroom.spring.room.dto.RoomDto;
+import com.tinyroom.spring.room.service.RoomService;
 import com.tinyroom.spring.security.TokenProvider;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -40,7 +44,13 @@ public class MemberController {
     
 	// MemberService의 메서드를 사용하기 위해 MemberService 자동으로 주입
 	@Autowired
-	private MemberServiceImpl service;
+	private MemberService service;
+	
+	@Autowired
+	private BlogService blogService;
+	
+	@Autowired
+	private RoomService roomService;
 	
 	@Autowired
 	private TokenProvider provider;
@@ -48,7 +58,7 @@ public class MemberController {
 	@Autowired
 	private AuthenticationManagerBuilder abuilder;
 	
-	// 회원가입 기능(form 형태로 데이터를 받아온다는 가정에서 @RequestParam으로 인자 받아옴)
+	// 회원가입 기능(form 형태로 데이터를 받아온다는 가정에서 @RequestParam으로 인자 받아옴 -> 이미지는 json으로 넘길수가 없음)
 	@PostMapping("/register")
 	public ResponseEntity<?> memberRegister(
 			@RequestParam("email") String email,
@@ -59,12 +69,13 @@ public class MemberController {
 			@RequestParam("description") String description,
 			@RequestParam("blog_title") String blog_title,
 			@RequestParam("blog_theme") int blog_theme,
-			@RequestParam("profile_img") MultipartFile profile_img
+			@RequestParam("profile_img") MultipartFile profile_img,
+			HttpServletResponse response
 			) {
 		// 회원가입에 필요한 정보를 담을 Map
 		Map<String, String> member = new HashMap<>();
 		
-		// 우선 회원가입에 필요한 정보가 email, pw, name, nickname, phone_number, description라고 생각해서 우선 이렇게 해놓음
+		// 우선 회원가입에 필요한 정보들을 member라는 map에 담음
 		member.put("email", email);
 		member.put("pw", pw);
 		member.put("name", name);
@@ -81,12 +92,11 @@ public class MemberController {
 		boolean uploadResult = false;
 		try {
 			uploadResult = service.registerMember(member, profile_img);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			uploadResult = false;
 		}
 		
-		return ResponseEntity.status(HttpStatus.OK).body(uploadResult);
+		return ResponseEntity.status(HttpStatus.OK).header("Location", "/login").body(uploadResult);
 	}
 	
 	@PostMapping("/login")
@@ -160,35 +170,55 @@ public class MemberController {
 	// 회원정보 수정 기능(form 형태로 데이터를 받아온다는 가정에서 @RequestParam으로 인자 받아옴)
 		@PutMapping("/member/modify")
 		public ResponseEntity<?> modifyMemberInfo(
-				@RequestParam("email") String email,
-				@RequestParam("pw") String pw,
 				@RequestParam("name") String name,
 				@RequestParam("nickname") String nickname,
-				@RequestParam("phone_number") String phone_number,
 				@RequestParam("description") String description,
+				@RequestParam("blogTheme") int blog_theme,
+				@RequestParam("roomTheme") int room_theme,
+				@RequestParam("furniture1") int furniture1,
+				@RequestParam("furniture2") int furniture2,
+				@RequestParam("furniture3") int furniture3,
+				@RequestParam("furniture4") int furniture4,
 				@RequestParam("profile_img") MultipartFile profile_img
 				) {
+			log.info("##################################### modify 실행 ###############################");
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String username = auth.getName(); // username 추출
+			log.info("#################################### " + username + "#######################################");
 			
+			// name, nickname, description은 Member 엔티티의 정보를 수정하는 것이므로 여기에 넣을 것
 			MemberDto member = service.getMember(username);
 			
-			// 회원가입에 필요한 정보를 담을 Map
-			
-			// 우선 회원가입에 필요한 정보가 email, pw, name, nickname, phone_number라고 생각해서 우선 이렇게 해놓음
-			member.setEmail(email);
-			member.setPw(pw);
 			member.setName(name);
 			member.setNickname(nickname);
-			member.setPhone_number(phone_number);
 			member.setDescription(description);
 			
+			log.info("#################################### " + member + "#######################################");
+			
+			// blog_theme는 Blog 엔티티의 정보
+			BlogDto blog = blogService.getBlog(service.dtoToEntity(member));
+			
+			blog.setBlog_theme(blog_theme);
+			
+			log.info("#################################### " + blog + "#######################################");
+			// room_theme, furniture1, furniture2, furniture3, furniture4는 Blog 엔티티의 정보
+			RoomDto room = roomService.getRoom(blogService.blogDtoToEntity(blog)); 
+			
+			room.setRoom_theme(room_theme);
+			room.setFurniture1(furniture1);
+			room.setFurniture2(furniture2);
+			room.setFurniture3(furniture3);
+			room.setFurniture4(furniture4);
+			
+			log.info("#################################### " + room + "#######################################");
+			
 			// MemberService의 회원가입 메서드 실행(member Map 을 인자로 넘김)
-			String modifyResult = "";
+			boolean modifyResult = false;
 			try {
-				modifyResult = service.updateMember(member, profile_img);
+				log.info("#################################### Service 실행 #######################################");
+				modifyResult = service.updateMember(member, blog, room, profile_img);
 			} catch (IOException e) {
-				e.printStackTrace();
+				modifyResult = false;
 			}
 			
 			return ResponseEntity.status(HttpStatus.OK).body(modifyResult);
