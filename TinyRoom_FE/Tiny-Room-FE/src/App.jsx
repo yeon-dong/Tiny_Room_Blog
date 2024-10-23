@@ -6,6 +6,7 @@ import PostDetailContent from "./pages/UserMainPage/PostDetailContent.jsx";
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 import SignUpPage from "./pages/SignUpPage/SignUpPage.jsx";
 import SignUpPage2 from "./pages/SignUpPage2/SignUpPage2.jsx";
+import NewPostContent from "./pages/UserMainPage/NewPostContent/NewPostContent.jsx";
 import SignUpPage3 from "./pages/SignUpPage3/SignUpPage3.jsx";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/:id" element={<UserMainPage />}>
             <Route index element={<MainContent />} />
             <Route path="post/:postId" element={<PostDetailContent />} />
+            <Route path="post/new" element={<NewPostContent />} />
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />

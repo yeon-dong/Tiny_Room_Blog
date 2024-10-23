@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 		
 		String token = provider.resolveToken((HttpServletRequest)request);
 		
-		log.info("#################################" + token + "###################################");
+		log.info("################################# jwt filter : " + token + "###################################");
 		
 		if(token != null && provider.validateToken(token)) {
 			//토큰으로 인증하고 그 결과인 Authentication 객체 반환
