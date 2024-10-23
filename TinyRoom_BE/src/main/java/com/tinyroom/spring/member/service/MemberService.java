@@ -12,10 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tinyroom.spring.blog.dto.BlogDto;
 import com.tinyroom.spring.member.dao.MemberDao;
 import com.tinyroom.spring.member.domain.Member;
 import com.tinyroom.spring.member.dto.MemberDto;
 import com.tinyroom.spring.post.domain.Post;
+import com.tinyroom.spring.room.dto.RoomDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -23,8 +25,8 @@ import lombok.extern.log4j.Log4j2;
 public interface MemberService {
 	
 	public boolean registerMember(Map<String, String> map, MultipartFile profile_img) throws IOException;
-	public String updateMember(MemberDto dto, MultipartFile profile_img) throws IOException;
-	public MemberDto getMember(String id);
+	public boolean updateMember(MemberDto dto, BlogDto blog, RoomDto room, MultipartFile profile_img) throws IOException;
+	public MemberDto getMember(String email);
       
 	default MemberDto entityMemberDto(Member member) {
 		MemberDto memberDto = MemberDto.builder()
