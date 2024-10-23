@@ -27,8 +27,10 @@ import Viewer from "../../components/MyEditor/Viewer";
 
 const PostDetailContent = () => {
   const location = useLocation();
+  const postId = location.pathname.split("/")[3];
 
   const [postData, setPostData] = useState(null);
+  const [hasHeart, setHeart] = useState(false);
   const { comment, heartCount, post } = useMemo(() => {
     if (postData === null) return {};
     else {
@@ -37,8 +39,6 @@ const PostDetailContent = () => {
   }, [postData]);
 
   const getPostData = useCallback(async () => {
-    const postId = location.pathname.split("/")[3];
-
     const response = await axios.get(
       `http://127.0.0.1:8080/posts/postDetail?post_id=${postId}`
     );
@@ -46,13 +46,64 @@ const PostDetailContent = () => {
     setPostData(response.data);
   }, []);
 
+  const checkHeart = useCallback(async () => {
+    // const response = await axios.get(
+    //   `http://localhost:8080/hearts/view?post_id=${postId}`,
+    //   {
+    //     headers: {
+    //       auth_token:
+    //         "eyJyZWdEYXRlIjoxNzI5NjkxNTA0MTMwLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlJPTEVfVVNFUiIsInVzZXJuYW1lIjoidXNlcjBAaGFuLmNvbSIsImV4cCI6MTcyOTY5NTEwNH0.TZbTg5FZpVH7U836aGYiwt53jI2jeVZ58003sX9x8l0",
+    //     },
+    //   }
+    // );
+
+    setHeart(true);
+  }, []);
+
+  const addHeart = useCallback(async () => {
+    const response = await axios.get(
+      `http://localhost:8080/hearts/add?post_id=${postId}`,
+      {
+        headers: {
+          auth_token:
+            "eyJyZWdEYXRlIjoxNzI5NjkxNTA0MTMwLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlJPTEVfVVNFUiIsInVzZXJuYW1lIjoidXNlcjBAaGFuLmNvbSIsImV4cCI6MTcyOTY5NTEwNH0.TZbTg5FZpVH7U836aGYiwt53jI2jeVZ58003sX9x8l0",
+        },
+      }
+    );
+
+    console.log(response);
+  }, []);
+
+  const deleteHeart = useCallback(async () => {
+    const response = await axios.delete(
+      `http://localhost:8080/hearts/delete?post_id=${postId}`,
+      {
+        headers: {
+          auth_token:
+            "eyJyZWdEYXRlIjoxNzI5NjkxNTA0MTMwLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlJPTEVfVVNFUiIsInVzZXJuYW1lIjoidXNlcjBAaGFuLmNvbSIsImV4cCI6MTcyOTY5NTEwNH0.TZbTg5FZpVH7U836aGYiwt53jI2jeVZ58003sX9x8l0",
+        },
+      }
+    );
+
+    console.log(response);
+  }, []);
+
   useEffect(() => {
     getPostData();
 
     // TODO if loged in,
     if (true) {
+      checkHeart();
     }
   }, []);
+
+  const handleHeartClick = useCallback(() => {
+    if (hasHeart) {
+      deleteHeart();
+    } else {
+      addHeart();
+    }
+  }, [hasHeart]);
 
   return (
     <Container>
@@ -78,7 +129,10 @@ const PostDetailContent = () => {
       </PostContent>
       <PostFooter>
         <PostInfoBox>
-          <RoundedButton icon="heart_empty.svg">
+          <RoundedButton
+            icon={hasHeart ? "heart.svg" : `heart_empty.svg`}
+            onClick={handleHeartClick}
+          >
             좋아요 {heartCount}
           </RoundedButton>
           <RoundedButton disabled icon="chat.svg">
