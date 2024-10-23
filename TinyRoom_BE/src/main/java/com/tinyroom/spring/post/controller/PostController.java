@@ -95,6 +95,7 @@ public class PostController {
 		return responseDto;
 	}
 	
+
 	//내가 쓴 글 수정
 	@PutMapping("/postUpdate") 
 	public Map<String, String> modify(
@@ -143,7 +144,7 @@ public class PostController {
 		postService.modify(postDto); //remove가 아닌 is_active로 상태를 변경
 		return Map.of("result", "success");
 	}
-	
+
 //	//새로운 글 작성
 //	@PostMapping("/member/write")
 //	public Map<String, Integer> register(
@@ -179,7 +180,4 @@ public class PostController {
 //		
 //		return Map.of("No",post_id);
 //	}
-	
-	
-	
 }
