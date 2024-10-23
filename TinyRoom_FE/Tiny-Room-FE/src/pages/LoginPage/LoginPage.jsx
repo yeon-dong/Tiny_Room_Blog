@@ -14,9 +14,11 @@ import {
   SignUpText,
 } from "./LoginPage.style";
 import { useNavigate } from "react-router-dom";
+import useStore from "../../stores/store.js";
 
 function LoginPage() {
   const navigate = useNavigate();
+  const setUserId = useStore((state) => state.setUserId); // setUserId 가져오기
   const [idPlaceholder, setIdPlaceholder] = useState("이메일을 입력하세요.");
   const [pwPlaceholder, setPwPlaceholder] = useState("비밀번호를 입력하세요.");
   const [username, setUsername] = useState(""); // 사용자 이름 상태
@@ -37,6 +39,7 @@ function LoginPage() {
       });
       if (response.data.flag) {
         console.log("로그인 성공:", response.data);
+        setUserId(response.data.id); // ID를 전역 상태로 저장
         // 로그인 성공 후 처리 (예: 리다이렉트, 토큰 저장 등)
         setErrorMessage(""); // 성공 시 에러 메시지 초기화
         navigate("/");
