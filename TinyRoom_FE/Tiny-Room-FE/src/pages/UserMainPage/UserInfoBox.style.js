@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -39,7 +40,7 @@ export const UsernameBox = styled.div`
   justify-content: space-between;
 `;
 
-export const EditButton = styled.button`
+export const EditButton = styled(Link)`
   font-size: 14px;
   font-weight: bold;
   color: #ff80a0;

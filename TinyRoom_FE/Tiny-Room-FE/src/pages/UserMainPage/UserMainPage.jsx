@@ -68,6 +68,7 @@ function UserMainPage() {
                 <UserBlogNameLine src="/images/very_cute_kitty.gif" />
               </BlogNameBox>
               <UserInfoBox
+                userId={userId}
                 profileImg={blogData?.user.profileImg}
                 nickname={blogData?.user.nickname}
                 description={blogData?.user.description}

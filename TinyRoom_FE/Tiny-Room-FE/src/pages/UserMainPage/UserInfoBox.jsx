@@ -8,14 +8,18 @@ import {
   UsernameBox,
 } from "./UserInfoBox.style";
 
-const UserInfoBox = ({ profileImg, nickname, description }) => {
+const UserInfoBox = ({ userId, profileImg, nickname, description }) => {
+  const at = localStorage.getItem("at");
+
   return (
     <Container>
       <ProfileBox>
         <ProfileImageBox>{profileImg}</ProfileImageBox>
         <UsernameBox>
           {nickname}
-          <EditButton>Edit</EditButton>
+          {at !== null && (
+            <EditButton to={`/${userId}/mypage`}>Edit</EditButton>
+          )}
         </UsernameBox>
         <DescriptionBox>{description}</DescriptionBox>
       </ProfileBox>
