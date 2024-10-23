@@ -79,6 +79,17 @@ public class PostController {
 	
 	
 	//category number 1 : 주방/가전제품, 2 : 홈 인테리어, 3 : 실내가구, 4: 전자제품
+	
+	//내가 쓴 글 전체조회
+//	@GetMapping("/myPostAll")
+//	public List<PostDto> getMyPosts(){
+//		
+//		
+//		
+//	}
+	
+	
+	
 	// 내가 쓴 글 상세조회
 	// http://localhost:8080/posts/postDetail/1
 	@GetMapping("/postDetail") 

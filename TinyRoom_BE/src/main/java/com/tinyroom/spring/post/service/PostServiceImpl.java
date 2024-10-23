@@ -55,31 +55,24 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PageResponseDto<PostDto> getList(PageRequestDto pageRequestDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
 	public int postWrite(Post post) {		
 		postDao.save(post);
 		return post.getPost_id();
 	}
 
-//	@Override
-//	public PageResponseDto<PostDto> getList(PageRequestDto pageRequestDto) {
-//		Page<Post> result = postDao.search1(pageRequestDto);
-//		
-//		List<PostDto> dtoList = result.get().map(post -> entityPostDto(post)).collect(Collectors.toList());
-//		
-//		PageResponseDto<PostDto> responseDto = PageResponseDto.<PostDto>withAll()
-//				.dtoList(dtoList)
-//				.pageRequestDto(pageRequestDto)
-//				.total(result.getTotalElements())
-//				.build();
-//		
-//		return responseDto;
-//	}
+	@Override
+	public PageResponseDto<PostDto> getList(PageRequestDto pageRequestDto) {
+		Page<Post> result = postDao.search1(pageRequestDto);
+		
+		List<PostDto> dtoList = result.get().map(post -> entityPostDto(post)).collect(Collectors.toList());
+		
+		PageResponseDto<PostDto> responseDto = PageResponseDto.<PostDto>withAll()
+				.dtoList(dtoList)
+				.pageRequestDto(pageRequestDto)
+				.total(result.getTotalElements())
+				.build();
+		
+		return responseDto;
+	}
 
 }
