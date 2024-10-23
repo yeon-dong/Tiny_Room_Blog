@@ -18,7 +18,7 @@ import useStore from "../../stores/store.js";
 
 function LoginPage() {
   const navigate = useNavigate();
-  const setUserId = useStore((state) => state.setUserId); // setUserId 가져오기
+  const { setUserId } = useStore(); // setUserId 가져오기
   const [idPlaceholder, setIdPlaceholder] = useState("이메일을 입력하세요.");
   const [pwPlaceholder, setPwPlaceholder] = useState("비밀번호를 입력하세요.");
   const [username, setUsername] = useState(""); // 사용자 이름 상태
