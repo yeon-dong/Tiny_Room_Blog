@@ -5,7 +5,7 @@ import {
   UserBlogBox,
   UserBlogContainer,
   UserBlogHeaderContainer,
-  UserBlogHeaderText,
+  UserBlogHeaderLink,
   UserBlogHeaderTextBetweenLine,
   UserBlogNameLine,
   BlogNameText,
@@ -22,6 +22,8 @@ function UserMainPage() {
   const location = useLocation();
   const userId = location.pathname.split("/")[1];
   const navigate = useNavigate();
+
+  const at = localStorage.getItem("at");
 
   const [blogData, setBlogData] = useState(null);
 
@@ -57,6 +59,14 @@ function UserMainPage() {
     navigate(`/${userId}`);
   }, []);
 
+  const handleLogoutClick = useCallback(() => {
+    if (at !== null) {
+      // TODO: Logout
+    } else {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <>
       <Wrapper>
@@ -77,11 +87,15 @@ function UserMainPage() {
             <UserBlogContainer>
               <UserBlogHeaderContainer>
                 <MenuBox>
-                  <UserBlogHeaderText>메인페이지</UserBlogHeaderText>
+                  <UserBlogHeaderLink to="/">메인페이지</UserBlogHeaderLink>
                   <UserBlogHeaderTextBetweenLine src="/images/Line 2.svg" />
-                  <UserBlogHeaderText>이웃목록</UserBlogHeaderText>
+                  <UserBlogHeaderLink to={`/${userId}/neighbour`}>
+                    이웃목록
+                  </UserBlogHeaderLink>
                 </MenuBox>
-                <LogoutButton>로그아웃</LogoutButton>
+                <LogoutButton onClick={handleLogoutClick}>
+                  {at === null ? "로그인" : "로그아웃"}
+                </LogoutButton>
               </UserBlogHeaderContainer>
               <UserBlogBox>
                 <Outlet context={blogData} />

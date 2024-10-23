@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
 export const Wrapper = styled.div`
@@ -89,13 +90,15 @@ export const LogoutButton = styled.button`
   font-size: 18px;
 `;
 
-export const UserBlogHeaderText = styled.div`
+export const UserBlogHeaderLink = styled(Link)`
   font-size: 18px;
   font-weight: normal;
+  text-decoration: none;
+  color: black;
 `;
 
 export const UserBlogHeaderTextBetweenLine = styled.img`
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 `;
 
 export const UserBlogBox = styled.div`
