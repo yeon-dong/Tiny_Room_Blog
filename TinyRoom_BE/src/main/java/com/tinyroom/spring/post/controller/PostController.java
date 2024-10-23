@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +38,7 @@ import com.tinyroom.spring.post.dto.PageRequestDto;
 import com.tinyroom.spring.post.dto.PageResponseDto;
 import com.tinyroom.spring.post.dto.PostDto;
 import com.tinyroom.spring.post.dto.RequestPostUpdateDto;
+import com.tinyroom.spring.post.dto.RequestPostWriteDto;
 import com.tinyroom.spring.post.dto.ResponsePostDetailDto;
 import com.tinyroom.spring.post.service.PostService;
 import com.tinyroom.spring.postheart.service.PostheartService;
@@ -75,6 +79,17 @@ public class PostController {
 	
 	
 	//category number 1 : 주방/가전제품, 2 : 홈 인테리어, 3 : 실내가구, 4: 전자제품
+	
+	//내가 쓴 글 전체조회
+//	@GetMapping("/myPostAll")
+//	public List<PostDto> getMyPosts(){
+//		
+//		
+//		
+//	}
+	
+	
+	
 	// 내가 쓴 글 상세조회
 	// http://localhost:8080/posts/postDetail/1
 	@GetMapping("/postDetail") 
@@ -139,45 +154,63 @@ public class PostController {
 		@RequestParam(name="post_id") int post_id
 			){
 		PostDto postDto = postService.get(post_id);
-		postDto.setIs_active(1); //삭제 시, is_activce = 1
+		postDto.setIs_active(0); //삭제 시, is_activce = 0
 		
 		postService.modify(postDto); //remove가 아닌 is_active로 상태를 변경
 		return Map.of("result", "success");
 	}
+	
+	//새로운 글 작성
+	@PostMapping("/writePost")
+	public Map<String, Integer> writePost(
+	        @RequestBody RequestPostWriteDto requestPostWriteDto
+	) {
+	    // 로그인된 사용자 이메일 추출
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String email = auth.getName(); // username 추출
 
-//	//새로운 글 작성
-//	@PostMapping("/member/write")
-//	public Map<String, Integer> register(
-//			@RequestBody HashMap<String, Object> map,
-//			@RequestParam(name="email") String email
-//			){
-//		LocalDate date;
-//		//Category category = category
-//		
-//	    String dateString = (String) map.get("date");
-//	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//	    date = LocalDate.parse(dateString, formatter);
-//	    
-//	    LocalDate w_date = LocalDate.now();
-//	    
-//		String title = (String) map.get("title");
-//	    String content = (String)map.get("content");
-//	    String post_img = (String)map.get("post_img");
-//	    
-//		MemberDto member = memberService.getMember(email);
-//		Map<String, Object> post = new HashMap<>();
-//		
-//		post.put("member", member);
-//		//post.put("category", category);
-//		post.put("date", date);
-//		post.put("w_date", w_date);
-//		post.put("title", title);
-//		post.put("content", content);
-//		post.put("post_img", post_img);
-//		post.put("is_active", 0);
-//		
-//		int post_id = postService.postWrite(post);
-//		
-//		return Map.of("No",post_id);
-//	}
+	    LocalDate date; // LocalDate로 선언
+	    String dateString = requestPostWriteDto.getDate();
+	    
+	    // 날짜 문자열을 LocalDate로 변환
+	    try {
+	        date = LocalDate.parse(dateString); // 기본 ISO 형식으로 파싱
+	    } catch (DateTimeParseException e) {
+	        throw new IllegalArgumentException("Invalid date format: " + dateString);
+	    }
+
+	    LocalDate w_date = LocalDate.now(); // 작성일 설정
+
+	    String title = requestPostWriteDto.getTitle();
+	    String content = requestPostWriteDto.getContent();
+	    String post_img = requestPostWriteDto.getPost_img();
+
+	    int category_id = requestPostWriteDto.getCategory_id();
+	    CategoryDto categoryDto = categoryService.get(category_id);
+	    Category category = categoryService.dtoToEntity(categoryDto);
+
+	    MemberDto memberDto = memberService.getMember(email);
+	    Member member = memberService.dtoToEntity(memberDto);
+
+	    // Post 객체 생성
+	    Post post = Post.builder()
+	            .member(member)      // Member 객체를 설정
+	            .category(category)  // Category 객체를 설정
+	            .date(date)         // 날짜 설정
+	            .w_date(w_date)     // 작성일 설정
+	            .title(title)       // 제목 설정
+	            .content(content)    // 내용 설정
+	            .post_img(post_img)  // 이미지 설정
+	            .is_active(1)       // 활성화 상태 설정 (예: 1 = 활성)
+	            .build();
+
+	    int post_id = postService.postWrite(post);
+
+	    return Map.of("No", post_id);
+	}
+
+
+	
+	
+	
 }

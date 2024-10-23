@@ -55,44 +55,24 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PageResponseDto<PostDto> getList(PageRequestDto pageRequestDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public int postWrite(Map<String, Object> map) {		
-		Post post = Post.builder()
-				.member((Member) map.get("member"))
-				.category((Category)map.get("category"))
-				.date((LocalDate) map.get("date"))
-				.w_date((LocalDate)map.get("w_date"))
-				.title((String)map.get("title"))
-				.content((String)map.get("content"))
-				.post_img((String)map.get("post_imgr"))
-				.is_active((int)map.get("is_active"))
-				.build();
-		
-		// 생성한 엔티티를 dao로 넘겨서 데이터 저장
+	public int postWrite(Post post) {		
 		postDao.save(post);
-
 		return post.getPost_id();
 	}
 
-//	@Override
-//	public PageResponseDto<PostDto> getList(PageRequestDto pageRequestDto) {
-//		Page<Post> result = postDao.search1(pageRequestDto);
-//		
-//		List<PostDto> dtoList = result.get().map(post -> entityPostDto(post)).collect(Collectors.toList());
-//		
-//		PageResponseDto<PostDto> responseDto = PageResponseDto.<PostDto>withAll()
-//				.dtoList(dtoList)
-//				.pageRequestDto(pageRequestDto)
-//				.total(result.getTotalElements())
-//				.build();
-//		
-//		return responseDto;
-//	}
+	@Override
+	public PageResponseDto<PostDto> getList(PageRequestDto pageRequestDto) {
+		Page<Post> result = postDao.search1(pageRequestDto);
+		
+		List<PostDto> dtoList = result.get().map(post -> entityPostDto(post)).collect(Collectors.toList());
+		
+		PageResponseDto<PostDto> responseDto = PageResponseDto.<PostDto>withAll()
+				.dtoList(dtoList)
+				.pageRequestDto(pageRequestDto)
+				.total(result.getTotalElements())
+				.build();
+		
+		return responseDto;
+	}
 
 }

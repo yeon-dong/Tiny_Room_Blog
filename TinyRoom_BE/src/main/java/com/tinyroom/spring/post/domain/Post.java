@@ -7,6 +7,7 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.querydsl.core.annotations.QueryEntity;
 import com.tinyroom.spring.category.domain.Category;
 import com.tinyroom.spring.member.domain.Member;
 
@@ -24,6 +25,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@QueryEntity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
