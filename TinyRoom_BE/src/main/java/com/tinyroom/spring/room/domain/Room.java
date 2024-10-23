@@ -29,7 +29,7 @@ public class Room {
 	@JoinColumn(name="blog_id")
 	private Blog blog;
 	
-	private int theme;	// 테마
+	private int room_theme;	// 테마
 	private int furniture1;	// 가구 시리얼 넘버(카테고리 1)
 	private int furniture2;	// 가구 시리얼 넘버(카테고리 2)
 	private int furniture3;	// 가구 시리얼 넘버(카테고리 3)
