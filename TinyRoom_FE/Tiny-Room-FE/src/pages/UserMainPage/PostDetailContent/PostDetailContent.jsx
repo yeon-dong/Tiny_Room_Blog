@@ -1,5 +1,5 @@
-import MainButton from "../../components/MainButton/MainButton";
-import RoundedButton from "../../components/RoundedButton/RoundedButton";
+import MainButton from "../../../components/MainButton/MainButton";
+import RoundedButton from "../../../components/RoundedButton/RoundedButton";
 import CommentBox from "./CommentBox";
 import NewCommentBox from "./NewCommentBox";
 import {
