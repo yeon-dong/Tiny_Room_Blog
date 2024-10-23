@@ -84,9 +84,7 @@ const NewPostContent = () => {
             post_img: "image_url_or_path.jpg", // TODO
           },
           {
-            headers: {
-              auth_token: "ey",
-            },
+            headers: { auth_token: at },
           }
         );
       } catch (e) {
