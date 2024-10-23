@@ -47,6 +47,7 @@ export const SignUpInfoContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   margin-bottom: 174px;
+  position: relative;
 `;
 
 export const SignUpInputWrap = styled.div`
@@ -65,36 +66,59 @@ export const SignUpInfo_Email = styled.input`
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border: 1px solid;
-  border-color: var(--primary-color2);
-  border-bottom: none;
+  border-color: ${(props) =>
+    props.isEmailValid ? "var(--primary-color2)" : "#EF4444"};
+  border-bottom: ${(props) =>
+    props.isEmailValid || !props.isPasswordValid ? "none" : "solid 1px"};
   font-size: 20px;
   font-weight: normal;
-  color: var(--primary-color2);
+  color: ${(props) =>
+    props.isEmailValid ? "var(--primary-color2)" : "#EF4444"};
   padding: 18px 10px 18px 60px;
   width: 100%;
+  &::placeholder {
+    color: ${(props) =>
+      props.isEmailValid ? "var(--primary-color2)" : "#EF4444"};
+    opacity: 1; /* opacity를 1로 설정하여 색상이 보이도록 함 */
+  }
 `;
 
 export const SignUpInfo_Password = styled.input`
   border: 1px solid;
-  border-bottom: none;
-  border-color: var(--primary-color2);
+  border-bottom: ${(props) =>
+    props.isPasswordValid || !props.isPhoneValid ? "none" : "solid 1px"};
+  border-color: ${(props) =>
+    props.isPasswordValid ? "var(--primary-color2)" : "#EF4444"};
   font-size: 20px;
   font-weight: normal;
-  color: var(--primary-color2);
+  color: ${(props) =>
+    props.isPasswordValid ? "var(--primary-color2)" : "#EF4444"};
   padding: 18px 10px 18px 60px;
   width: 100%;
+  &::placeholder {
+    color: ${(props) =>
+      props.isPasswordValid ? "var(--primary-color2)" : "#EF4444"};
+    opacity: 1; /* opacity를 1로 설정하여 색상이 보이도록 함 */
+  }
 `;
 
 export const SignUpInfo_Phone = styled.input`
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   border: 1px solid;
-  border-color: var(--primary-color2);
+  border-color: ${(props) =>
+    props.isPhoneValid ? "var(--primary-color2)" : "#EF4444"};
   font-size: 20px;
   font-weight: normal;
-  color: var(--primary-color2);
+  color: ${(props) =>
+    props.isPhoneValid ? "var(--primary-color2)" : "#EF4444"};
   padding: 18px 10px 18px 60px;
   width: 100%;
+  &::placeholder {
+    color: ${(props) =>
+      props.isPhoneValid ? "var(--primary-color2)" : "#EF4444"};
+    opacity: 1; /* opacity를 1로 설정하여 색상이 보이도록 함 */
+  }
 `;
 
 export const BottomContainer = styled.div`
@@ -135,4 +159,13 @@ export const SignUpStep = styled.img`
   height: 12px;
   position: absolute;
   bottom: 20px;
+`;
+
+export const LoginErrorMsg = styled.p`
+  font-size: 15px;
+  font-weight: normal;
+  color: #ef4444;
+  position: absolute;
+  left: 20px;
+  top: 190px;
 `;
