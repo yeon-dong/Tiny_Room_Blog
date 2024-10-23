@@ -1,12 +1,23 @@
 import { useCallback, useState } from "react";
 import {
+  BubbleImg,
   Container,
   ElectronicsImg,
   InteriorImg,
   KitchenImg,
+  LivingImg,
   RoomImg,
   Shadow,
 } from "./MyRoom.style";
+
+const furniturePositions = [
+  undefined,
+  [25, 100],
+  [230, 5],
+  [380, 15],
+  [590, 100],
+];
+const furnitureNames = ["", "kitchen", "interior", "living", "electronic"];
 
 const MyRoom = () => {
   const roomData = {
@@ -26,13 +37,7 @@ const MyRoom = () => {
   return (
     <Container>
       <RoomImg src={`/images/room${roomData.room}.png`} alt="Room" />
-      {hoveredPart > 0 && (
-        <Shadow
-        // onMouseEnter={(e) => {
-        //   handleMouseEnter(0);
-        // }}
-        />
-      )}
+      {hoveredPart > 0 && <Shadow />}
       <KitchenImg
         src={`/images/kitchen${roomData.kitchen}.png`}
         alt="Kitchen"
@@ -56,6 +61,17 @@ const MyRoom = () => {
         }}
         isHovered={hoveredPart === 2}
       />
+      <LivingImg
+        src={`/images/living${roomData.living}.png`}
+        alt="Living"
+        onMouseEnter={(e) => {
+          handleMouseEnter(3);
+        }}
+        onMouseLeave={() => {
+          setHoveredPart(0);
+        }}
+        isHovered={hoveredPart === 3}
+      />
       <ElectronicsImg
         src={`/images/electronics${roomData.electronics}.png`}
         alt="Electronics"
@@ -67,6 +83,15 @@ const MyRoom = () => {
         }}
         isHovered={hoveredPart === 4}
       />
+
+      {hoveredPart > 0 && (
+        <BubbleImg
+          left={furniturePositions[hoveredPart][0]}
+          top={furniturePositions[hoveredPart][1]}
+          src={`/images/${furnitureNames[hoveredPart]}_bubble.png`}
+          alt="Bubble"
+        />
+      )}
     </Container>
   );
 };

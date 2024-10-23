@@ -49,6 +49,16 @@ export const InteriorImg = styled.img`
   ${(p) => (p.isHovered ? "z-index: 10;" : "")}
 `;
 
+export const LivingImg = styled.img`
+  position: absolute;
+  left: 400px;
+  top: 0;
+  width: 150px;
+  height: 400px;
+  cursor: pointer;
+  ${(p) => (p.isHovered ? "z-index: 10;" : "")}
+`;
+
 export const ElectronicsImg = styled.img`
   position: absolute;
   left: 580px;
@@ -57,4 +67,13 @@ export const ElectronicsImg = styled.img`
   height: 400px;
   cursor: pointer;
   ${(p) => (p.isHovered ? "z-index: 10;" : "")}
+`;
+
+export const BubbleImg = styled.img`
+  position: absolute;
+  left: ${(p) => p.left}px;
+  top: ${(p) => p.top}px;
+  width: 183px;
+  height: 84px;
+  z-index: 11;
 `;
