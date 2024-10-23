@@ -19,7 +19,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @RequiredArgsConstructor
 @Component // 토큰을 생성 / 토큰의 추가 정보를 추출 / 토큰의 유효성 검사
 public class TokenProvider {

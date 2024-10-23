@@ -26,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Configuration
-@EnableWebSecurity
 public class SecurityConfiguration {
 	private final TokenProvider provider;
 	
@@ -66,7 +65,7 @@ public class SecurityConfiguration {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        config.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:5173"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:5173", "127.0.0.1:5173"));
         source.registerCorsConfiguration("/**", config);
         return source;
     }
