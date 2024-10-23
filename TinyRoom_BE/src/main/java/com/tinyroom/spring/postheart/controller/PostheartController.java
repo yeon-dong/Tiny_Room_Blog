@@ -37,6 +37,25 @@ public class PostheartController {
 	@Autowired
 	MemberService memberService;
 	
+	@GetMapping("/view")
+	public int viewHeart(
+		@RequestParam(name="post_id") int post_id) {
+		PostDto postDto = postService.get(post_id);
+		Post post = postService.dtoToEntity(postDto);
+		
+	    // 로그인된 사용자 이메일 추출
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String email = auth.getName(); // username 추출
+	    
+	    MemberDto memberDto = memberService.getMember(email);
+	    Member member = memberService.dtoToEntity(memberDto);
+	    
+	    PostheartDto postheartDto = postheartService.getHeart(member, post);
+		
+		return postheartDto.getIs_active();
+	}
+	
+	
 	@GetMapping("/add")
 	public Map<String, String> addHeart(
 			@RequestParam(name="post_id") int post_id
