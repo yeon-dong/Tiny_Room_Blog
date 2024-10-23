@@ -71,19 +71,46 @@ const NewPostContent = () => {
 
   const handleUpdateClick = useCallback(async () => {
     if (!isUpdate) {
+      try {
+        const response = await axios.post(
+          `http://127.0.0.1:8080/posts/writePost`,
+          {
+            category_id: categoryIdx + 1,
+            date: date.format("YYYY-MM-DD"),
+            title: title,
+            content: content,
+            post_img: "image_url_or_path.jpg", // TODO
+          },
+          {
+            headers: {
+              auth_token: "ey",
+            },
+          }
+        );
+      } catch (e) {
+        alert("글 작성 실패");
+      }
     } else {
-      const response = await axios.post(
-        `http://localhost:8080/posts/postUpdate?post_id=${postId}`,
-        {
-          category_id: categoryIdx + 1,
-          date: date.format("YYYY-MM-DD"),
-          title: title,
-          content: content,
-          post_img: "image_url_or_path.jpg", // TODO
-        }
-      );
-
-      console.log(response);
+      try {
+        const response = await axios.put(
+          `http://localhost:8080/posts/postUpdate?post_id=${postId}`,
+          {
+            category_id: categoryIdx + 1,
+            date: date.format("YYYY-MM-DD"),
+            title: title,
+            content: content,
+            post_img: "image_url_or_path.jpg", // TODO
+          },
+          {
+            headers: {
+              auth_token:
+                "eyJyZWdEYXRlIjoxNzI5NjcyNzY4NTI2LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IlJPTEVfVVNFUiIsInVzZXJuYW1lIjoidXNlcjBAaGFuLmNvbSIsImV4cCI6MTcyOTY3NjM2OH0.ZATc-MgQmX5JvMgaGrOnt74xj23JaO5WnyFSFZ_hAoI",
+            },
+          }
+        );
+      } catch (e) {
+        alert("글 수정 실패");
+      }
     }
   }, [categoryIdx, date, title, content]);
 
