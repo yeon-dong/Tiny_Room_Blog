@@ -30,6 +30,7 @@ function App() {
               <Route index element={<MainContent />} />
               <Route path="post/:postId" element={<PostDetailContent />} />
               <Route path="post/new" element={<NewPostContent />} />
+              <Route path="post/update/:postId" element={<NewPostContent />} />
               <Route path="neighbour" element={<NeighbourContent />} />
               <Route path="mypage" element={<MyPageContent />} />
             </Route>

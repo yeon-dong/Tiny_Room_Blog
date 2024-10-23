@@ -1,7 +1,10 @@
+import { useCallback, useEffect } from "react";
 import MainButton from "../../components/MainButton/MainButton";
 import RoundedButton from "../../components/RoundedButton/RoundedButton";
 import CommentBox from "./CommentBox";
 import NewCommentBox from "./NewCommentBox";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 import {
   BackButton,
   Container,
@@ -20,6 +23,22 @@ import {
 } from "./PostDetailContent.style";
 
 const PostDetailContent = () => {
+  const location = useLocation();
+
+  const getPostData = useCallback(async () => {
+    const postId = location.pathname.split("/")[3];
+
+    const response = await axios.get(
+      `http://127.0.0.1:8080/posts/postDetail?post_id=${postId}`
+    );
+
+    console.log(response.data);
+  }, []);
+
+  useEffect(() => {
+    getPostData();
+  }, []);
+
   return (
     <Container>
       <Header>
