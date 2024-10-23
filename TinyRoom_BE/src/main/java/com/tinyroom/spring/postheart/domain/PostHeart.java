@@ -37,4 +37,6 @@ public class PostHeart {
 	@ManyToOne
 	@JoinColumn(name="post_id")
 	private Post post;
+	
+	private int is_active;
 }
