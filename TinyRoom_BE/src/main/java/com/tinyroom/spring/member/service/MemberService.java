@@ -14,47 +14,45 @@ import com.tinyroom.spring.member.dao.MemberDao;
 import com.tinyroom.spring.member.domain.Member;
 import com.tinyroom.spring.member.domain.MemberRole;
 import com.tinyroom.spring.member.dto.MemberDto;
+import com.tinyroom.spring.post.domain.Post;
+import com.tinyroom.spring.post.dto.PostDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-
-@Log4j2
-@Service
-@Transactional
-public class MemberService {
+public interface MemberService {
 	
-	// MemberDao 사용하기 위해 MemberDao 자동으로 주입
-	@Autowired
-	private MemberDao dao;
-	
-	// 패스워드 암호화를 위한 PasswordEncoder 자동으로 주입
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	// 회원가입
-	public void register(Map<String, String> map) {
-		// Member 엔티티 생성
-		Member member = Member.builder()
-				.email(map.get("email"))
-				.pw(passwordEncoder.encode(map.get("pw")))
-				.name(map.get("name"))
-				.nickname(map.get("nickname"))
-				.phone_number(map.get("phone_number"))
-				.build();
+		public void register(Map<String, String> map);
+		public MemberDto getMember(String id);
 		
-		// 생성한 엔티티를 dao로 넘겨서 데이터 저장
-		dao.save(member);
-	}
-
-	// id로 검색
-		public MemberDto getMember(String id) {
-			// dao.findById(pk): pk기준으로 검색
-			Member m = dao.findByEmail(id).orElse(null);// orElse(null): 검색결과 없으면 널 반환
-			if (m == null) {
-				return null;
-			}
-			return new MemberDto(m.getEmail(), m.getPw(), m.getName(), m.getNickname(), m.getPhone_number(), m.getType());
+		default MemberDto entityMemberDto(Member member) {
+			MemberDto memberDto = MemberDto.builder()
+					.member_id(member.getMember_id())
+					.email(member.getEmail())
+					.pw(member.getPw())
+					.name(member.getName())
+					.nickname(member.getNickname())
+					.phone_number(member.getPhone_number())
+					.profile_img(member.getProfile_img())
+					.description(member.getDescription())
+					.is_active(member.getIs_active())
+					.build();
+			return memberDto;
+		}
+		
+		default Member dtoToEntity(MemberDto memberDto) {
+			 Member member = Member.builder()
+						.member_id(memberDto.getMember_id())
+						.email(memberDto.getEmail())
+						.pw(memberDto.getPw())
+						.name(memberDto.getName())
+						.nickname(memberDto.getNickname())
+						.phone_number(memberDto.getPhone_number())
+						.profile_img(memberDto.getProfile_img())
+						.description(memberDto.getDescription())
+						.is_active(memberDto.getIs_active())
+						.build();
+			return member;
 		}
 	
 }

@@ -44,7 +44,7 @@ public class SecurityConfiguration {
 		.authorizeHttpRequests((authz)-> authz
 				.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()//forward 요청은 모두 허용
 				.requestMatchers("/auth/**").hasRole("USER")  //url이 /auth/로 시작하면 인증을 요구 ROLE_USER
-				.requestMatchers("/", "/join", "/error", "/login", "/read-img/**").permitAll()
+				.requestMatchers("/", "/join", "/error", "/login", "/read-img/**", "/posts/**").permitAll()
 				.anyRequest().permitAll()
 				)
 		//토큰 처리하는 필터를 현재 필터 앞에 붙임
