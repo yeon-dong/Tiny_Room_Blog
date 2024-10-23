@@ -1,3 +1,4 @@
+import { useOutletContext } from "react-router-dom";
 import {
   BoardBox,
   BoardContent,
@@ -8,9 +9,11 @@ import {
 import MyRoom from "./MyRoom";
 
 const MainContent = () => {
+  const blogData = useOutletContext();
+
   return (
     <Container>
-      <MyRoom />
+      {Boolean(blogData) && <MyRoom roomData={blogData.room} />}
       <BoardBox>
         <BoardHeader>최신 게시글</BoardHeader>
         <BoardContent></BoardContent>

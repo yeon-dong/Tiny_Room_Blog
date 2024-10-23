@@ -32,12 +32,28 @@ export const ProfileImageBox = styled.div`
 export const UsernameBox = styled.div`
   width: 100%;
   flex: 0 0 18px;
-  background-color: pink;
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const EditButton = styled.button`
+  font-size: 14px;
+  font-weight: bold;
+  color: #ff80a0;
+  height: 18px;
+  line-height: 18px;
+  text-decoration: underline;
 `;
 
 export const DescriptionBox = styled.div`
   width: 100%;
   flex: 0 0 112px;
   border-radius: 10px;
-  background-color: yellowgreen;
+  background-color: var(--gray3);
+  font-size: 16px;
+  padding: 10px;
+  color: #585858;
 `;
