@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tinyroom.spring.category.domain.Category;
+import com.tinyroom.spring.category.dto.CategoryDto;
+import com.tinyroom.spring.category.service.CategoryService;
 import com.tinyroom.spring.comment.domain.Comment;
 import com.tinyroom.spring.comment.service.CommentService;
 import com.tinyroom.spring.member.controller.MemberController;
@@ -32,6 +34,7 @@ import com.tinyroom.spring.post.domain.Post;
 import com.tinyroom.spring.post.dto.PageRequestDto;
 import com.tinyroom.spring.post.dto.PageResponseDto;
 import com.tinyroom.spring.post.dto.PostDto;
+import com.tinyroom.spring.post.dto.RequestPostUpdateDto;
 import com.tinyroom.spring.post.dto.ResponsePostDetailDto;
 import com.tinyroom.spring.post.service.PostService;
 import com.tinyroom.spring.postheart.service.PostheartService;
@@ -54,6 +57,9 @@ public class PostController {
 	@Autowired
 	CommentService commentService;
 	
+	@Autowired
+	CategoryService categoryService;
+	
 	// '/member' 내가 쓴 글 조회 '/main' 메인페이지 글 조회
 	
 	//메인페이지 전체 글 조회 (최신순 나열)
@@ -70,7 +76,7 @@ public class PostController {
 	
 	//category number 1 : 주방/가전제품, 2 : 홈 인테리어, 3 : 실내가구, 4: 전자제품
 	// 내가 쓴 글 상세조회
-	// http://localhost:8080/posts/member/1
+	// http://localhost:8080/posts/postDetail/1
 	@GetMapping("/postDetail") 
 	public ResponsePostDetailDto get(
 			@RequestParam(name="post_id") int post_id
@@ -89,48 +95,55 @@ public class PostController {
 		return responseDto;
 	}
 	
-//	//내가 쓴 글 수정
-//	@PutMapping("/member/{post_id}") 
-//	public Map<String, String> modify(
-//	        @PathVariable(name="post_id") int post_id,
-//	        @RequestBody HashMap<String, Object> map 
-//	        ) {
-//	    PostDto postDto = postService.get(post_id);
-//	    
-//	    Category category = (Category)map.get("category");
-//	    String dateString = (String) map.get("date");
-//	    
-//	    // DateTimeFormatter를 사용하여 LocalDate로 변환
-//	    if (dateString != null && !dateString.isEmpty()) {
-//	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//	        LocalDate localDate = LocalDate.parse(dateString, formatter);
-//	        postDto.setDate(localDate);  
-//	    }
-//
-//	    String title = (String) map.get("title");
-//	    String content = (String) map.get("content");
-//	    String post_img = (String) map.get("post_img");
-//	    
-//	    if (title != null) postDto.setTitle(title);
-//	    if (content != null) postDto.setContent(content);
-//	    if (post_img != null) postDto.setPost_img(post_img);
-//	    if (category != null) postDto.setCategory(category);
-//	    
-//	    postService.modify(postDto);
-//	    
-//	    return Map.of("result", "success");
-//	}
-//	
-//	//내가 쓴 글 삭제
-//	@DeleteMapping("/member/{post_id}")
-//	public Map<String, String> remove(
-//			@PathVariable(name="post_id") int post_id
-//			){
-//		
-//		postService.remove(post_id);
-//		return Map.of("result", "success");
-//	}
-//	
+	//내가 쓴 글 수정
+	@PutMapping("/postUpdate") 
+	public Map<String, String> modify(
+			@RequestParam(name="post_id") int post_id,
+	        @RequestBody RequestPostUpdateDto requestPostUpdateDto
+	        ) {
+	    PostDto postDto = postService.get(post_id);
+	    
+	    int category_id = requestPostUpdateDto.getCategory_id();
+	    CategoryDto categoryDto = categoryService.get(category_id);
+	    Category category = categoryService.dtoToEntity(categoryDto);
+	    
+	    String dateString = requestPostUpdateDto.getDate();
+	    
+	    // DateTimeFormatter를 사용하여 LocalDate로 변환
+	    if (dateString != null && !dateString.isEmpty()) {
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	        LocalDate localDate = LocalDate.parse(dateString, formatter);
+	        postDto.setDate(localDate);  
+	    }
+
+	    String title = requestPostUpdateDto.getTitle();
+	    String content = requestPostUpdateDto.getContent();
+	    String post_img = requestPostUpdateDto.getPost_img();
+	    
+	    if (title != null) postDto.setTitle(title);
+	    if (content != null) postDto.setContent(content);
+	    if (post_img != null) postDto.setPost_img(post_img);
+	    if (category != null) postDto.setCategory(category);
+	    
+	    postService.modify(postDto);
+	    
+	    return Map.of("result", "success");
+	}
+	
+	
+	//내가 쓴 글 삭제
+	// http://localhost:8080/posts/delete/1
+	@PutMapping("/delete")
+	public Map<String, String> remove(
+		@RequestParam(name="post_id") int post_id
+			){
+		PostDto postDto = postService.get(post_id);
+		postDto.setIs_active(1); //삭제 시, is_activce = 1
+		
+		postService.modify(postDto); //remove가 아닌 is_active로 상태를 변경
+		return Map.of("result", "success");
+	}
+	
 //	//새로운 글 작성
 //	@PostMapping("/member/write")
 //	public Map<String, Integer> register(
