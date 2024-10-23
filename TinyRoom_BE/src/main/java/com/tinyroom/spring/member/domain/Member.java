@@ -1,10 +1,14 @@
 package com.tinyroom.spring.member.domain;
 
 import java.util.List;
+
+import org.antlr.v4.runtime.misc.NotNull;
+
 import java.util.ArrayList;
 
 import com.tinyroom.spring.post.domain.Post;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,8 +38,10 @@ public class Member {
 	private int member_id;
 	
 	// email -> 아이디로 사용할 컬럼
+	@Column(nullable=false)
 	private String email;
 	// pw -> 비밀번호에 해당
+	@Column(nullable=false)
 	private String pw;
 	// name -> 회원 이름
 	private String name;

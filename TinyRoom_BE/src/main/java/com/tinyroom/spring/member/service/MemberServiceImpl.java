@@ -7,8 +7,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tinyroom.spring.blog.dao.BlogDao;
+import com.tinyroom.spring.blog.domain.Blog;
 import com.tinyroom.spring.member.dao.MemberDao;
 import com.tinyroom.spring.member.domain.Member;
 import com.tinyroom.spring.member.dto.MemberDto;
@@ -26,13 +29,18 @@ public class MemberServiceImpl implements MemberService{
    // MemberDao 사용하기 위해 MemberDao 자동으로 주입
    @Autowired
    private MemberDao dao;
+   
+   @Autowired
+   private BlogDao blogDao;
+   
    // 패스워드 암호화를 위한 PasswordEncoder 자동으로 주입
    @Autowired
    private PasswordEncoder passwordEncoder;
    
    @Override
-// 회원가입
-   public String registerMember(Map<String, String> map, MultipartFile profile_img) throws IOException {
+   @Transactional(rollbackFor=Exception.class)
+// 회원가입(Member, Blog 두 개의 테이블에 insert하므로 transaction 필요
+   public boolean registerMember(Map<String, String> map, MultipartFile profile_img) throws IOException {
       
       log.info("upload file : " + profile_img.getOriginalFilename());
       
@@ -54,14 +62,26 @@ public class MemberServiceImpl implements MemberService{
             .description(map.get("description"))
             .build();
       
+      Blog blog = Blog.builder()
+    		  .member(member)
+    		  .blog_title(map.get("blog_title"))
+    		  .blog_theme(Integer.parseInt(map.get("blog_theme")))
+    		  .build();
+      log.info("############################## 여기까진 문제 없음 ############################################");
       // 생성한 엔티티를 dao로 넘겨서 데이터 저장
-      dao.save(member);
-      
-      if(filePath != null) {
-         return "file uploaded success!!!!" + filePath;
+      try {
+    	  dao.save(member);
+          blogDao.save(blog);
+          
+          if(filePath != null) {
+              log.info("이미지 파일 저장에 성공했습니다.");
+           }
+          
+          return true;
+      } catch (Exception e){
+    	  log.error("회원 가입에 실패했습니다 : " + e.getMessage());
+    	  throw e;
       }
-      
-      return null;
    }
    
 // 회원가입
