@@ -56,10 +56,6 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-tasks.withType(JavaCompile) {
-    options.annotationProcessor.path = configurations.annotationProcessor
-}
-
 // Querydsl 설정 - generated 폴더 설정 및 소스 디렉토리에 추가
 def querydslSrcDir = file("src/main/generated")
 
