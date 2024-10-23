@@ -89,7 +89,7 @@ public class PostController {
 		return responseDto;
 	}
 	
-//	//내가 쓴 글 수정
+	//	//내가 쓴 글 수정
 //	@PutMapping("/member/{post_id}") 
 //	public Map<String, String> modify(
 //	        @PathVariable(name="post_id") int post_id,
@@ -166,7 +166,4 @@ public class PostController {
 //		
 //		return Map.of("No",post_id);
 //	}
-	
-	
-	
 }

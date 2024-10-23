@@ -57,24 +57,28 @@ public class MemberController {
 			@RequestParam("nickname") String nickname,
 			@RequestParam("phone_number") String phone_number,
 			@RequestParam("description") String description,
+			@RequestParam("blog_title") String blog_title,
+			@RequestParam("blog_theme") int blog_theme,
 			@RequestParam("profile_img") MultipartFile profile_img
 			) {
 		// 회원가입에 필요한 정보를 담을 Map
 		Map<String, String> member = new HashMap<>();
 		
-		// 우선 회원가입에 필요한 정보가 email, pw, name, nickname, phone_number라고 생각해서 우선 이렇게 해놓음
+		// 우선 회원가입에 필요한 정보가 email, pw, name, nickname, phone_number, description라고 생각해서 우선 이렇게 해놓음
 		member.put("email", email);
 		member.put("pw", pw);
 		member.put("name", name);
 		member.put("nickname", nickname);
 		member.put("phone_number", phone_number);
 		member.put("description", description);
+		member.put("blog_title", blog_title);
+		member.put("blog_theme", blog_theme + "");
 		
 		// Map에 데이터 입력 후 다음 단계 진행된다는 것 확인하기 위한 로그
 		log.info("************************* register controller *******************************");
 		
 		// MemberService의 회원가입 메서드 실행(member Map 을 인자로 넘김)
-		String uploadResult = "";
+		boolean uploadResult = false;
 		try {
 			uploadResult = service.registerMember(member, profile_img);
 		} catch (IOException e) {
@@ -86,7 +90,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("/login")
-	public Map<String, String> login(@RequestBody HashMap<String, String> map) {
+	public Map login(@RequestBody HashMap<String, String> map) {
 		//인증에 사용할 객체. Username / Password 를 비교하여 인증하는 클래스
 		UsernamePasswordAuthenticationToken authtoken = new UsernamePasswordAuthenticationToken(map.get("username"), map.get("password"));
 		
@@ -99,24 +103,31 @@ public class MemberController {
 		} catch(Exception e) {
 			flag = false;
 		}
-			
-		
-		//isAuthenticated(): 인증결과 반환(true/false)
-//		flag = auth.isAuthenticated();
 		
 		Map result = new HashMap<>();
+		
+		String email = map.get("username");
+		
+		MemberDto member = service.getMember(email);
+		
 		if (flag) {
-			String id = map.get("username");
+			result.put("id", member.getMember_id());
+			result.put("email", member.getEmail());
+			result.put("name", member.getName());
+			result.put("nickname", member.getNickname());
+			result.put("phone_number", member.getPhone_number());
+			result.put("profileImg", member.getProfile_img());
+			result.put("description", member.getDescription());
 			//인증 성공시 토큰 생성
-			String token = provider.getToken(service.getMember(id));
+			String token = provider.getToken(member);
+//			String token = provider.getToken(service.getMember(email));
 			//토큰을 요청자에게 전달
-			map.put("token", token);
-			map.put("id", id);
+			result.put("token", token);
 			String type = provider.getRoles(token);
-			map.put("type", type);
+			result.put("type", type);
 		}
-		map.put("flag", flag + "");
-		return map;
+		result.put("flag", flag);
+		return result;
 	}
 	
 	//내정보확인
