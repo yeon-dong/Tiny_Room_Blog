@@ -31,7 +31,7 @@ public class TokenUserDetails implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
 		List<GrantedAuthority> list = new ArrayList<>();
-		log.info("#################################" + new SimpleGrantedAuthority(m.getType()) + "##################");
+		log.info("################################# TokenUserDetails 권한 목록 : " + new SimpleGrantedAuthority(m.getType()) + "##################");
 		list.add(new SimpleGrantedAuthority(m.getType()));
 		return list;
 	}
