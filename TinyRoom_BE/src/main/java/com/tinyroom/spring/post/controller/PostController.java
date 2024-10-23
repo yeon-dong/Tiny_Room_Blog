@@ -132,7 +132,7 @@ public class PostController {
 		Map<String, Object> post = new HashMap<>();
 		
 		post.put("member", member);
-		post.put("category", category);
+//		post.put("category", category);
 		post.put("date", date);
 		post.put("w_date", w_date);
 		post.put("title", title);

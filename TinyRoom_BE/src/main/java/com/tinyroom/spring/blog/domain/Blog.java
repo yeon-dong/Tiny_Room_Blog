@@ -31,6 +31,6 @@ public class Blog {
 	
 	// blog_title -> 블로그 제목(이름)
 	private String blog_title;
-	// blog_img -> 블로그 배경 이미지 파일명
-	private String blog_img;
+	// blog_theme -> 블로그 테마 번호
+	private int blog_theme;
 }
