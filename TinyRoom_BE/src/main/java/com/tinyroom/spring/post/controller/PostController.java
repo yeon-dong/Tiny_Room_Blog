@@ -98,6 +98,7 @@ public class PostController {
             		.thumbnail(post.getThumbnail())
             		.heartCount(heartCount)
             		.commentCount(commentCount)
+            		.nickname(post.getMember().getNickname())
             		.build();
             return dto;
         }).collect(Collectors.toList());
