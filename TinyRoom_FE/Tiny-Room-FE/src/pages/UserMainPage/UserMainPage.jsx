@@ -18,13 +18,14 @@ import {
 import UserInfoBox from "./UserInfoBox";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import useStore from "../../stores/store";
 
 function UserMainPage() {
   const location = useLocation();
   const userId = location.pathname.split("/")[1];
   const navigate = useNavigate();
 
-  const at = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
   const { resetUserInfo } = useStore();
 
