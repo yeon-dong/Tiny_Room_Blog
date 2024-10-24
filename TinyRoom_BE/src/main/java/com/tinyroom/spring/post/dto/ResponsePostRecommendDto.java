@@ -20,6 +20,7 @@ public class ResponsePostRecommendDto {
 	private String text_content;
 	private String content;
 	private String post_img;
+	private String nickname;
 	private int heartCount;
 	private int commentCount;
 }
