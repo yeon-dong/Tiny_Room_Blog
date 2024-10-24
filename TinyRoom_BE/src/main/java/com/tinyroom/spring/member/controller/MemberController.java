@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -89,14 +90,15 @@ public class MemberController {
 		log.info("************************* register controller *******************************");
 		
 		// MemberService의 회원가입 메서드 실행(member Map 을 인자로 넘김)
-		boolean uploadResult = false;
+		Map map;
 		try {
-			uploadResult = service.registerMember(member, profile_img);
+			map = service.registerMember(member, profile_img);
 		} catch (Exception e) {
-			uploadResult = false;
+			map = new HashMap<>();
+			map.put("result", false);
 		}
 		
-		return ResponseEntity.status(HttpStatus.OK).header("Location", "/login").body(uploadResult);
+		return ResponseEntity.status(HttpStatus.OK).header("Location", "/login").body(map);
 	}
 	
 	@PostMapping("/login")
@@ -168,8 +170,8 @@ public class MemberController {
 	}
 	
 	// 회원정보 수정 기능(form 형태로 데이터를 받아온다는 가정에서 @RequestParam으로 인자 받아옴)
-		@PutMapping("/member/modify")
-		public ResponseEntity<?> modifyMemberInfo(
+	@PutMapping("/member/modify")
+	public ResponseEntity<?> modifyMemberInfo(
 				@RequestParam("name") String name,
 				@RequestParam("nickname") String nickname,
 				@RequestParam("description") String description,
@@ -223,4 +225,5 @@ public class MemberController {
 			
 			return ResponseEntity.status(HttpStatus.OK).body(modifyResult);
 		}
+
 }

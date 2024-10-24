@@ -19,5 +19,5 @@ public class ResponsePostDetailDto {
 	//post 상세조회 response 응답 담는 dto
 	private Post post;
 	private int heartCount;
-	private List<Comment> comment;
+	private int commentCount;
 }

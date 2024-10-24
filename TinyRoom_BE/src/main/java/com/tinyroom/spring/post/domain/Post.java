@@ -5,12 +5,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryEntity;
 import com.tinyroom.spring.category.domain.Category;
+import com.tinyroom.spring.comment.domain.Comment;
 import com.tinyroom.spring.member.domain.Member;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -53,8 +56,10 @@ public class Post {
 	private String content;	// 포스트 내용
 	private String post_img;	// 포스트 첨부 이미지
 	private int is_active; // 활성화 여부(삭제 여부) : 삭제했을 때 db에서 실제로 삭제되는 것이 아니라 상태값으로 관리
-	
 
+	  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+	  private List<Comment> comments;
+	
 	public void changeCategory(Category category) {
 		this.category = category;
 	}
