@@ -39,8 +39,8 @@ public class Comment {
 	private int is_active;
 	
 	// post_id -> Post Entity와 1대N 관계 (FK) : N 쪽 
-	@ManyToOne
-	@JoinColumn(name="post_id")
+	 @ManyToOne
+	 @JoinColumn(name = "post_id", nullable = false)
 	private Post post;
 	
 	// member_id -> Member Entity와 1대N 관계 (FK) : N 쪽 
@@ -57,6 +57,7 @@ public class Comment {
 	@OneToMany(fetch= FetchType.LAZY, mappedBy = "parent")
 	private List<Comment> comments;
 	
+
 	private LocalDate date;
-	
+
 }

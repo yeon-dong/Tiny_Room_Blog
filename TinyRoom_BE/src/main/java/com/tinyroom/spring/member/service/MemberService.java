@@ -24,9 +24,10 @@ import lombok.extern.log4j.Log4j2;
 
 public interface MemberService {
 	
-	public boolean registerMember(Map<String, String> map, MultipartFile profile_img) throws IOException;
+	public Map registerMember(Map<String, String> map, MultipartFile profile_img) throws IOException;
 	public boolean updateMember(MemberDto dto, BlogDto blog, RoomDto room, MultipartFile profile_img) throws IOException;
 	public MemberDto getMember(String email);
+	public String uploadImage(MultipartFile img);
       
 	default MemberDto entityMemberDto(Member member) {
 		MemberDto memberDto = MemberDto.builder()

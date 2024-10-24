@@ -110,12 +110,13 @@ public class PostController {
 		PostDto postDto = postService.get(post_id);
 		Post post = postService.dtoToEntity(postDto);
 		int heartCount = postheartService.getCount(post);
-		List<Comment> comments= commentService.findAll(post);
+		int commentCount = commentService.getCount(post);
+
 		
 		ResponsePostDetailDto responseDto = ResponsePostDetailDto.builder()
 			    .post(post)
 			    .heartCount(heartCount)
-			    .comment(comments)
+			    .commentCount(commentCount)
 			    .build();
 		
 		return responseDto;
@@ -137,6 +138,7 @@ public class PostController {
 	    CategoryDto categoryDto = categoryService.get(category_id);
 	    Category category = categoryService.dtoToEntity(categoryDto);
 	    
+	    
 	    // DateTimeFormatter를 사용하여 LocalDate로 변환
 	    if (dateString != null && !dateString.isEmpty()) {
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -147,6 +149,9 @@ public class PostController {
 	    if (title != null) postDto.setTitle(title);
 	    if (content != null) postDto.setContent(content);
 	    if (category != null) postDto.setCategory(category);
+	    
+	    LocalDate w_date = LocalDate.now(); 
+	    postDto.setW_date(w_date);
 	    
 	    postService.modify(postDto, post_img_files);
 	    

@@ -136,7 +136,7 @@ public class PostServiceImpl implements PostService {
 		post.changeContent(postDto.getContent());
 		post.changeDate(postDto.getDate());
 		post.changeTitle(postDto.getTitle());
-		
+		post.setW_date(postDto.getW_date());
 		postDao.save(post);
 	}
 

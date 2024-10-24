@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class CommentServiceImpl implements CommentService{
 	public int getCount(Post post) {
 		return commentDao.countByPost(post);
 	}
-    
+
     public List<ResponseCommentDto> getCommentsByPost(Post post) {
         List<Comment> comments = commentDao.findByPostOrderByDateDesc(post);
         Map<Integer, ResponseCommentDto> commentMap = new HashMap<>();
@@ -96,4 +97,5 @@ public class CommentServiceImpl implements CommentService{
 
         return parentComments; // 부모-자식 구조의 리스트 반환
     }
+
 }

@@ -33,4 +33,6 @@ public class CommentDto {
 	private Comment parent;
 	
 	private List<Comment> comments;
+	
+	private LocalDate date;	
 }

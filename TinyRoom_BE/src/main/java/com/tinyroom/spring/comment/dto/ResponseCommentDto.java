@@ -20,6 +20,7 @@ import lombok.Setter;
 @Setter
 public class ResponseCommentDto {
 	private int comment_id;
+
 	private String content;
 	private int post_id;
 	private int parent_id;
