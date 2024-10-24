@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -27,7 +28,27 @@ export const BoardBox = styled.div`
 export const BoardHeader = styled.div`
   width: 100%;
   flex: 0 0 18px;
-  background-color: skyblue;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const CategoryList = styled.div`
+  display: flex;
+  gap: 20px;
+  height: 100%;
+`;
+
+export const CategoryItem = styled.button`
+  height: 100%;
+  font-size: 18px;
+  ${(p) => (p.selected === 1 ? "font-weight: bold;" : "")}
+`;
+
+export const WriteButton = styled(Link)`
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--primary-color);
 `;
 
 export const BoardContent = styled.div`
