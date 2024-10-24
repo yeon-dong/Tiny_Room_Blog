@@ -74,7 +74,7 @@ function SignUpPage3() {
           }
         );
         alert("회원가입에 성공했습니다!");
-        // navigate("/login");
+        navigate("/login");
       } catch (error) {
         console.error("회원가입 실패:", error);
         alert("회원가입에 실패했습니다. 다시 시도해 주세요.");
