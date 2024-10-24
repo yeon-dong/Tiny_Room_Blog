@@ -30,10 +30,9 @@ const NewPostContent = () => {
   const location = useLocation();
   const isUpdate = location.pathname.split("/").length === 5;
   const postId = isUpdate ? location.pathname.split("/")[4] : -1;
-
   const navigate = useNavigate();
 
-  const at = localStorage.getItem("at");
+  const at = localStorage.getItem("token");
 
   const editorRef = useRef(null);
 
