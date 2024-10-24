@@ -120,9 +120,11 @@ public class MemberServiceImpl implements MemberService{
    @Transactional(rollbackFor = Exception.class)
    public boolean updateMember(MemberDto dto, BlogDto blogDto, RoomDto roomDto, MultipartFile profile_img) throws IOException {
       
-      log.info("upload file : " + profile_img.getOriginalFilename());
+	   String imageName = profile_img.getOriginalFilename();		
+	   
+      log.info("upload file : " + imageName);
       
-      String filePath = FOLDER_PATH + profile_img.getOriginalFilename();
+      String filePath = FOLDER_PATH + imageName;
       
       profile_img.transferTo(new File(filePath));
       
@@ -183,6 +185,17 @@ public String uploadImage(MultipartFile img) {
 	}
 	
 	return "/image/" + imageName;
+}
+
+@Override
+public MemberDto getProfile(int id) {
+	// dao.findById(pk): pk기준으로 검색
+    Member member = dao.findById(id).orElse(null);// orElse(null): 검색결과 없으면 널 반환
+    
+    if (member == null) {
+       return null;
+    }
+    return entityMemberDto(member);
 }
 
 }

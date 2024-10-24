@@ -23,21 +23,21 @@ public class MemberTest {
 	@Autowired
 	AuthenticationManagerBuilder authenticationManagerBuilder;
 	
-	@Test
-	public void testInsertMember() {
-		
-		for(int i=0;i<10;i++) {
-			
-			Member member = Member.builder()
-					.email("user"+ i +"@han.com")
-					.pw(passwordEncoder.encode("1234"))
-					.nickname("user"+i)
-					.type("ROLE_USER")
-					.build();
-			
-			memberRepository.save(member);
-		}
-	}
+//	@Test
+//	public void testInsertMember() {
+//		
+//		for(int i=0;i<10;i++) {
+//			
+//			Member member = Member.builder()
+//					.email("user"+ i +"@han.com")
+//					.pw(passwordEncoder.encode("1234"))
+//					.nickname("user"+i)
+//					.type("ROLE_USER")
+//					.build();
+//			
+//			memberRepository.save(member);
+//		}
+//	}
 	
 	
 //	@Test
