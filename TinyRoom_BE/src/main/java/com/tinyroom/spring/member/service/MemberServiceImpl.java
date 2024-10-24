@@ -2,6 +2,7 @@ package com.tinyroom.spring.member.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ import lombok.extern.log4j.Log4j2;
 public class MemberServiceImpl implements MemberService{
    
    // 프로필 이미지를 저장할 경로
-   private final String FOLDER_PATH = "c:\\profile_images\\";
+   private final String FOLDER_PATH = "c:\\tinyroomImages\\";
 
    @Autowired
 	private BlogService blogService;
@@ -54,14 +55,17 @@ public class MemberServiceImpl implements MemberService{
    @Override
    @Transactional(rollbackFor=Exception.class)
 // 회원가입(Member, Blog 두 개의 테이블에 insert하므로 transaction 필요
-   public boolean registerMember(Map<String, String> map, MultipartFile profile_img) throws IOException {
+   public Map registerMember(Map<String, String> map, MultipartFile profile_img) throws IOException {
       
-      log.info("upload file : " + profile_img.getOriginalFilename());
+	   String imageName = profile_img.getOriginalFilename();
+	   
+      log.info("upload file : " + imageName);
       
-      String filePath = FOLDER_PATH + profile_img.getOriginalFilename();
+      String filePath = FOLDER_PATH + imageName;
       
       profile_img.transferTo(new File(filePath));
       
+      Map result = new HashMap<>();
       
       // Member 엔티티 생성
       Member member = Member.builder()
@@ -70,7 +74,7 @@ public class MemberServiceImpl implements MemberService{
             .name(map.get("name"))
             .nickname(map.get("nickname"))
             .phone_number(map.get("phone_number"))
-            .profile_img(filePath)
+            .profile_img("/image/" + imageName)
             .is_active(1)
             .type("ROLE_USER")
             .description(map.get("description"))
@@ -99,14 +103,17 @@ public class MemberServiceImpl implements MemberService{
           roomDao.save(room);
           
           if(filePath != null) {
-              log.info("이미지 파일 저장에 성공했습니다.");
+              log.info("이미지 파일 저장에 성공했습니다 : /image/" + imageName);
            }
           
-          return true;
+          result.put("result", true);
+          result.put("imageUrl", "/image/" + imageName);
       } catch (Exception e){
     	  log.error("회원 가입에 실패했습니다 : " + e.getMessage());
     	  throw e;
       }
+      
+      return result;
    }
    
 // 회원가입
@@ -150,5 +157,24 @@ public class MemberServiceImpl implements MemberService{
       }
       return entityMemberDto(m);
    }
+
+@Override
+public String uploadImage(MultipartFile img) {
+	String imageName = img.getOriginalFilename();
+	   
+    log.info("upload file : " + imageName);
+    
+    String filePath = FOLDER_PATH + imageName;
+    
+    try {
+		img.transferTo(new File(filePath));
+	} catch (IllegalStateException e) {
+		e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	
+	return "/image/" + imageName;
+}
 
 }

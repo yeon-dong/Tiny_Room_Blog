@@ -35,11 +35,12 @@ function SignUpPage2() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageSrc(reader.result); // 선택한 이미지의 데이터 URL로 상태 업데이트
-      };
-      reader.readAsDataURL(file); // 파일을 데이터 URL로 읽기
+      // const reader = new FileReader();
+      // reader.onloadend = () => {
+      //   setImageSrc(reader.result); // 선택한 이미지의 데이터 URL로 상태 업데이트
+      // };
+      // reader.readAsDataURL(file); // 파일을 데이터 URL로 읽기
+      setImageSrc(file);
     }
   };
 
@@ -68,7 +69,7 @@ function SignUpPage2() {
         <SignUpInnerBox>
           <SignUpText>Join Us</SignUpText>
           <BlogProfileText>블로그 프로필</BlogProfileText>
-          <BlogProfileIMG src={imageSrc} alt="Profile" />
+          {/* <BlogProfileIMG src={imageSrc} alt="Profile" /> */}
           <BlogProfileUploadContainer>
             <input
               type="file"
