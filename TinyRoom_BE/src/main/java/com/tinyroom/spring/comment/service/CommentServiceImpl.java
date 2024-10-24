@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.tinyroom.spring.comment.dao.CommentDao;
 import com.tinyroom.spring.comment.domain.Comment;
 import com.tinyroom.spring.comment.dto.CommentDto;
+import com.tinyroom.spring.comment.dto.ResponseCommentDto;
 import com.tinyroom.spring.post.domain.Post;
 import com.tinyroom.spring.post.service.PostService;
 
@@ -16,11 +17,11 @@ import com.tinyroom.spring.post.service.PostService;
 public class CommentServiceImpl implements CommentService{
 	@Autowired
 	CommentDao commentDao;
-
+	
 	@Override
-	public List<Comment> findAll(Integer post_id) {
+	public List<Comment> findAll(Post post) {
 		// TODO Auto-generated method stub
-		return commentDao.findAllByPost_id(post_id);
+		return commentDao.findByPost(post);
 	}
 
 	@Override
@@ -47,4 +48,15 @@ public class CommentServiceImpl implements CommentService{
 	public void delete(int comment_id) {
 		commentDao.deleteById(comment_id);
 	}
+
+	@Override
+	public int getCount(Post post) {
+		return commentDao.countByPost(post);
+	}
+
+//	@Override
+//	public List<Comment> getCommentList(int post_id) {
+//		 List<Comment> comments = commentDao.findByPostPost_Id(post_id);
+//		return comments;
+//	}
 }
