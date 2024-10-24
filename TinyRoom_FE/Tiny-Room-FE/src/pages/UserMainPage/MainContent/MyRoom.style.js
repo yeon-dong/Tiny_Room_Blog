@@ -77,3 +77,12 @@ export const BubbleImg = styled.img`
   height: 84px;
   z-index: 11;
 `;
+
+export const CharacterImg = styled.img`
+  position: absolute;
+  left: 340px;
+  bottom: 20px;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+`;
