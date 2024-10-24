@@ -16,12 +16,12 @@ export const ContentContainer = styled.div`
   justify-content: center;
   gap: 24px;
   padding: 20px;
-  cursor: pointer;
   // margin-top: 20px;
 `;
 
 // 각 카드 컨테이너
 export const Card = styled.div`
+  cursor: pointer;
   width: 240px;
   border-radius: 10px;
   overflow: hidden;

@@ -17,7 +17,10 @@ function ContentSection({ recommendPost }) {
       <ContentContainer>
         {recommendPostArray.map((content, index) => (
           <Card key={index}>
-            <CardImage src={content.thumbnail} alt={content.title} />
+            <CardImage
+              src={`http://localhost:8080${content.thumbnail}`}
+              alt={content.title}
+            />
             <CardBody>
               <CardTitle>{content.title}</CardTitle>
               <CardAuthor>{content.post_id}</CardAuthor>
