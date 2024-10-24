@@ -88,6 +88,9 @@ export const MenuBox = styled.div`
 
 export const LogoutButton = styled.button`
   font-size: 18px;
+  &:hover {
+    font-weight: bold;
+  }
 `;
 
 export const UserBlogHeaderLink = styled(Link)`
@@ -95,6 +98,10 @@ export const UserBlogHeaderLink = styled(Link)`
   font-weight: normal;
   text-decoration: none;
   color: black;
+  cursor: pointer;
+  &:hover {
+    font-weight: bold;
+  }
 `;
 
 export const UserBlogHeaderTextBetweenLine = styled.img`

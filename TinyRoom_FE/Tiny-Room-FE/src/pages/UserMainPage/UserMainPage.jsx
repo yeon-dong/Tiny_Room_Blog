@@ -24,7 +24,9 @@ function UserMainPage() {
   const userId = location.pathname.split("/")[1];
   const navigate = useNavigate();
 
-  const at = localStorage.getItem("at");
+  const at = localStorage.getItem("token");
+
+  const { resetUserInfo } = useStore();
 
   const [blogData, setBlogData] = useState(null);
 
@@ -43,8 +45,10 @@ function UserMainPage() {
   }, []);
 
   const handleLogoutClick = useCallback(() => {
-    if (at !== null) {
-      // TODO: Logout
+    if (token !== null) {
+      localStorage.removeItem("token");
+      resetUserInfo();
+      alert("로그아웃 되었습니다.");
     } else {
       navigate("/login");
     }
@@ -77,7 +81,7 @@ function UserMainPage() {
                   </UserBlogHeaderLink>
                 </MenuBox>
                 <LogoutButton onClick={handleLogoutClick}>
-                  {at === null ? "로그인" : "로그아웃"}
+                  {token === null ? "로그인" : "로그아웃"}
                 </LogoutButton>
               </UserBlogHeaderContainer>
               <UserBlogBox>

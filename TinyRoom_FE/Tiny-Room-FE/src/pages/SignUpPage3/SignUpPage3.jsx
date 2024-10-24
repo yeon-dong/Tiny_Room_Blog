@@ -30,6 +30,7 @@ function SignUpPage3() {
     signUpProfileImg,
     signUpName,
     signUpNickName,
+    resetSignUpData,
   } = useStore();
   const [blogNamePlaceholder, setBlogNamePlaceholder] = useState(
     "한글, 영문, 숫자 혼용 가능(한글 기준 8자 이내)"
@@ -73,8 +74,14 @@ function SignUpPage3() {
             // },
           }
         );
-        alert("회원가입에 성공했습니다!");
-        // navigate("/login");
+        if (response.data.result === false) {
+          alert("회원가입에 실패했습니다. 다시 시도해 주세요.");
+        } else {
+          alert("회원가입에 성공했습니다!");
+          // console.log(response.data);
+          resetSignUpData();
+          navigate("/login");
+        }
       } catch (error) {
         console.error("회원가입 실패:", error);
         alert("회원가입에 실패했습니다. 다시 시도해 주세요.");

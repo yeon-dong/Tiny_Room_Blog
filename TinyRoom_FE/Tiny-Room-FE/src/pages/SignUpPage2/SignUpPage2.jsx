@@ -29,23 +29,26 @@ function SignUpPage2() {
     "한글, 영문, 숫자 혼용 가능(한글 기준 8자 이내)"
   );
   const [imageSrc, setImageSrc] = useState("/images/Group 46.svg"); // 기본 이미지 경로
+  const [imageFile, setImageFile] = useState(null); // 기본 이미지 경로
   const [name, setName] = useState("");
   const [nickname, setNickName] = useState("");
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // const reader = new FileReader();
-      // reader.onloadend = () => {
-      //   setImageSrc(reader.result); // 선택한 이미지의 데이터 URL로 상태 업데이트
-      // };
-      // reader.readAsDataURL(file); // 파일을 데이터 URL로 읽기
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageSrc(reader.result); // 선택한 이미지의 데이터 URL로 상태 업데이트
+      };
+      reader.readAsDataURL(file); // 파일을 데이터 URL로 읽기
       setImageSrc(file);
     }
   };
 
   const handleDeleteImage = () => {
     setImageSrc("/images/Group 46.svg"); // 기본 이미지로 설정
+    setImageFile(null); //파일 없음으로 설정
   };
 
   const isNextBtnEnabled =
@@ -56,7 +59,7 @@ function SignUpPage2() {
 
   const handleNextBtnClick = () => {
     if (isNextBtnEnabled) {
-      setSignUpProfileImg(imageSrc);
+      setSignUpProfileImg(imageFile);
       setSignUpName(name);
       setSignUpNickName(nickname);
       navigate("/signup3");
@@ -69,7 +72,7 @@ function SignUpPage2() {
         <SignUpInnerBox>
           <SignUpText>Join Us</SignUpText>
           <BlogProfileText>블로그 프로필</BlogProfileText>
-          {/* <BlogProfileIMG src={imageSrc} alt="Profile" /> */}
+          <BlogProfileIMG src={imageSrc} alt="Profile" />
           <BlogProfileUploadContainer>
             <input
               type="file"

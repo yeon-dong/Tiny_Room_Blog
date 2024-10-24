@@ -18,7 +18,7 @@ import useStore from "../../stores/store.js";
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { setUserId } = useStore(); // setUserId 가져오기
+  const { setUserInfo } = useStore(); // setUserId 가져오기
   const [idPlaceholder, setIdPlaceholder] = useState("이메일을 입력하세요.");
   const [pwPlaceholder, setPwPlaceholder] = useState("비밀번호를 입력하세요.");
   const [username, setUsername] = useState(""); // 사용자 이름 상태
@@ -38,10 +38,24 @@ function LoginPage() {
         password: password,
       });
       if (response.data.flag) {
-        console.log("로그인 성공:", response.data);
-        setUserId(response.data.id); // ID를 전역 상태로 저장
+        let info = {
+          name: response.data.name,
+          description: response.data.description,
+          email: response.data.email,
+          id: response.data.id,
+          nickname: response.data.nickname,
+          phone_number: response.data.phone_number,
+          profileImg: response.data.profileImg,
+          type: response.data.type,
+        }; // 넣을 json data
+        localStorage.setItem("token", response.data.token);
+        setUserInfo(info); // 유저정보를 전역 상태로 저장
         // 로그인 성공 후 처리 (예: 리다이렉트, 토큰 저장 등)
         setErrorMessage(""); // 성공 시 에러 메시지 초기화
+        alert(
+          `🤍환영합니다, ${info.name}님🤍\n오늘도 티니룸에서 좋은 하루 보내세요🍀`
+        );
+
         navigate("/");
       } else {
         setErrorMessage("아이디 또는 비밀번호가 일치하지 않습니다.");
