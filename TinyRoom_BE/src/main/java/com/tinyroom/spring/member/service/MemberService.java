@@ -28,6 +28,7 @@ public interface MemberService {
 	public boolean updateMember(MemberDto dto, BlogDto blog, RoomDto room, MultipartFile profile_img) throws IOException;
 	public MemberDto getMember(String email);
 	public String uploadImage(MultipartFile img);
+	public MemberDto getProfile(int id);
       
 	default MemberDto entityMemberDto(Member member) {
 		MemberDto memberDto = MemberDto.builder()
