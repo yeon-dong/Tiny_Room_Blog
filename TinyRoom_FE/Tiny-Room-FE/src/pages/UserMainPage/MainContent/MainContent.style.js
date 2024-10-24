@@ -54,10 +54,13 @@ export const WriteButton = styled(Link)`
 export const BoardContent = styled.div`
   display: flex;
   flex: 0 0 200px;
-  background-color: yellow;
+  justify-content: center;
+  gap: 20px 40px;
+  flex-wrap: wrap;
 `;
 
 export const BoardFooter = styled.div`
+  display: flex;
+  justify-content: center;
   flex: 0 0 22px;
-  background-color: pink;
 `;

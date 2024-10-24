@@ -12,6 +12,9 @@ import {
 import MyRoom from "./MyRoom";
 import { useCallback, useEffect, useState } from "react";
 import useStore from "../../../stores/store";
+import PostPreview from "./PostPreview";
+import axios from "axios";
+import MyPagination from "../../../components/Pagination/MyPagination";
 
 const MainContent = () => {
   const location = useLocation();
@@ -23,12 +26,34 @@ const MainContent = () => {
   const blogData = useOutletContext();
 
   const [selectedCategoryIdx, setSelectedCategoryIdx] = useState(0);
+  const [posts, setPosts] = useState({
+    data: [],
+    totalCount: 0,
+  });
+
+  console.log(posts);
+  const [page, setPage] = useState(1);
 
   const handleFurnitureClick = useCallback((categoryIdx) => {
     setSelectedCategoryIdx(categoryIdx);
   }, []);
 
-  console.log(selectedCategoryIdx);
+  const getPosts = useCallback(async () => {
+    const response = await axios.get(
+      `http://localhost:8080/user/${userId}?category=${selectedCategoryIdx}&page=${page}`
+    );
+
+    setPosts(response.data);
+  }, [page]);
+
+  useEffect(() => {
+    getPosts();
+  }, [page]);
+
+  const handlePageChange = useCallback((e, page) => {
+    setPage(page);
+  }, []);
+
   return (
     <Container>
       {Boolean(blogData) && (
@@ -76,8 +101,18 @@ const MainContent = () => {
             <WriteButton to={`/${userId}/post/new`}>글쓰기</WriteButton>
           )}
         </BoardHeader>
-        <BoardContent></BoardContent>
-        <BoardFooter></BoardFooter>
+        <BoardContent>
+          {posts.data.map((post) => (
+            <PostPreview key={post.post_id} post={post} />
+          ))}
+        </BoardContent>
+        <BoardFooter>
+          <MyPagination
+            count={Math.ceil(posts.totalCount / 4)}
+            page={page}
+            onChange={handlePageChange}
+          />
+        </BoardFooter>
       </BoardBox>
     </Container>
   );

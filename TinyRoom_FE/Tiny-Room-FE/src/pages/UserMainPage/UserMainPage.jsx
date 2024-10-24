@@ -17,6 +17,7 @@ import {
 } from "./UserMainPage.style";
 import UserInfoBox from "./UserInfoBox";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function UserMainPage() {
   const location = useLocation();
@@ -28,27 +29,9 @@ function UserMainPage() {
   const [blogData, setBlogData] = useState(null);
 
   const getBlogData = useCallback(async () => {
-    // const response = await axios.get(`/blog/${userId}`);
+    const response = await axios.get(`http://localhost:8080/blog/${userId}`);
 
-    // TODO: 더미데이터
-    setBlogData({
-      user: {
-        profileImg: "https://naver.com",
-        nickname: "Nickname",
-        description: "This is my blog, Thank you",
-      },
-      blog: {
-        title: "Blog Title",
-        blogTheme: 0,
-      },
-      room: {
-        theme: 0,
-        furniture1: 0,
-        furniture2: 0,
-        furniture3: 0,
-        furniture4: 0,
-      },
-    });
+    setBlogData(response.data);
   }, []);
 
   useEffect(() => {

@@ -26,8 +26,14 @@ export const ProfileBox = styled.div`
 export const ProfileImageBox = styled.div`
   width: 100%;
   flex: 0 0 230px;
-  background-color: skyblue;
   border-radius: 10px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 export const UsernameBox = styled.div`

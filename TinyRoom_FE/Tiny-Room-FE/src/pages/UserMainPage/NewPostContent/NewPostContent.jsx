@@ -95,12 +95,13 @@ const NewPostContent = () => {
     if (!isUpdate) {
       try {
         const response = await axios.post(
-          `http://127.0.0.1:8080/posts/writePost`,
+          `http://localhost:8080/posts/writePost`,
           {
             category_id: categoryIdx + 1,
             date: date.format("YYYY-MM-DD"),
             title: title,
             content: content,
+            text_content: textContent,
             thumbnail: thumbnail,
           },
           {
@@ -119,6 +120,7 @@ const NewPostContent = () => {
             date: date.format("YYYY-MM-DD"),
             title: title,
             content: content,
+            text_content: textContent,
             thumbnail: thumbnail,
           },
           {

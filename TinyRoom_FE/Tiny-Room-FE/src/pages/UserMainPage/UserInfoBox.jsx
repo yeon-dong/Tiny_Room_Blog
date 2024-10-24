@@ -14,7 +14,9 @@ const UserInfoBox = ({ userId, profileImg, nickname, description }) => {
   return (
     <Container>
       <ProfileBox>
-        <ProfileImageBox>{profileImg}</ProfileImageBox>
+        <ProfileImageBox>
+          <img src={`http://localhost:8080${profileImg}`} alt="ProfileImage" />
+        </ProfileImageBox>
         <UsernameBox>
           {nickname}
           {at !== null && (

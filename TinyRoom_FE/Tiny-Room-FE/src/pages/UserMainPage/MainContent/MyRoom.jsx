@@ -41,7 +41,7 @@ const MyRoom = ({ selectedCategoryIdx, onFurnitureClick, roomData }) => {
 
   return (
     <Container>
-      <RoomImg src={`/images/room${roomData.theme}.png`} alt="Room" />
+      <RoomImg src={`/images/room${roomData.roomTheme}.png`} alt="Room" />
       {(selectedCategoryIdx > 0 || hoveredPart > 0) && (
         <Shadow onClick={handleShadowClick} />
       )}
