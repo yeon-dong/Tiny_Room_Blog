@@ -11,6 +11,7 @@ import {
 
 function ContentSection({ recommendPost }) {
   const recommendPostArray = Object.values(recommendPost);
+
   return (
     <>
       <HotTitle>HOT 게시물</HotTitle>
