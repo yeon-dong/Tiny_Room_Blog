@@ -57,7 +57,7 @@ public class Post {
 	private String post_img;	// 포스트 첨부 이미지
 	private int is_active; // 활성화 여부(삭제 여부) : 삭제했을 때 db에서 실제로 삭제되는 것이 아니라 상태값으로 관리
 	private String thumbnail;
-	private String content_for_html;
+	private String text_content;
 
 	  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	  private List<Comment> comments;
@@ -79,10 +79,6 @@ public class Post {
 	
 	public void changeContent(String content) {
 		this.content = content;
-	}
-	
-	public void changePost_img(String post_img) {
-		this.post_img = post_img;
 	}
 	
 }
