@@ -1,10 +1,22 @@
-import { useCallback, useEffect, useRef } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 
-const MyEditor = () => {
+const MyEditor = forwardRef((props, ref) => {
   const editorRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    getEditor: () => {
+      editorRef.current?.getEditor();
+    },
+  }));
 
   const handleUploadImage = useCallback(() => {
     const input = document.createElement("input");
@@ -23,11 +35,7 @@ const MyEditor = () => {
 
       console.log(file.name);
 
-      // 서버에 올려질때까지 표시할 로딩 placeholder 삽입
-      // editor.insertEmbed(range.index, "image", `/images/loading.gif`);
-
       try {
-        // 이런식으로 서버에 업로드 한뒤 이미지 태그에 삽입할 url을 반환받도록 구현하면 된다
         const response = await axios.post(
           `http://localhost:8080/image/upload`,
           formData,
@@ -38,21 +46,12 @@ const MyEditor = () => {
           }
         );
 
-        console.log(response.data);
+        const url = "http://localhost:8080" + response.data;
 
-        const uurl = "http://localhost:8080" + response.data;
-
-        console.log(uurl);
-
-        // 정상적으로 업로드 됐다면 로딩 placeholder 삭제
-        // getEditor().deleteText(range.index, 1);
-        // 받아온 url을 이미지 태그에 삽입
-        editor.insertEmbed(range.index, "image", uurl);
-
-        // 사용자 편의를 위해 커서 이미지 오른쪽으로 이동
+        editor.insertEmbed(range.index, "image", url);
         editor.setSelection(range.index + 1);
       } catch (e) {
-        // getEditor().deleteText(range.index, 1);
+        alert("이미지 업로드 실패");
       }
     };
   }, []);
@@ -70,6 +69,7 @@ const MyEditor = () => {
       theme="snow"
       onChange={(v, d, s, e) => {
         console.log(e.getContents());
+        console.log(e.getText());
       }}
       style={{ height: "100%" }}
       formats={[
@@ -107,6 +107,6 @@ const MyEditor = () => {
       }}
     />
   );
-};
+});
 
 export default MyEditor;
