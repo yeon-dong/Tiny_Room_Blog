@@ -31,14 +31,16 @@ public class Neighbour {
 	// from_member_id -> Member와 1:N 관계 (N 쪽) : 이웃을 신청한 쪽
 	@ManyToOne
 	@JoinColumn(name="from_member_id")
-	private Member from_member;
+	private Member fromMember;
 	
 	// to_member_id -> Member와 1:N 관계 (N 쪽) : 이웃 신청을 받은 쪽
 	@ManyToOne
 	@JoinColumn(name="to_member_id")
-	private Member to_member;
+	private Member toMember;
 	
 	// status -> 신청 수락 / 거절 상태
 	private int status;
+	
+	private String message;
 	
 }

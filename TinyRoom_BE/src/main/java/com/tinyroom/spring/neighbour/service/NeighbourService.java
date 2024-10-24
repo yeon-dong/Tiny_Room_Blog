@@ -1,5 +1,8 @@
 package com.tinyroom.spring.neighbour.service;
 
+import java.util.List;
+
+import com.tinyroom.spring.member.domain.Member;
 import com.tinyroom.spring.neighbour.domain.Neighbour;
 import com.tinyroom.spring.neighbour.dto.NeighbourDto;
 import com.tinyroom.spring.post.domain.Post;
@@ -12,8 +15,8 @@ public interface NeighbourService {
 	default NeighbourDto entityNeighbourDto(Neighbour neighbour) {
 		NeighbourDto neighbourDto = NeighbourDto.builder()
 				.neighbour_id(neighbour.getNeighbour_id())
-				.from_member(neighbour.getFrom_member())
-				.to_member(neighbour.getTo_member())
+				.from_member(neighbour.getFromMember())
+				.to_member(neighbour.getToMember())
 				.status(neighbour.getStatus())
 				.build();
 		return neighbourDto;
@@ -22,8 +25,8 @@ public interface NeighbourService {
 	default Neighbour dtoToEntity(NeighbourDto neighbourDto) {
 		Neighbour neighbour = Neighbour.builder()
 				.neighbour_id(neighbourDto.getNeighbour_id())
-				.from_member(neighbourDto.getFrom_member())
-				.to_member(neighbourDto.getTo_member())
+				.fromMember(neighbourDto.getFrom_member())
+				.toMember(neighbourDto.getTo_member())
 				.status(neighbourDto.getStatus())
 				.build();
 		return neighbour;
@@ -32,4 +35,10 @@ public interface NeighbourService {
 	Neighbour getNeighbour(int neighbour_id);
 
 	void modifyStatus(NeighbourDto neighbourDto);
+
+	void deleteNeighbour(int neighbour_id);
+
+	List<Neighbour> getSendNeighbourList(Member member);
+
+	List<Neighbour> getNeighbourList(Member member);
 }
