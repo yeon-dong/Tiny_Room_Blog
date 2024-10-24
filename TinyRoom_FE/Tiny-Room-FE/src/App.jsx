@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "./pages/MainPage/MainPage.jsx";
 import UserMainPage from "./pages/UserMainPage/UserMainPage.jsx";
 import MainContent from "./pages/UserMainPage/MainContent/MainContent.jsx";
-import PostDetailContent from "./pages/UserMainPage/PostDetailContent.jsx";
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 import SignUpPage from "./pages/SignUpPage/SignUpPage.jsx";
 import SignUpPage2 from "./pages/SignUpPage2/SignUpPage2.jsx";
@@ -11,6 +10,7 @@ import SignUpPage3 from "./pages/SignUpPage3/SignUpPage3.jsx";
 import NeighbourContent from "./pages/UserMainPage/NeighbourContent/NeighbourContent.jsx";
 import { createTheme, ThemeProvider } from "@mui/material";
 import MyPageContent from "./pages/UserMainPage/MyPageContent/MyPageContent.jsx";
+import PostDetailContent from "./pages/UserMainPage/PostDetailContent/PostDetailContent.jsx";
 
 const theme = createTheme({
   palette: {
@@ -30,6 +30,7 @@ function App() {
               <Route index element={<MainContent />} />
               <Route path="post/:postId" element={<PostDetailContent />} />
               <Route path="post/new" element={<NewPostContent />} />
+              <Route path="post/update/:postId" element={<NewPostContent />} />
               <Route path="neighbour" element={<NeighbourContent />} />
               <Route path="mypage" element={<MyPageContent />} />
             </Route>

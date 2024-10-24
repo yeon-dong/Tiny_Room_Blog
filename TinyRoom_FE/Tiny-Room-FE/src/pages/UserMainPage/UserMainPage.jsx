@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Wrapper,
   Container,
   UserBlogBox,
   UserBlogContainer,
   UserBlogHeaderContainer,
-  UserBlogHeaderText,
+  UserBlogHeaderLink,
   UserBlogHeaderTextBetweenLine,
   UserBlogNameLine,
   BlogNameText,
@@ -16,39 +16,77 @@ import {
   LogoutButton,
 } from "./UserMainPage.style";
 import UserInfoBox from "./UserInfoBox";
-import { Outlet } from "react-router-dom";
-import useStore from "../../stores/store.js"; // Zustand 스토어 import
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import useStore from "../../stores/store";
 
 function UserMainPage() {
+  const location = useLocation();
+  const userId = location.pathname.split("/")[1];
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
+
   const { resetUserInfo } = useStore();
-  const handleLogOut = () => {
-    localStorage.removeItem("token");
-    resetUserInfo();
-    alert("로그아웃 되었습니다.");
-  };
+
+  const [blogData, setBlogData] = useState(null);
+
+  const getBlogData = useCallback(async () => {
+    const response = await axios.get(`http://localhost:8080/blog/${userId}`);
+
+    setBlogData(response.data);
+  }, []);
+
+  useEffect(() => {
+    getBlogData();
+  }, []);
+
+  const handleBlogTitleClick = useCallback(() => {
+    navigate(`/${userId}`);
+  }, []);
+
+  const handleLogoutClick = useCallback(() => {
+    if (token !== null) {
+      localStorage.removeItem("token");
+      resetUserInfo();
+      alert("로그아웃 되었습니다.");
+    } else {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <>
       <Wrapper>
         <ContainerBox>
           <Container>
             <UserInfoContainer>
-              <BlogNameBox>
-                <BlogNameText>User's Blog</BlogNameText>
+              <BlogNameBox onClick={handleBlogTitleClick}>
+                <BlogNameText>{blogData?.blog.title}</BlogNameText>
                 <UserBlogNameLine src="/images/very_cute_kitty.gif" />
               </BlogNameBox>
-              <UserInfoBox />
+              <UserInfoBox
+                userId={userId}
+                profileImg={blogData?.user.profileImg}
+                nickname={blogData?.user.nickname}
+                description={blogData?.user.description}
+              />
             </UserInfoContainer>
             <UserBlogContainer>
               <UserBlogHeaderContainer>
                 <MenuBox>
-                  <UserBlogHeaderText>메인페이지</UserBlogHeaderText>
+                  <UserBlogHeaderLink to="/">메인페이지</UserBlogHeaderLink>
                   <UserBlogHeaderTextBetweenLine src="/images/Line 2.svg" />
-                  <UserBlogHeaderText>이웃목록</UserBlogHeaderText>
+                  <UserBlogHeaderLink to={`/${userId}/neighbour`}>
+                    이웃목록
+                  </UserBlogHeaderLink>
                 </MenuBox>
-                <LogoutButton onClick={handleLogOut}>로그아웃</LogoutButton>
+                <LogoutButton onClick={handleLogoutClick}>
+                  {token === null ? "로그인" : "로그아웃"}
+                </LogoutButton>
               </UserBlogHeaderContainer>
               <UserBlogBox>
-                <Outlet />
+                <Outlet context={blogData} />
               </UserBlogBox>
             </UserBlogContainer>
           </Container>

@@ -2,6 +2,8 @@ package com.tinyroom.spring.member.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,10 +30,9 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Service
 public class MemberServiceImpl implements MemberService{
+	
+	private final String FOLDER_PATH = "c:\\tinyroomImages\\";
    
-   // 프로필 이미지를 저장할 경로
-   private final String FOLDER_PATH = "c:\\tinyroomImages\\";
-
    @Autowired
 	private BlogService blogService;
 	
@@ -55,16 +56,8 @@ public class MemberServiceImpl implements MemberService{
    @Override
    @Transactional(rollbackFor=Exception.class)
 // 회원가입(Member, Blog 두 개의 테이블에 insert하므로 transaction 필요
-   public Map registerMember(Map<String, String> map, MultipartFile profile_img) throws IOException {
-      
-	   String imageName = profile_img.getOriginalFilename();
-	   
-      log.info("upload file : " + imageName);
-      
-      String filePath = FOLDER_PATH + imageName;
-      
-      profile_img.transferTo(new File(filePath));
-      
+   public Map registerMember(Map<String, String> map) throws IOException {
+     
       Map result = new HashMap<>();
       
       // Member 엔티티 생성
@@ -74,7 +67,7 @@ public class MemberServiceImpl implements MemberService{
             .name(map.get("name"))
             .nickname(map.get("nickname"))
             .phone_number(map.get("phone_number"))
-            .profile_img("/image/" + imageName)
+            .profile_img(map.get("profile_img"))
             .is_active(1)
             .type("ROLE_USER")
             .description(map.get("description"))
@@ -95,19 +88,16 @@ public class MemberServiceImpl implements MemberService{
     		  .furniture4(0)
     		  .build();
       
-      log.info("############################## 여기까진 문제 없음 ############################################");
       // 생성한 엔티티를 dao로 넘겨서 데이터 저장
       try {
     	  dao.save(member);
           blogDao.save(blog);
           roomDao.save(room);
           
-          if(filePath != null) {
-              log.info("이미지 파일 저장에 성공했습니다 : /image/" + imageName);
-           }
+          log.info("##########################################################file uploaded success!!!");
           
           result.put("result", true);
-          result.put("imageUrl", "/image/" + imageName);
+          result.put("imageUrl", map.get("profile_img"));
       } catch (Exception e){
     	  log.error("회원 가입에 실패했습니다 : " + e.getMessage());
     	  throw e;
@@ -118,15 +108,7 @@ public class MemberServiceImpl implements MemberService{
    
 // 회원가입
    @Transactional(rollbackFor = Exception.class)
-   public boolean updateMember(MemberDto dto, BlogDto blogDto, RoomDto roomDto, MultipartFile profile_img) throws IOException {
-      
-	   String imageName = profile_img.getOriginalFilename();		
-	   
-      log.info("upload file : " + imageName);
-      
-      String filePath = FOLDER_PATH + imageName;
-      
-      profile_img.transferTo(new File(filePath));
+   public boolean updateMember(MemberDto dto, BlogDto blogDto, RoomDto roomDto) throws IOException {
       
    // Member 엔티티 생성
       Member member = dtoToEntity(dto);
@@ -139,9 +121,9 @@ public class MemberServiceImpl implements MemberService{
     	  dao.save(member);
     	  blogDao.save(blog);
     	  roomDao.save(room);
-    	  if(filePath != null) {
-    	         log.info("##########################################################file uploaded success!!!!" + filePath);
-    	      }  
+    	  
+    	  log.info("##########################################################file uploaded success!!!" );
+    	  
     	  return true;
       } catch(Exception e) {
     	  log.info("#############################################################회원 정보 수정 실패");
@@ -162,11 +144,24 @@ public class MemberServiceImpl implements MemberService{
 
 @Override
 public String uploadImage(MultipartFile img) {
-	String imageName = img.getOriginalFilename();
+	String[] temp = img.getOriginalFilename().split(" .");
+	String extension = temp[temp.length - 1];
+	LocalDateTime current = LocalDateTime.now();
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+	String imageName = current.format(formatter) + "." + extension;
+
 	   
     log.info("upload file : " + imageName);
     
-    String filePath = FOLDER_PATH + imageName;
+    String filePath;
+    String os = System.getProperty("os.name").toLowerCase();
+    if(os.contains("win")) {
+    	filePath = FOLDER_PATH + imageName;
+    } else {
+    	filePath = System.getProperty("user.dir") + "/files/image/" + imageName;
+    }
+    
+    
     
     try {
 		img.transferTo(new File(filePath));
