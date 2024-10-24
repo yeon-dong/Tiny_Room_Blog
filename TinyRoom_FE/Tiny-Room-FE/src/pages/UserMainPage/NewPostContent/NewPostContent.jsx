@@ -33,6 +33,8 @@ const NewPostContent = () => {
 
   const at = localStorage.getItem("at");
 
+  const editorRef = useRef(null);
+
   const [categoryIdx, setCategoryIdx] = useState(-1);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -71,7 +73,25 @@ const NewPostContent = () => {
     setTitle(e.target.value);
   }, []);
 
+  const getThumbnail = useCallback(() => {
+    const editor = editorRef?.current.getEditor();
+    const editorContent = editor.getContents().ops;
+
+    const foundItem = editorContent.find(
+      (item) => typeof item.insert === "object" && "image" in item?.insert
+    );
+
+    if (!foundItem) return "";
+
+    const url = foundItem.insert.image;
+
+    return url.substring(url.indexOf("/image/"));
+  }, []);
+
   const handleUpdateClick = useCallback(async () => {
+    const thumbnail = getThumbnail();
+    const textContent = editorRef?.current.getEditor().getText();
+
     if (!isUpdate) {
       try {
         const response = await axios.post(
@@ -81,7 +101,7 @@ const NewPostContent = () => {
             date: date.format("YYYY-MM-DD"),
             title: title,
             content: content,
-            post_img: "image_url_or_path.jpg", // TODO
+            thumbnail: thumbnail,
           },
           {
             headers: { auth_token: at },
@@ -99,7 +119,7 @@ const NewPostContent = () => {
             date: date.format("YYYY-MM-DD"),
             title: title,
             content: content,
-            post_img: "image_url_or_path.jpg", // TODO
+            thumbnail: thumbnail,
           },
           {
             headers: { auth_token: at },
@@ -144,7 +164,13 @@ const NewPostContent = () => {
         />
       </TitleBox>
       <EditorWrapper>
-        <MyEditor value={content} />
+        <MyEditor
+          value={content}
+          ref={editorRef}
+          onChange={(a, b, c, e) => {
+            console.log(e.getContents());
+          }}
+        />
       </EditorWrapper>
       <ButtonBox>
         <MainButton>목록</MainButton>

@@ -14,7 +14,7 @@ const MyEditor = forwardRef(({ value, onChange }, ref) => {
 
   useImperativeHandle(ref, () => ({
     getEditor: () => {
-      editorRef.current?.getEditor();
+      return editorRef.current?.getEditor();
     },
   }));
 
