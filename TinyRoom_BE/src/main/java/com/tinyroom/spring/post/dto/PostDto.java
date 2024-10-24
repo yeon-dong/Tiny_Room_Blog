@@ -25,12 +25,11 @@ public class PostDto {
 	private LocalDate date;	
 	private LocalDate w_date; // date -> 포스트 작성일자
 	private String title;	// 포스트 제목
-	private String content;	// 포스트 내용
-	private String post_img;	// 포스트 첨부 이미지
+	private String content;	// 포스트 내용(html 형식)
 	private int is_active; // 활성화 여부(삭제 여부) : 삭제했을 때 db에서 실제로 삭제되는 것이 아니라 상태값으로 관리
 
 	private String thumbnail;
-	private String content_for_html;
+	private String text_content;
 
 	
 }
