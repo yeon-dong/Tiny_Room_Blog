@@ -16,4 +16,6 @@ public class RequestPostWriteDto {
 	private String date; //String 으로 받아와서 date로 변경하여 저장할 예정
 	private String title;
 	private String content;
+	private String text_content;
+	private String thumbnail;
 }

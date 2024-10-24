@@ -18,9 +18,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestPostUpdateDto {
-	int category_id;
-	String date; //String 으로 받아와서 date로 변경하여 저장할 예정
-	String title;
-	String content;
-	String post_img;
+	private int category_id;
+	private String date; //String 으로 받아와서 date로 변경하여 저장할 예정
+	private String title;
+	private String content;
+	private String text_content;
+	private String thumbnail;
 }

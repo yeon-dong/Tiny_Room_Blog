@@ -71,10 +71,7 @@ public class PostController {
 	
 	@Autowired
 	CategoryService categoryService;
-	
-	@Value("${file.upload-dir}") // 업로드 디렉토리 경로
-    private String uploadDir;
-	
+
 	// '/member' 내가 쓴 글 조회 '/main' 메인페이지 글 조회
 	
 	//메인페이지 전체 글 조회 (최신순 나열)
@@ -127,34 +124,29 @@ public class PostController {
 	@PutMapping("/postUpdate") 
 	public Map<String, String> modify(
 			@RequestParam(name="post_id") int post_id,
-			@RequestParam("date") String dateString,
-			@RequestParam("title") String title,
-			@RequestParam("content") String content,
-			@RequestParam("category_id") int category_id,
-			@RequestParam("text_content")String text_content,
-			@RequestParam("thumbnail")String thumbnail
+			@RequestBody RequestPostUpdateDto requestPostUpdateDto
 	        ) {
 	    PostDto postDto = postService.get(post_id);
 	    
-	    CategoryDto categoryDto = categoryService.get(category_id);
+	    CategoryDto categoryDto = categoryService.get(requestPostUpdateDto.getCategory_id());
 	    Category category = categoryService.dtoToEntity(categoryDto);
 	    
-	    
+	   
 	    // DateTimeFormatter를 사용하여 LocalDate로 변환
-	    if (dateString != null && !dateString.isEmpty()) {
+	    if (requestPostUpdateDto.getDate() != null && !requestPostUpdateDto.getDate().isEmpty()) {
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	        LocalDate localDate = LocalDate.parse(dateString, formatter);
+	        LocalDate localDate = LocalDate.parse(requestPostUpdateDto.getDate(), formatter);
 	        postDto.setDate(localDate);  
 	    }
 	    
-	    if (title != null) postDto.setTitle(title);
-	    if (content != null) postDto.setContent(content);
-	    if (category != null) postDto.setCategory(category);
+	    postDto.setTitle(requestPostUpdateDto.getTitle());
+	    postDto.setContent(requestPostUpdateDto.getContent());
+	    postDto.setCategory(category);
 	    
 	    LocalDate w_date = LocalDate.now(); 
 	    postDto.setW_date(w_date);
-	    postDto.setText_content(text_content);
-	    postDto.setThumbnail(thumbnail);
+	    postDto.setText_content(requestPostUpdateDto.getText_content());
+	    postDto.setThumbnail(requestPostUpdateDto.getThumbnail());
 	    
 	    postService.modify(postDto);
 	    
@@ -177,12 +169,7 @@ public class PostController {
 	//새로운 글 작성
 	@PostMapping("/writePost")
 	public Map<String, Integer> writePost(
-			@RequestParam("date") String dateString,
-			@RequestParam("title") String title,
-			@RequestParam("content") String content,
-			@RequestParam("category_id") int category_id,
-			@RequestParam("text_content")String text_content,
-			@RequestParam("thumbnail")String thumbnail
+			@RequestBody RequestPostWriteDto requestPostWriteDto
 			
 	) {
 	    // 로그인된 사용자 이메일 추출
@@ -194,14 +181,14 @@ public class PostController {
 	    
 	    // 날짜 문자열을 LocalDate로 변환
 	    try {
-	        date = LocalDate.parse(dateString); // 기본 ISO 형식으로 파싱
+	        date = LocalDate.parse(requestPostWriteDto.getDate()); // 기본 ISO 형식으로 파싱
 	    } catch (DateTimeParseException e) {
-	        throw new IllegalArgumentException("Invalid date format: " + dateString);
+	        throw new IllegalArgumentException("Invalid date format: " + requestPostWriteDto.getDate());
 	    }
 
 	    LocalDate w_date = LocalDate.now(); // 작성일 설정
 	    
-	    CategoryDto categoryDto = categoryService.get(category_id);
+	    CategoryDto categoryDto = categoryService.get(requestPostWriteDto.getCategory_id());
 	    Category category = categoryService.dtoToEntity(categoryDto);
 
 	    MemberDto memberDto = memberService.getMember(email);
@@ -213,20 +200,16 @@ public class PostController {
 	            .category(category)  // Category 객체를 설정
 	            .date(date)         // 날짜 설정
 	            .w_date(w_date)     // 작성일 설정
-	            .title(title)       // 제목 설정
-	            .content(content)    // 내용 설정 
-	            .text_content(text_content)
-	            .thumbnail(thumbnail)
+	            .title(requestPostWriteDto.getTitle())       // 제목 설정
+	            .content(requestPostWriteDto.getContent())    // 내용 설정 
+	            .text_content(requestPostWriteDto.getText_content())
+	            .thumbnail(requestPostWriteDto.getThumbnail())
 	            .is_active(1)       // 활성화 상태 설정 (예: 1 = 활성)
 	            .build();
 
 	    int post_id = postService.postWrite(post);
 
 	    return Map.of("No", post_id);
-	}
-
-
-	
-	
+	}	
 	
 }
