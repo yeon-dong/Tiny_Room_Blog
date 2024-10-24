@@ -1,6 +1,10 @@
 package com.tinyroom.spring.comment.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +58,44 @@ public class CommentServiceImpl implements CommentService{
 		return commentDao.countByPost(post);
 	}
 
-//	@Override
-//	public List<Comment> getCommentList(int post_id) {
-//		 List<Comment> comments = commentDao.findByPostPost_Id(post_id);
-//		return comments;
-//	}
+    public List<ResponseCommentDto> getCommentsByPost(Post post) {
+        List<Comment> comments = commentDao.findByPostOrderByDateDesc(post);
+        Map<Integer, ResponseCommentDto> commentMap = new HashMap<>();
+
+        // 모든 댓글을 ResponseCommentDto로 변환하고 맵에 저장
+        for (Comment comment : comments) {
+            ResponseCommentDto dto = new ResponseCommentDto();
+            dto.setComment_id(comment.getComment_id());
+            dto.setContent(comment.getContent());
+            dto.setPost_id(post.getPost_id());
+            dto.setDate(comment.getDate());
+            dto.setParent_id(comment.getParent() != null ? comment.getParent().getComment_id() : 0); // 부모 ID 설정
+
+            commentMap.put(dto.getComment_id(), dto);
+        }
+
+        // 자식 댓글을 부모 댓글에 추가
+        for (ResponseCommentDto dto : commentMap.values()) {
+            if (dto.getParent_id() != 0) { // 부모 댓글이 있는 경우
+                ResponseCommentDto parentDto = commentMap.get(dto.getParent_id());
+                if (parentDto != null) {
+                    if (parentDto.getChildren() == null) {
+                        parentDto.setChildren(new ArrayList<>());
+                    }
+                    parentDto.getChildren().add(dto); // 부모 댓글의 자식 리스트에 추가
+                }
+            }
+        }
+
+        // 부모 댓글만 포함된 리스트 생성
+        List<ResponseCommentDto> parentComments = new ArrayList<>();
+        for (ResponseCommentDto dto : commentMap.values()) {
+            if (dto.getParent_id() == 0) { // 부모 댓글만 추가
+                parentComments.add(dto);
+            }
+        }
+
+        return parentComments; // 부모-자식 구조의 리스트 반환
+    }
+
 }

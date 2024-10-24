@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +26,7 @@ import jakarta.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class Comment {
 	// comment_id -> 댓글 식별자(PK)
 	@Id
@@ -55,5 +57,7 @@ public class Comment {
 	@OneToMany(fetch= FetchType.LAZY, mappedBy = "parent")
 	private List<Comment> comments;
 	
-	private LocalDate date;	
+
+	private LocalDate date;
+
 }
