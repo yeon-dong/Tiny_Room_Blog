@@ -110,5 +110,6 @@ export const PostControlBox = styled.div`
 export const PaginationBox = styled.div`
   width: 100%;
   flex: 0 0 22px;
-  background-color: skyblue;
+  display: flex;
+  justify-content: center;
 `;
