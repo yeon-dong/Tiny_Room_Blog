@@ -17,8 +17,15 @@ import {
 } from "./UserMainPage.style";
 import UserInfoBox from "./UserInfoBox";
 import { Outlet } from "react-router-dom";
+import useStore from "../../stores/store.js"; // Zustand 스토어 import
 
 function UserMainPage() {
+  const { resetUserInfo } = useStore();
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    resetUserInfo();
+    alert("로그아웃 되었습니다.");
+  };
   return (
     <>
       <Wrapper>
