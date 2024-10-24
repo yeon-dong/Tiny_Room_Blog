@@ -45,7 +45,7 @@ function UserMainPage() {
                   <UserBlogHeaderTextBetweenLine src="/images/Line 2.svg" />
                   <UserBlogHeaderText>이웃목록</UserBlogHeaderText>
                 </MenuBox>
-                <LogoutButton>로그아웃</LogoutButton>
+                <LogoutButton onClick={handleLogOut}>로그아웃</LogoutButton>
               </UserBlogHeaderContainer>
               <UserBlogBox>
                 <Outlet />
