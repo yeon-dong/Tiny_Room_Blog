@@ -1,11 +1,20 @@
 package com.tinyroom.spring.post.domain;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.querydsl.core.annotations.QueryEntity;
 import com.tinyroom.spring.category.domain.Category;
+import com.tinyroom.spring.comment.domain.Comment;
 import com.tinyroom.spring.member.domain.Member;
+import com.tinyroom.spring.postheart.domain.PostHeart;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,12 +26,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@QueryEntity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class Post {
 	// post_id -> 포스트 식별자 (PK)
 	@Id
@@ -38,10 +50,39 @@ public class Post {
 	@ManyToOne
 	@JoinColumn(name="category_id")
 	private Category category;
-	
-	private Date date;	// date -> 포스트 작성일자
+
+	private LocalDate date;
+	private  LocalDate w_date;	// date -> 포스트 작성일자
 	private String title;	// 포스트 제목
 	private String content;	// 포스트 내용
 	private String post_img;	// 포스트 첨부 이미지
 	private int is_active; // 활성화 여부(삭제 여부) : 삭제했을 때 db에서 실제로 삭제되는 것이 아니라 상태값으로 관리
+	private String thumbnail;
+	private String text_content;
+
+	  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+	  private List<Comment> comments;
+	  
+	  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+	  private List<PostHeart> hearts;
+	
+	public void changeCategory(Category category) {
+		this.category = category;
+	}
+	public void changeDate( LocalDate date) {
+		this.date = date;
+	}
+	
+	public void changeW_Date( LocalDate w_date) {
+		this.w_date = w_date;
+	}
+	
+	public void changeTitle(String title) {
+		this.title = title;
+	}
+	
+	public void changeContent(String content) {
+		this.content = content;
+	}
+	
 }

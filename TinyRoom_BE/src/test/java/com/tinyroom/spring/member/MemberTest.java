@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.tinyroom.spring.member.dao.MemberDao;
 import com.tinyroom.spring.member.domain.Member;
-import com.tinyroom.spring.member.domain.MemberRole;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -24,25 +23,21 @@ public class MemberTest {
 	@Autowired
 	AuthenticationManagerBuilder authenticationManagerBuilder;
 	
-	@Test
-	public void testInsertMember() {
-		
-		for(int i=0;i<10;i++) {
-			
-			Member member = Member.builder()
-					.email("user"+ i +"@han.com")
-					.pw(passwordEncoder.encode("1234"))
-					.nickname("user"+i)
-					.build();
-			member.addRole(MemberRole.USER);
-			
-			if(i > 8) {
-				member.addRole(MemberRole.ADMIN);
-			}
-			
-			memberRepository.save(member);
-		}
-	}
+//	@Test
+//	public void testInsertMember() {
+//		
+//		for(int i=0;i<10;i++) {
+//			
+//			Member member = Member.builder()
+//					.email("user"+ i +"@han.com")
+//					.pw(passwordEncoder.encode("1234"))
+//					.nickname("user"+i)
+//					.type("ROLE_USER")
+//					.build();
+//			
+//			memberRepository.save(member);
+//		}
+//	}
 	
 	
 //	@Test

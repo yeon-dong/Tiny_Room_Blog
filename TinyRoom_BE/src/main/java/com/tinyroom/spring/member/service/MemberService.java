@@ -1,5 +1,6 @@
 package com.tinyroom.spring.member.service;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,44 +10,56 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.tinyroom.spring.blog.dto.BlogDto;
 import com.tinyroom.spring.member.dao.MemberDao;
 import com.tinyroom.spring.member.domain.Member;
-import com.tinyroom.spring.member.domain.MemberRole;
+import com.tinyroom.spring.member.dto.MemberDto;
+import com.tinyroom.spring.post.domain.Post;
+import com.tinyroom.spring.room.dto.RoomDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-
-@Log4j2
-@Service
-@Transactional
-public class MemberService {
+public interface MemberService {
 	
-	// MemberDao 사용하기 위해 MemberDao 자동으로 주입
-	@Autowired
-	private MemberDao memberDao;
-	
-	// 패스워드 암호화를 위한 PasswordEncoder 자동으로 주입
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	// 회원가입
-	public void register(Map<String, String> map) {
-		// Member 엔티티 생성
-		Member member = Member.builder()
-				.email(map.get("email"))
-				.pw(passwordEncoder.encode(map.get("pw")))
-				.name(map.get("name"))
-				.nickname(map.get("nickname"))
-				.phone_number(map.get("phone_number"))
-				.build();
-		
-		// USER 권한 부여
-		member.addRole(MemberRole.USER);
-		
-		// 생성한 엔티티를 dao로 넘겨서 데이터 저장
-		memberDao.save(member);
+	public Map registerMember(Map<String, String> map, MultipartFile profile_img) throws IOException;
+	public boolean updateMember(MemberDto dto, BlogDto blog, RoomDto room, MultipartFile profile_img) throws IOException;
+	public MemberDto getMember(String email);
+	public String uploadImage(MultipartFile img);
+	public MemberDto getProfile(int id);
+      
+	default MemberDto entityMemberDto(Member member) {
+		MemberDto memberDto = MemberDto.builder()
+           .member_id(member.getMember_id())
+           .email(member.getEmail())
+           .pw(member.getPw())
+           .name(member.getName())
+           .nickname(member.getNickname())
+           .phone_number(member.getPhone_number())
+           .profile_img(member.getProfile_img())
+           .description(member.getDescription())
+           .is_active(member.getIs_active())
+           .type(member.getType())
+           .build();
+     return memberDto;
 	}
-	
+  
+	default Member dtoToEntity(MemberDto memberDto) {
+		Member member = Member.builder()
+          .member_id(memberDto.getMember_id())
+          .email(memberDto.getEmail())
+          .pw(memberDto.getPw())
+          .name(memberDto.getName())
+          .nickname(memberDto.getNickname())
+          .phone_number(memberDto.getPhone_number())
+          .profile_img(memberDto.getProfile_img())
+          .description(memberDto.getDescription())
+          .is_active(memberDto.getIs_active())
+          .type(memberDto.getType())
+          .build();
+      return member;
+	}
+   
 }
