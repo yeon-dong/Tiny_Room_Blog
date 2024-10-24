@@ -26,6 +26,7 @@ public class CommentDto {
 	private String content;
 	private int is_active;
 	private Post post;
+	private LocalDate date;
 
 	private Member member;
 	

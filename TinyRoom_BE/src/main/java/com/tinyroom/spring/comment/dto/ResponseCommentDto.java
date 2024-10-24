@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,9 +20,10 @@ import lombok.Setter;
 @Setter
 public class ResponseCommentDto {
 	private int comment_id;
-	private int post_id;
-	private int member_id;
+
 	private String content;
-	private String nickname; //작성자 
-	private LocalDate date;	
+	private int post_id;
+	private int parent_id;
+	private List<ResponseCommentDto> children; 
+	private LocalDate date;
 }

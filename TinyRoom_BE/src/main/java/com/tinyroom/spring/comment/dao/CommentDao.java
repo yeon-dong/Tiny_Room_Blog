@@ -14,6 +14,7 @@ public  interface  CommentDao extends JpaRepository<Comment, Integer> {
 	 // 특정 포스트의 모든 댓글을 가져오는 쿼리
     List<Comment> findByPost(Post post);
 
+    List<Comment> findByPostOrderByDateDesc(Post post);
 	int countByPost(Post post);
 
 }
