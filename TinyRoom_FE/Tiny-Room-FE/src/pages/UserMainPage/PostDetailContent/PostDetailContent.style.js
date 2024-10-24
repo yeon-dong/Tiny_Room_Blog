@@ -75,7 +75,15 @@ export const PostTitle = styled.div`
 export const PostContent = styled.div`
   width: 100%;
   border: 1px solid var(--gray1);
-  flex: 0 0 600px;
+  padding: 20px;
+`;
+
+export const PostUpdatedAt = styled.div`
+  width: 100%;
+  font-size: 15px;
+  color: var(--gray1);
+  user-select: none;
+  margin-bottom: 20px;
 `;
 
 export const PostFooter = styled.div`

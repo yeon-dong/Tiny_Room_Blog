@@ -37,7 +37,10 @@ export const TitleBox = styled.div`
 `;
 
 export const DropdownWrapper = styled.div`
-  height: 40px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 `;
 
 export const TitleInput = styled.input`

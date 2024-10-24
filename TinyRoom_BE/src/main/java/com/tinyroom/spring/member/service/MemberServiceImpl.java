@@ -153,7 +153,15 @@ public String uploadImage(MultipartFile img) {
 	   
     log.info("upload file : " + imageName);
     
-    String filePath = FOLDER_PATH + imageName;
+    String filePath;
+    String os = System.getProperty("os.name").toLowerCase();
+    if(os.contains("win")) {
+    	filePath = FOLDER_PATH + imageName;
+    } else {
+    	filePath = System.getProperty("user.dir") + "/files/image/" + imageName;
+    }
+    
+    
     
     try {
 		img.transferTo(new File(filePath));
