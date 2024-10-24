@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,12 +46,15 @@ import com.tinyroom.spring.post.dto.PostDto;
 import com.tinyroom.spring.post.dto.RequestPostUpdateDto;
 import com.tinyroom.spring.post.dto.RequestPostWriteDto;
 import com.tinyroom.spring.post.dto.ResponsePostDetailDto;
+import com.tinyroom.spring.post.dto.ResponsePostRecommendDto;
 import com.tinyroom.spring.post.service.PostService;
 import com.tinyroom.spring.postheart.service.PostheartService;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -73,17 +77,32 @@ public class PostController {
 	CategoryService categoryService;
 
 	// '/member' 내가 쓴 글 조회 '/main' 메인페이지 글 조회
-	
-	//메인페이지 전체 글 조회 (최신순 나열)
-	//PageNation 적용
-//	@GetMapping("/list/recently")
-//	public PageResponseDto<PostDto> list(PageRequestDto pageRequestDto){
-//		log.info(pageRequestDto);
-//		
-//		return postService.getList(pageRequestDto);
-//		
-//	}
-//	
+
+	//main page 에 보여줄 추천을 제일 많이 받은 글 3개 전송
+	@GetMapping("/recommend")
+	public List<ResponsePostRecommendDto> recommend(){
+		List<Post> recommendPostList = postService.findTopByOrderByHeartCountDesc(PageRequest.of(0, 3));
+
+        // 각 포스트에 대해 ResponsePostRecommendDto로 변환
+        return recommendPostList.stream().map(post -> {
+        	int heartCount = postheartService.getCount(post);
+    		int commentCount = commentService.getCount(post);
+
+            // DTO로 변환
+            ResponsePostRecommendDto dto = ResponsePostRecommendDto.builder()
+            		.post_id(post.getPost_id())
+            		.post_img(post.getPost_img())
+            		.title(post.getTitle())
+            		.content(post.getContent())
+            		.text_content(post.getText_content())
+            		.thumbnail(post.getThumbnail())
+            		.heartCount(heartCount)
+            		.commentCount(commentCount)
+            		.build();
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
 	
 	
 	//category number 1 : 주방/가전제품, 2 : 홈 인테리어, 3 : 실내가구, 4: 전자제품

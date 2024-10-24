@@ -12,6 +12,7 @@ import com.querydsl.core.annotations.QueryEntity;
 import com.tinyroom.spring.category.domain.Category;
 import com.tinyroom.spring.comment.domain.Comment;
 import com.tinyroom.spring.member.domain.Member;
+import com.tinyroom.spring.postheart.domain.PostHeart;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -61,6 +62,9 @@ public class Post {
 
 	  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	  private List<Comment> comments;
+	  
+	  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+	  private List<PostHeart> hearts;
 	
 	public void changeCategory(Category category) {
 		this.category = category;
