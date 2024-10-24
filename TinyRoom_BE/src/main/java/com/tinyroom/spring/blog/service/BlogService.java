@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.querydsl.core.Tuple;
 import com.tinyroom.spring.blog.domain.Blog;
 import com.tinyroom.spring.blog.dto.BlogDto;
 import com.tinyroom.spring.member.dao.MemberDao;
@@ -16,7 +17,7 @@ public interface BlogService {
 
 	public BlogDto getBlog(Member member);
 	
-	public List<Post> findPostByUserId(int id, int category, int page);
+	public List<Tuple> findPostByUserId(int id, int category, int page);
 	
 	public int getPostCount(int id, int category);
 	

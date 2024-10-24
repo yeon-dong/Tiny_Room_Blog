@@ -56,15 +56,21 @@ public class MemberServiceImpl implements MemberService{
    @Transactional(rollbackFor=Exception.class)
 // 회원가입(Member, Blog 두 개의 테이블에 insert하므로 transaction 필요
    public Map registerMember(Map<String, String> map, MultipartFile profile_img) throws IOException {
-      
-	   String imageName = profile_img.getOriginalFilename();
+     
+	   String imageName;
 	   
-      log.info("upload file : " + imageName);
-      
-      String filePath = FOLDER_PATH + imageName;
-      
-      profile_img.transferTo(new File(filePath));
-      
+	   if(profile_img.isEmpty() ) {
+		   imageName = "Group 46.svg";
+	   } else {
+		   imageName = profile_img.getOriginalFilename();
+		   
+		      log.info("upload file : " + imageName);
+		      
+		      String filePath = FOLDER_PATH + imageName;
+		      
+		      profile_img.transferTo(new File(filePath));
+	   }
+	   
       Map result = new HashMap<>();
       
       // Member 엔티티 생성
@@ -95,16 +101,13 @@ public class MemberServiceImpl implements MemberService{
     		  .furniture4(0)
     		  .build();
       
-      log.info("############################## 여기까진 문제 없음 ############################################");
       // 생성한 엔티티를 dao로 넘겨서 데이터 저장
       try {
     	  dao.save(member);
           blogDao.save(blog);
           roomDao.save(room);
           
-          if(filePath != null) {
-              log.info("이미지 파일 저장에 성공했습니다 : /image/" + imageName);
-           }
+          log.info("##########################################################file uploaded success!!! : /image/" + imageName);
           
           result.put("result", true);
           result.put("imageUrl", "/image/" + imageName);
@@ -120,13 +123,23 @@ public class MemberServiceImpl implements MemberService{
    @Transactional(rollbackFor = Exception.class)
    public boolean updateMember(MemberDto dto, BlogDto blogDto, RoomDto roomDto, MultipartFile profile_img) throws IOException {
       
-	   String imageName = profile_img.getOriginalFilename();		
+	   String imageName;
 	   
-      log.info("upload file : " + imageName);
+	   if(profile_img.isEmpty() ) {
+		   imageName = "Group 46.svg";
+	   } else {
+		   imageName = profile_img.getOriginalFilename();
+		   
+		      log.info("upload file : " + imageName);
+		      
+		      String filePath = FOLDER_PATH + imageName;
+		      
+		      profile_img.transferTo(new File(filePath));
+	   }
+	   
+	   log.info("upload file : " + imageName);
       
-      String filePath = FOLDER_PATH + imageName;
-      
-      profile_img.transferTo(new File(filePath));
+      dto.setProfile_img("/image/" + imageName);
       
    // Member 엔티티 생성
       Member member = dtoToEntity(dto);
@@ -139,9 +152,9 @@ public class MemberServiceImpl implements MemberService{
     	  dao.save(member);
     	  blogDao.save(blog);
     	  roomDao.save(room);
-    	  if(filePath != null) {
-    	         log.info("##########################################################file uploaded success!!!!" + filePath);
-    	      }  
+    	  
+    	  log.info("##########################################################file uploaded success!!! : /image/" + imageName);
+    	  
     	  return true;
       } catch(Exception e) {
     	  log.info("#############################################################회원 정보 수정 실패");

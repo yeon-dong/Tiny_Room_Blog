@@ -1,5 +1,6 @@
 package com.tinyroom.spring.member.controller;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,9 +71,12 @@ public class MemberController {
 			@RequestParam("description") String description,
 			@RequestParam("blog_title") String blog_title,
 			@RequestParam("blog_theme") int blog_theme,
-			@RequestParam("profile_img") MultipartFile profile_img,
+			@RequestParam(value="profile_img", required = false) MultipartFile profile_img,
 			HttpServletResponse response
 			) {
+		
+		log.info("##############################" + profile_img + "##################################");
+		
 		// 회원가입에 필요한 정보를 담을 Map
 		Map<String, String> member = new HashMap<>();
 		
@@ -182,10 +186,8 @@ public class MemberController {
 				@RequestParam("furniture4") int furniture4,
 				@RequestParam("profile_img") MultipartFile profile_img
 				) {
-			log.info("##################################### modify 실행 ###############################");
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String username = auth.getName(); // username 추출
-			log.info("#################################### " + username + "#######################################");
 			
 			// name, nickname, description은 Member 엔티티의 정보를 수정하는 것이므로 여기에 넣을 것
 			MemberDto member = service.getMember(username);
@@ -194,14 +196,12 @@ public class MemberController {
 			member.setNickname(nickname);
 			member.setDescription(description);
 			
-			log.info("#################################### " + member + "#######################################");
 			
 			// blog_theme는 Blog 엔티티의 정보
 			BlogDto blog = blogService.getBlog(service.dtoToEntity(member));
 			
 			blog.setBlog_theme(blog_theme);
 			
-			log.info("#################################### " + blog + "#######################################");
 			// room_theme, furniture1, furniture2, furniture3, furniture4는 Blog 엔티티의 정보
 			RoomDto room = roomService.getRoom(blogService.blogDtoToEntity(blog)); 
 			
@@ -211,12 +211,10 @@ public class MemberController {
 			room.setFurniture3(furniture3);
 			room.setFurniture4(furniture4);
 			
-			log.info("#################################### " + room + "#######################################");
 			
 			// MemberService의 회원가입 메서드 실행(member Map 을 인자로 넘김)
 			boolean modifyResult = false;
 			try {
-				log.info("#################################### Service 실행 #######################################");
 				modifyResult = service.updateMember(member, blog, room, profile_img);
 			} catch (IOException e) {
 				modifyResult = false;

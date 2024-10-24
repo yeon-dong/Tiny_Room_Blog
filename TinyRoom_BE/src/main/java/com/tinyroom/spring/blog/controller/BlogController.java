@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.querydsl.core.Tuple;
 import com.tinyroom.spring.blog.dto.BlogDto;
 import com.tinyroom.spring.blog.service.BlogService;
 import com.tinyroom.spring.member.controller.MemberController;
@@ -92,7 +93,7 @@ public class BlogController {
 		log.info("############################### mypage ##############################");
 		Map result = new HashMap();
 		
-		List<Post> li = blogService.findPostByUserId(id, page, category);
+		List<Tuple> li = blogService.findPostByUserId(id, page, category);
 		int totalCount = blogService.getPostCount(id, category);
 		
 		result.put("totalCount", totalCount);
