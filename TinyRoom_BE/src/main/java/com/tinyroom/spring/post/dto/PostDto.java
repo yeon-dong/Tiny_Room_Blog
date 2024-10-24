@@ -30,7 +30,7 @@ public class PostDto {
 	private int is_active; // 활성화 여부(삭제 여부) : 삭제했을 때 db에서 실제로 삭제되는 것이 아니라 상태값으로 관리
 
 	private String thumbnail;
-	private String content_for_html;
+	private String text_content;
 
 	
 }

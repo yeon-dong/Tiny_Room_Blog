@@ -18,9 +18,9 @@ import com.tinyroom.spring.post.dto.PostDto;
 
 public interface PostService {
 	public PostDto get(int post_id);
-	public void modify(PostDto postDto, List<MultipartFile> post_img_files);
+	public void modify(PostDto postDto);
 	public void remove(int post_id);
-	public int postWrite(Post post, List<MultipartFile> post_img_files);
+	public int postWrite(Post post);
 	
 	public PageResponseDto<PostDto> getList(PageRequestDto pageRequestDto);
 	
@@ -36,7 +36,7 @@ public interface PostService {
 				.post_img(post.getPost_img())
 				.is_active(post.getIs_active())
 				.thumbnail(post.getThumbnail())
-				.content_for_html(post.getContent_for_html())
+				.text_content(post.getText_content())
 				.build();
 		return postDto;
 	}
@@ -53,7 +53,7 @@ public interface PostService {
 				.post_img(postDto.getPost_img())
 				.is_active(postDto.getIs_active())
 				.thumbnail(postDto.getThumbnail())
-				.content_for_html(postDto.getContent_for_html())
+				.text_content(postDto.getText_content())
 				.build();
 		return post;
 	}
