@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.querydsl.core.Tuple;
 import com.tinyroom.spring.blog.domain.Blog;
 import com.tinyroom.spring.blog.dto.BlogDto;
+import com.tinyroom.spring.blog.dto.PostPageDto;
 import com.tinyroom.spring.member.dao.MemberDao;
 import com.tinyroom.spring.member.domain.Member;
 import com.tinyroom.spring.member.dto.MemberDto;
@@ -17,7 +18,7 @@ public interface BlogService {
 
 	public BlogDto getBlog(Member member);
 	
-	public List<Post> getPostList(int id, int category, int page);
+	public List<PostPageDto> getPostList(int id, int category, int page);
 	
 	public int countPost(int id, int category);
 	
