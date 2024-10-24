@@ -2,6 +2,7 @@ package com.tinyroom.spring.post.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,8 @@ public interface PostService {
 				.content(post.getContent())
 				.post_img(post.getPost_img())
 				.is_active(post.getIs_active())
+				.thumbnail(post.getThumbnail())
+				.content_for_html(post.getContent_for_html())
 				.build();
 		return postDto;
 	}
@@ -49,10 +52,13 @@ public interface PostService {
 				.content(postDto.getContent())
 				.post_img(postDto.getPost_img())
 				.is_active(postDto.getIs_active())
+				.thumbnail(postDto.getThumbnail())
+				.content_for_html(postDto.getContent_for_html())
 				.build();
 		return post;
 	}
 	
 	public void modifyForDelete(PostDto postDto);
+    public Optional<Post> findById(int post_id);
 	
 }

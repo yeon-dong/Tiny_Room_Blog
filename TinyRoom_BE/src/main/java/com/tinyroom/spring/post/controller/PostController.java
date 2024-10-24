@@ -110,7 +110,7 @@ public class PostController {
 		PostDto postDto = postService.get(post_id);
 		Post post = postService.dtoToEntity(postDto);
 		int heartCount = postheartService.getCount(post);
-		List<Comment> comments= commentService.findAll(post_id);
+		List<Comment> comments= commentService.findAll(post);
 		
 		ResponsePostDetailDto responseDto = ResponsePostDetailDto.builder()
 			    .post(post)

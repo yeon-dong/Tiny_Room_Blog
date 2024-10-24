@@ -148,5 +148,10 @@ public class PostServiceImpl implements PostService {
 		post.setIs_active(0);
 		postDao.save(post);
 	}
+	
+    public Optional<Post> findById(int post_id) {
+        return postDao.findById(post_id); // Optional<Post> 반환
+    }
+	
 
 }

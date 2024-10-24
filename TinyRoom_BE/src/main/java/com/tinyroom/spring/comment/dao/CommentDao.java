@@ -7,11 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.tinyroom.spring.comment.domain.Comment;
+import com.tinyroom.spring.post.domain.Post;
 
 
 public  interface  CommentDao extends JpaRepository<Comment, Integer> {
+	 // 특정 포스트의 모든 댓글을 가져오는 쿼리
+    List<Comment> findByPost(Post post);
 
-	@Query("select c from Comment c where c.post.id = :postId")
-	List<Comment> findAllByPost_id(@Param("postId") Integer postId);
+	int countByPost(Post post);
 
 }
