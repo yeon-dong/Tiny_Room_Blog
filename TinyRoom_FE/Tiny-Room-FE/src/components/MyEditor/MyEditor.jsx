@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import axios from "axios";
 
 const MyEditor = () => {
   const editorRef = useRef(null);
@@ -14,6 +15,9 @@ const MyEditor = () => {
       const editor = editorRef.current.getEditor();
       const file = input.files[0];
 
+      const formData = new FormData();
+      formData.append("img", file);
+
       // 현재 커서 위치 저장
       const range = editor.getSelection(true);
 
@@ -24,12 +28,26 @@ const MyEditor = () => {
 
       try {
         // 이런식으로 서버에 업로드 한뒤 이미지 태그에 삽입할 url을 반환받도록 구현하면 된다
-        const url = await uploadImage(file, filePath);
+        const response = await axios.post(
+          `http://localhost:8080/image/upload`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        console.log(response.data);
+
+        const uurl = "http://localhost:8080" + response.data;
+
+        console.log(uurl);
 
         // 정상적으로 업로드 됐다면 로딩 placeholder 삭제
         // getEditor().deleteText(range.index, 1);
         // 받아온 url을 이미지 태그에 삽입
-        editor.insertEmbed(range.index, "image", url);
+        editor.insertEmbed(range.index, "image", uurl);
 
         // 사용자 편의를 위해 커서 이미지 오른쪽으로 이동
         editor.setSelection(range.index + 1);
@@ -50,6 +68,9 @@ const MyEditor = () => {
     <ReactQuill
       ref={editorRef}
       theme="snow"
+      onChange={(v, d, s, e) => {
+        console.log(e.getContents());
+      }}
       style={{ height: "100%" }}
       formats={[
         "header",
