@@ -28,4 +28,8 @@ public interface NeighbourService {
 				.build();
 		return neighbour;
 	}
+
+	Neighbour getNeighbour(int neighbour_id);
+
+	void modifyStatus(NeighbourDto neighbourDto);
 }

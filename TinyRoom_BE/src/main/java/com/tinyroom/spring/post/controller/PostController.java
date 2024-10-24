@@ -99,6 +99,7 @@ public class PostController {
             		.heartCount(heartCount)
             		.commentCount(commentCount)
             		.nickname(post.getMember().getNickname())
+            		.member_id(post.getMember().getMember_id())
             		.build();
             return dto;
         }).collect(Collectors.toList());
