@@ -4,13 +4,13 @@ import java.util.List;
 
 import com.tinyroom.spring.comment.domain.Comment;
 import com.tinyroom.spring.comment.dto.CommentDto;
+import com.tinyroom.spring.comment.dto.ResponseCommentDto;
 import com.tinyroom.spring.post.domain.Post;
 import com.tinyroom.spring.post.dto.PostDto;
 
 public interface CommentService {
 //post에 대한 comment 모두 주기
-	public List<Comment> findAll(Integer post_id);
-
+	public List<Comment> findAll(Post post);
 	public void addComment(Comment comment);
 
 	public CommentDto getComment(int comment_id);
@@ -23,6 +23,7 @@ public interface CommentService {
 				.post(comment.getPost())
 				.member(comment.getMember())
 				.comments(comment.getComments())
+				.date(comment.getDate())
 				.build();
 		return commentDto;
 	}
@@ -35,6 +36,7 @@ public interface CommentService {
 				.post(commentDto.getPost())
 				.member(commentDto.getMember())
 				.comments(commentDto.getComments())
+				.date(commentDto.getDate())
 				.build();
 		return comment;
 	}
@@ -42,4 +44,7 @@ public interface CommentService {
 	public void modify(CommentDto commentDto);
 
 	public void delete(int comment_id);
+	public int getCount(Post post);
+
+//	public List<Comment> getCommentList(int post_id);
 }
