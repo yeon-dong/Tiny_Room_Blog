@@ -1,10 +1,12 @@
 package com.tinyroom.spring.post.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tinyroom.spring.post.dao.PostDao;
 import com.tinyroom.spring.post.domain.Post;
@@ -15,9 +17,9 @@ import com.tinyroom.spring.post.dto.PostDto;
 
 public interface PostService {
 	public PostDto get(int post_id);
-	public void modify(PostDto postDto);
+	public void modify(PostDto postDto, List<MultipartFile> post_img_files);
 	public void remove(int post_id);
-	public int postWrite(Post post);
+	public int postWrite(Post post, List<MultipartFile> post_img_files);
 	
 	public PageResponseDto<PostDto> getList(PageRequestDto pageRequestDto);
 	
@@ -50,5 +52,7 @@ public interface PostService {
 				.build();
 		return post;
 	}
+	
+	public void modifyForDelete(PostDto postDto);
 	
 }

@@ -1,5 +1,9 @@
 package com.tinyroom.spring.post.controller;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -16,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,6 +48,9 @@ import com.tinyroom.spring.post.dto.ResponsePostDetailDto;
 import com.tinyroom.spring.post.service.PostService;
 import com.tinyroom.spring.postheart.service.PostheartService;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -63,6 +71,9 @@ public class PostController {
 	
 	@Autowired
 	CategoryService categoryService;
+	
+	@Value("${file.upload-dir}") // 업로드 디렉토리 경로
+    private String uploadDir;
 	
 	// '/member' 내가 쓴 글 조회 '/main' 메인페이지 글 조회
 	
@@ -99,12 +110,12 @@ public class PostController {
 		PostDto postDto = postService.get(post_id);
 		Post post = postService.dtoToEntity(postDto);
 		int heartCount = postheartService.getCount(post);
-		List<Comment> comments= commentService.findAll(post_id);
+		int commentCount = commentService.getCount(post);
 		
 		ResponsePostDetailDto responseDto = ResponsePostDetailDto.builder()
 			    .post(post)
 			    .heartCount(heartCount)
-			    .comment(comments)
+			    .commentCount(commentCount)
 			    .build();
 		
 		return responseDto;
@@ -115,15 +126,17 @@ public class PostController {
 	@PutMapping("/postUpdate") 
 	public Map<String, String> modify(
 			@RequestParam(name="post_id") int post_id,
-	        @RequestBody RequestPostUpdateDto requestPostUpdateDto
+			@RequestParam("date") String dateString,
+			@RequestParam("title") String title,
+			@RequestParam("content") String content,
+			@RequestParam("category_id") int category_id,
+			@RequestParam("post_img_files") List<MultipartFile> post_img_files
 	        ) {
 	    PostDto postDto = postService.get(post_id);
 	    
-	    int category_id = requestPostUpdateDto.getCategory_id();
 	    CategoryDto categoryDto = categoryService.get(category_id);
 	    Category category = categoryService.dtoToEntity(categoryDto);
 	    
-	    String dateString = requestPostUpdateDto.getDate();
 	    
 	    // DateTimeFormatter를 사용하여 LocalDate로 변환
 	    if (dateString != null && !dateString.isEmpty()) {
@@ -131,17 +144,15 @@ public class PostController {
 	        LocalDate localDate = LocalDate.parse(dateString, formatter);
 	        postDto.setDate(localDate);  
 	    }
-
-	    String title = requestPostUpdateDto.getTitle();
-	    String content = requestPostUpdateDto.getContent();
-	    String post_img = requestPostUpdateDto.getPost_img();
 	    
 	    if (title != null) postDto.setTitle(title);
 	    if (content != null) postDto.setContent(content);
-	    if (post_img != null) postDto.setPost_img(post_img);
 	    if (category != null) postDto.setCategory(category);
 	    
-	    postService.modify(postDto);
+	    LocalDate w_date = LocalDate.now(); 
+	    postDto.setW_date(w_date);
+	    
+	    postService.modify(postDto, post_img_files);
 	    
 	    return Map.of("result", "success");
 	}
@@ -154,23 +165,26 @@ public class PostController {
 		@RequestParam(name="post_id") int post_id
 			){
 		PostDto postDto = postService.get(post_id);
-		postDto.setIs_active(0); //삭제 시, is_activce = 0
 		
-		postService.modify(postDto); //remove가 아닌 is_active로 상태를 변경
+		postService.modifyForDelete(postDto); //remove가 아닌 is_active로 상태를 변경
 		return Map.of("result", "success");
 	}
 	
 	//새로운 글 작성
 	@PostMapping("/writePost")
 	public Map<String, Integer> writePost(
-	        @RequestBody RequestPostWriteDto requestPostWriteDto
+			@RequestParam("date") String dateString,
+			@RequestParam("title") String title,
+			@RequestParam("content") String content,
+			@RequestParam("category_id") int category_id,
+			@RequestParam("post_img_files") List<MultipartFile> post_img_files
 	) {
 	    // 로그인된 사용자 이메일 추출
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    String email = auth.getName(); // username 추출
 
 	    LocalDate date; // LocalDate로 선언
-	    String dateString = requestPostWriteDto.getDate();
+
 	    
 	    // 날짜 문자열을 LocalDate로 변환
 	    try {
@@ -180,12 +194,7 @@ public class PostController {
 	    }
 
 	    LocalDate w_date = LocalDate.now(); // 작성일 설정
-
-	    String title = requestPostWriteDto.getTitle();
-	    String content = requestPostWriteDto.getContent();
-	    String post_img = requestPostWriteDto.getPost_img();
-
-	    int category_id = requestPostWriteDto.getCategory_id();
+	    
 	    CategoryDto categoryDto = categoryService.get(category_id);
 	    Category category = categoryService.dtoToEntity(categoryDto);
 
@@ -199,12 +208,11 @@ public class PostController {
 	            .date(date)         // 날짜 설정
 	            .w_date(w_date)     // 작성일 설정
 	            .title(title)       // 제목 설정
-	            .content(content)    // 내용 설정
-	            .post_img(post_img)  // 이미지 설정
+	            .content(content)    // 내용 설정 
 	            .is_active(1)       // 활성화 상태 설정 (예: 1 = 활성)
 	            .build();
 
-	    int post_id = postService.postWrite(post);
+	    int post_id = postService.postWrite(post, post_img_files);
 
 	    return Map.of("No", post_id);
 	}
