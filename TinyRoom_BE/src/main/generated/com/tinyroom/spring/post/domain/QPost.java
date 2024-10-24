@@ -38,6 +38,10 @@ public class QPost extends EntityPathBase<Post> {
 
     public final StringPath post_img = createString("post_img");
 
+    public final StringPath text_content = createString("text_content");
+
+    public final StringPath thumbnail = createString("thumbnail");
+
     public final StringPath title = createString("title");
 
     public final DatePath<java.time.LocalDate> w_date = createDate("w_date", java.time.LocalDate.class);

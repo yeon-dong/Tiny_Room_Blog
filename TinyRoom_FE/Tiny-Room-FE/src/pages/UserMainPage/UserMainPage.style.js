@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
 export const Wrapper = styled.div`
@@ -49,6 +50,7 @@ export const BlogNameBox = styled.div`
   align-items: center;
   position: relative;
   flex: 0 0 48px;
+  cursor: pointer;
 `;
 
 export const BlogNameText = styled.div`
@@ -91,9 +93,11 @@ export const LogoutButton = styled.button`
   }
 `;
 
-export const UserBlogHeaderText = styled.div`
+export const UserBlogHeaderLink = styled(Link)`
   font-size: 18px;
   font-weight: normal;
+  text-decoration: none;
+  color: black;
   cursor: pointer;
   &:hover {
     font-weight: bold;
@@ -101,7 +105,7 @@ export const UserBlogHeaderText = styled.div`
 `;
 
 export const UserBlogHeaderTextBetweenLine = styled.img`
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 `;
 
 export const UserBlogBox = styled.div`

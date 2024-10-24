@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tinyroom.spring.blog.dao.BlogDao;
 import com.tinyroom.spring.blog.domain.Blog;
@@ -46,17 +47,9 @@ public class BlogServiceImpl implements BlogService {
 	}
 	
 	@Override
-	public List<Post> findPostByUserId(int id, int category, int page) {
-		return queryFactory.selectFrom(QPost.post)
-				.where(QPost.post.member.member_id.eq(id))
-				.offset(page * 4)	// size : 4로 고정
-				.limit(4)
-				.fetch();
-	}
-	
-	
-	@Override
-	public int getPostCount(int id, int category) {
+	public List<Tuple> findPostByUserId(int id, int category, int page) {
+		QPost post = QPost.post;
+		
 		BooleanBuilder builder = new BooleanBuilder();
 		
 		builder.and(QPost.post.member.member_id.eq(id));
@@ -65,7 +58,28 @@ public class BlogServiceImpl implements BlogService {
 		
 		builder.and(QPost.post.is_active.eq(1));
 		
-		return queryFactory.selectFrom(QPost.post)
+		return queryFactory.select(post.post_id, post.thumbnail, post.title, post.text_content, post.date, post.w_date)
+				.from(post)
+				.where(builder)
+				.offset(page * 4)	// size : 4로 고정
+				.limit(4)
+				.fetch();
+	}
+	
+	
+	@Override
+	public int getPostCount(int id, int category) {
+		QPost post = QPost.post;
+		
+		BooleanBuilder builder = new BooleanBuilder();
+		
+		builder.and(post.member.member_id.eq(id));
+		
+		if(category != 0) builder.and(post.category.category_id.eq(category));
+		
+		builder.and(post.is_active.eq(1));
+		
+		return queryFactory.selectFrom(post)
 				.where(builder)
 				.fetch().size();
 	}

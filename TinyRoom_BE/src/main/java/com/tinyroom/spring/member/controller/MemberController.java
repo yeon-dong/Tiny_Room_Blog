@@ -1,6 +1,10 @@
 package com.tinyroom.spring.member.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +47,9 @@ import lombok.extern.log4j.Log4j2;
 @RestController	// RESTful 웹 서비스의 컨트롤러임을 나타내는 어노테이션
 public class MemberController {
     
+	// 프로필 이미지를 저장할 경로
+   private final String FOLDER_PATH = "c:\\tinyroomImages\\";
+	
 	// MemberService의 메서드를 사용하기 위해 MemberService 자동으로 주입
 	@Autowired
 	private MemberService service;
@@ -70,9 +77,42 @@ public class MemberController {
 			@RequestParam("description") String description,
 			@RequestParam("blog_title") String blog_title,
 			@RequestParam("blog_theme") int blog_theme,
-			@RequestParam("profile_img") MultipartFile profile_img,
+			@RequestParam(value="profile_img", required = false) MultipartFile profile_img,
 			HttpServletResponse response
 			) {
+		
+		log.info("##############################" + profile_img + "##################################");
+		
+		String imageName;
+		String newName;
+	   if(profile_img == null) {
+		   imageName = "Group 46.svg";
+	   } else {
+		   String[] temp = profile_img.getOriginalFilename().split(" .");
+		   String extension = temp[temp.length - 1];
+		   LocalDateTime current = LocalDateTime.now();
+		   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+		   imageName = current.format(formatter) + "." + extension;
+		   
+	      log.info("upload file : " + imageName);
+	      
+	      String filePath;
+		    String os = System.getProperty("os.name").toLowerCase();
+		    if(os.contains("win")) {
+		    	filePath = FOLDER_PATH + imageName;
+		    } else {
+		    	filePath = System.getProperty("user.dir") + "/files/image/" + imageName;
+		  }
+	      
+		  try {
+			profile_img.transferTo(new File(filePath));
+			} catch (IllegalStateException e) {
+			e.printStackTrace();
+		  } catch (IOException e) {
+			  e.printStackTrace();
+		  }
+	   }
+		
 		// 회원가입에 필요한 정보를 담을 Map
 		Map<String, String> member = new HashMap<>();
 		
@@ -85,6 +125,7 @@ public class MemberController {
 		member.put("description", description);
 		member.put("blog_title", blog_title);
 		member.put("blog_theme", blog_theme + "");
+		member.put("profile_img", "/image/" + imageName);
 		
 		// Map에 데이터 입력 후 다음 단계 진행된다는 것 확인하기 위한 로그
 		log.info("************************* register controller *******************************");
@@ -92,7 +133,7 @@ public class MemberController {
 		// MemberService의 회원가입 메서드 실행(member Map 을 인자로 넘김)
 		Map map;
 		try {
-			map = service.registerMember(member, profile_img);
+			map = service.registerMember(member);
 		} catch (Exception e) {
 			map = new HashMap<>();
 			map.put("result", false);
@@ -180,12 +221,42 @@ public class MemberController {
 				@RequestParam("furniture2") int furniture2,
 				@RequestParam("furniture3") int furniture3,
 				@RequestParam("furniture4") int furniture4,
-				@RequestParam("profile_img") MultipartFile profile_img
+				@RequestParam(value="profile_img", required = false) MultipartFile profile_img
 				) {
-			log.info("##################################### modify 실행 ###############################");
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String username = auth.getName(); // username 추출
-			log.info("#################################### " + username + "#######################################");
+			
+			String imageName;
+			   
+		   if(profile_img == null) {
+			   imageName = "Group 46.svg";
+		   } else {
+			   String[] temp = profile_img.getOriginalFilename().split(" .");
+			   String extension = temp[temp.length - 1];
+			   LocalDateTime current = LocalDateTime.now();
+			   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+			   imageName = current.format(formatter) + "." + extension;
+			   
+		       log.info("upload file : " + imageName);
+		      
+		       String filePath;
+			    String os = System.getProperty("os.name").toLowerCase();
+			    if(os.contains("win")) {
+			    	filePath = FOLDER_PATH + imageName;
+			    } else {
+			    	filePath = System.getProperty("user.dir") + "/files/image/" + imageName;
+			  }
+		      
+		       try {
+		    	   profile_img.transferTo(new File(filePath));
+		       } catch (IllegalStateException e) {
+		    	   e.printStackTrace();
+		       } catch (IOException e) {
+		    	   e.printStackTrace();
+		       }
+		   }
+			   
+			   log.info("upload file : " + imageName);
 			
 			// name, nickname, description은 Member 엔티티의 정보를 수정하는 것이므로 여기에 넣을 것
 			MemberDto member = service.getMember(username);
@@ -193,15 +264,14 @@ public class MemberController {
 			member.setName(name);
 			member.setNickname(nickname);
 			member.setDescription(description);
+			member.setProfile_img("/image/" + imageName);
 			
-			log.info("#################################### " + member + "#######################################");
 			
 			// blog_theme는 Blog 엔티티의 정보
 			BlogDto blog = blogService.getBlog(service.dtoToEntity(member));
 			
 			blog.setBlog_theme(blog_theme);
 			
-			log.info("#################################### " + blog + "#######################################");
 			// room_theme, furniture1, furniture2, furniture3, furniture4는 Blog 엔티티의 정보
 			RoomDto room = roomService.getRoom(blogService.blogDtoToEntity(blog)); 
 			
@@ -211,13 +281,11 @@ public class MemberController {
 			room.setFurniture3(furniture3);
 			room.setFurniture4(furniture4);
 			
-			log.info("#################################### " + room + "#######################################");
 			
 			// MemberService의 회원가입 메서드 실행(member Map 을 인자로 넘김)
 			boolean modifyResult = false;
 			try {
-				log.info("#################################### Service 실행 #######################################");
-				modifyResult = service.updateMember(member, blog, room, profile_img);
+				modifyResult = service.updateMember(member, blog, room);
 			} catch (IOException e) {
 				modifyResult = false;
 			}

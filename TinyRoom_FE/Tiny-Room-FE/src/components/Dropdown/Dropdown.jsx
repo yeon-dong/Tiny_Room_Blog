@@ -7,27 +7,32 @@ import {
   MenuItem,
 } from "./Dropdown.style";
 
-const Dropdown = () => {
+const Dropdown = ({ value, values, onChange }) => {
   const [isOpen, setOpen] = useState(false);
 
   const handleInputClick = useCallback(() => {
     setOpen(!isOpen);
   }, [isOpen]);
 
+  const handleItemClick = useCallback((i) => {
+    onChange(i);
+  }, []);
+
   return (
     <Container>
       <Input onClick={handleInputClick}>
-        카테고리를 선택해 주세요.
+        {value === -1 ? "카테고리를 선택해 주세요." : values[value]}
         <IconWrapper>
           <img src="/images/arrow_down.svg" alt="ArrowDown" />
         </IconWrapper>
       </Input>
       {isOpen && (
         <ItemBox>
-          <MenuItem>주방 가전제품</MenuItem>
-          <MenuItem>홈 인테리어</MenuItem>
-          <MenuItem>실내가구</MenuItem>
-          <MenuItem>전자제품</MenuItem>
+          {values.map((value, i) => (
+            <MenuItem key={i} onClick={() => handleItemClick(i)}>
+              {value}
+            </MenuItem>
+          ))}
         </ItemBox>
       )}
     </Container>

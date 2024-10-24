@@ -48,5 +48,4 @@ public class NeighbourController {
 	    
 	    neighbourService.sendApprove(neighbourDto);
 		return Map.of("result", "success");
-	}
 }
