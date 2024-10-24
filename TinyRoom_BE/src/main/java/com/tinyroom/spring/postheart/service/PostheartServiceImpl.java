@@ -30,6 +30,7 @@ public class PostheartServiceImpl implements PostheartService{
 	public PostheartDto getHeart(Member member, Post post) {
 		 PostHeart postheart = postheartDao.findByMemberAndPost(member, post)
 		            .orElse(null); // 없을 경우 null 반환
+		 if(postheart == null) return null;
 		 PostheartDto postheartDto =  entityPostheartDto(postheart);
 		 
 		 return postheartDto;
