@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
 const useStore = create((set) => ({
-  userId: null, // 초기값 설정
-  setUserId: (id) => set({ userId: id }), // userId를 설정하는 함수
+  userInfo: null, // 초기값 설정
+  setUserInfo: (info) => set({ userInfo: info }), // userId를 설정하는 함수
 
   //회원 가입 시 페이지끼리 props 안주기 위해 만든 상태관리
   signUpEmail: null, // 초기값 설정
