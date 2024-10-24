@@ -21,6 +21,7 @@ export const ContentContainer = styled.div`
 
 // 각 카드 컨테이너
 export const Card = styled.div`
+  cursor: pointer;
   width: 240px;
   border-radius: 10px;
   overflow: hidden;

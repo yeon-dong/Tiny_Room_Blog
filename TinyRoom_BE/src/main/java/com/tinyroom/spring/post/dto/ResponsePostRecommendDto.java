@@ -15,11 +15,13 @@ import lombok.ToString;
 @Builder
 public class ResponsePostRecommendDto {
 	private int post_id;
+	private int member_id;
 	private String title;
 	private String thumbnail;
 	private String text_content;
 	private String content;
 	private String post_img;
+	private String nickname;
 	private int heartCount;
 	private int commentCount;
 }
