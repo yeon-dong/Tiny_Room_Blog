@@ -41,19 +41,34 @@ const MainContent = () => {
       <BoardBox>
         <BoardHeader>
           <CategoryList>
-            <CategoryItem selected={selectedCategoryIdx === 0 ? 1 : 0}>
+            <CategoryItem
+              selected={selectedCategoryIdx === 0 ? 1 : 0}
+              onClick={() => handleFurnitureClick(0)}
+            >
               전체 게시글
             </CategoryItem>
-            <CategoryItem selected={selectedCategoryIdx === 1 ? 1 : 0}>
+            <CategoryItem
+              selected={selectedCategoryIdx === 1 ? 1 : 0}
+              onClick={() => handleFurnitureClick(1)}
+            >
               주방가전제품
             </CategoryItem>
-            <CategoryItem selected={selectedCategoryIdx === 2 ? 1 : 0}>
+            <CategoryItem
+              selected={selectedCategoryIdx === 2 ? 1 : 0}
+              onClick={() => handleFurnitureClick(2)}
+            >
               홈인테리어
             </CategoryItem>
-            <CategoryItem selected={selectedCategoryIdx === 3 ? 1 : 0}>
+            <CategoryItem
+              selected={selectedCategoryIdx === 3 ? 1 : 0}
+              onClick={() => handleFurnitureClick(3)}
+            >
               실내가구
             </CategoryItem>
-            <CategoryItem selected={selectedCategoryIdx === 4 ? 1 : 0}>
+            <CategoryItem
+              selected={selectedCategoryIdx === 4 ? 1 : 0}
+              onClick={() => handleFurnitureClick(4)}
+            >
               전자제품
             </CategoryItem>
           </CategoryList>
