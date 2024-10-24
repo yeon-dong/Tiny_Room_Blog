@@ -7,13 +7,26 @@ import {
   Container,
 } from "./MainContent.style";
 import MyRoom from "./MyRoom";
+import { useCallback, useState } from "react";
 
 const MainContent = () => {
   const blogData = useOutletContext();
 
+  const [selectedCategoryIdx, setSelectedCategoryIdx] = useState(0);
+
+  const handleFurnitureClick = useCallback((categoryIdx) => {
+    setSelectedCategoryIdx(categoryIdx);
+  }, []);
+
   return (
     <Container>
-      {Boolean(blogData) && <MyRoom roomData={blogData.room} />}
+      {Boolean(blogData) && (
+        <MyRoom
+          selectedCategoryIdx={selectedCategoryIdx}
+          onFurnitureClick={handleFurnitureClick}
+          roomData={blogData.room}
+        />
+      )}
       <BoardBox>
         <BoardHeader>최신 게시글</BoardHeader>
         <BoardContent></BoardContent>

@@ -19,18 +19,32 @@ const furniturePositions = [
 ];
 const furnitureNames = ["", "kitchen", "interior", "living", "electronic"];
 
-const MyRoom = ({ roomData }) => {
-  console.log(`/images/room_theme_${roomData.theme}.png`);
+const isHovered = (selectedCategoryIdx, hoveredPart, categoryIdx) => {
+  return selectedCategoryIdx === categoryIdx || hoveredPart === categoryIdx
+    ? 1
+    : 0;
+};
+
+const MyRoom = ({ selectedCategoryIdx, onFurnitureClick, roomData }) => {
   const [hoveredPart, setHoveredPart] = useState(0);
 
-  const handleMouseEnter = useCallback((id) => {
-    setHoveredPart(id);
+  const handleMouseEnter = useCallback(
+    (id) => {
+      if (selectedCategoryIdx === 0) setHoveredPart(id);
+    },
+    [selectedCategoryIdx]
+  );
+
+  const handleShadowClick = useCallback(() => {
+    onFurnitureClick(0);
   }, []);
 
   return (
     <Container>
       <RoomImg src={`/images/room${roomData.theme}.png`} alt="Room" />
-      {hoveredPart > 0 && <Shadow />}
+      {(selectedCategoryIdx > 0 || hoveredPart > 0) && (
+        <Shadow onClick={handleShadowClick} />
+      )}
       <KitchenImg
         src={`/images/kitchen${roomData.furniture1}.png`}
         alt="Kitchen"
@@ -40,7 +54,8 @@ const MyRoom = ({ roomData }) => {
         onMouseLeave={() => {
           setHoveredPart(0);
         }}
-        isHovered={hoveredPart === 1}
+        onClick={() => onFurnitureClick(1)}
+        is_hovered={isHovered(selectedCategoryIdx, hoveredPart, 1)}
       />
       <InteriorImg
         src={`/images/interior${roomData.furniture2}.png`}
@@ -51,7 +66,8 @@ const MyRoom = ({ roomData }) => {
         onMouseLeave={() => {
           setHoveredPart(0);
         }}
-        isHovered={hoveredPart === 2}
+        onClick={() => onFurnitureClick(2)}
+        is_hovered={isHovered(selectedCategoryIdx, hoveredPart, 2)}
       />
       <LivingImg
         src={`/images/living${roomData.furniture3}.png`}
@@ -62,7 +78,8 @@ const MyRoom = ({ roomData }) => {
         onMouseLeave={() => {
           setHoveredPart(0);
         }}
-        isHovered={hoveredPart === 3}
+        onClick={() => onFurnitureClick(3)}
+        is_hovered={isHovered(selectedCategoryIdx, hoveredPart, 3)}
       />
       <ElectronicsImg
         src={`/images/electronics${roomData.furniture4}.png`}
@@ -73,16 +90,26 @@ const MyRoom = ({ roomData }) => {
         onMouseLeave={() => {
           setHoveredPart(0);
         }}
-        isHovered={hoveredPart === 4}
+        onClick={() => onFurnitureClick(4)}
+        is_hovered={isHovered(selectedCategoryIdx, hoveredPart, 4)}
       />
 
-      {hoveredPart > 0 && (
+      {selectedCategoryIdx > 0 ? (
         <BubbleImg
-          left={furniturePositions[hoveredPart][0]}
-          top={furniturePositions[hoveredPart][1]}
-          src={`/images/${furnitureNames[hoveredPart]}_bubble.png`}
+          left={furniturePositions[selectedCategoryIdx][0]}
+          top={furniturePositions[selectedCategoryIdx][1]}
+          src={`/images/${furnitureNames[selectedCategoryIdx]}_bubble.png`}
           alt="Bubble"
         />
+      ) : (
+        hoveredPart > 0 && (
+          <BubbleImg
+            left={furniturePositions[hoveredPart][0]}
+            top={furniturePositions[hoveredPart][1]}
+            src={`/images/${furnitureNames[hoveredPart]}_bubble.png`}
+            alt="Bubble"
+          />
+        )
       )}
     </Container>
   );
