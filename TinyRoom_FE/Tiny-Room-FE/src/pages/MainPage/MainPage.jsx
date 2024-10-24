@@ -1,13 +1,51 @@
-import React, { useEffect } from "react";
-import useStore from "../../stores/store.js"; // Zustand 스토어 import
+import React from "react";
+import {
+  Container,
+  LogoContainer,
+  MainHeader,
+  SearchButton,
+  SearchContainer,
+  SearchInput,
+  SearchIcon,
+  HeaderContainer,
+  MenuList,
+  MenuItem,
+  LoginButton,
+  Divider,
+} from "./MainPage.style";
+import ContentSection from "./ContentSection";
+import RecentContentSection from "./RecentContentSection";
 
 function MainPage() {
-  const { userInfo } = useStore();
-  useEffect(() => {
-    // console.log("현재 userInfo:", userInfo); // userInfo를 콘솔에 출력
-    // console.log("현재 token:", localStorage.getItem("token")); // userInfo를 콘솔에 출력
-  }, []); // userInfo가 변경될 때마다 실행
-  return <div>MainPage</div>;
+  const handleSearchClick = () => {
+    alert("검색 버튼이 눌렸습니다!"); // 여기에 실제 검색 동작을 추가할 수 있습니다.
+  };
+  return (
+    <Container>
+      <MainHeader>
+        <LogoContainer></LogoContainer>
+        <SearchContainer>
+          <SearchButton onClick={handleSearchClick}>
+            <SearchIcon src="/images/SearchIcon.svg" alt="Search Icon" />
+          </SearchButton>
+          {/* <SearchInput type="text" placeholder="검색어를 입력하세요..." /> */}
+        </SearchContainer>
+      </MainHeader>
+      <HeaderContainer>
+        <MenuList>
+          <MenuItem>전체보기</MenuItem>
+          <MenuItem>주방가전제품</MenuItem>
+          <MenuItem>홈인테리어</MenuItem>
+          <MenuItem>실내가구</MenuItem>
+          <MenuItem>전자제품</MenuItem>
+          <LoginButton>로그인</LoginButton>
+        </MenuList>
+      </HeaderContainer>
+      <Divider />
+      <ContentSection />
+      <RecentContentSection />
+    </Container>
+  );
 }
 
 export default MainPage;
