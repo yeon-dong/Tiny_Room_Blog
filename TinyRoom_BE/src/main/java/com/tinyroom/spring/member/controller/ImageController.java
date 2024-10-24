@@ -42,7 +42,13 @@ public class ImageController {
 		ResponseEntity<byte[]> result = null;
 		
 		try {
-			java.io.File file = new java.io.File(FOLDER_PATH + imageName);
+			java.io.File file;
+		    String os = System.getProperty("os.name").toLowerCase();
+		    if(os.contains("win")) {
+		    	file = new java.io.File(FOLDER_PATH + imageName);
+		    } else {
+		    	file = new java.io.File(System.getProperty("user.dir") + "/files/image/" + imageName);
+		    }
 			
 			HttpHeaders header = new HttpHeaders();
             header.add("Content-type", Files.probeContentType(file.toPath()));
