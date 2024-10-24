@@ -22,8 +22,6 @@ public class QPostHeart extends EntityPathBase<PostHeart> {
 
     public static final QPostHeart postHeart = new QPostHeart("postHeart");
 
-    public final NumberPath<Integer> is_active = createNumber("is_active", Integer.class);
-
     public final com.tinyroom.spring.member.domain.QMember member;
 
     public final com.tinyroom.spring.post.domain.QPost post;
