@@ -17,12 +17,13 @@ public interface BlogService {
 
 	public BlogDto getBlog(Member member);
 	
-	public List<Tuple> findPostByUserId(int id, int category, int page);
+	public List<Post> getPostList(int id, int category, int page);
 	
-	public int getPostCount(int id, int category);
+	public int countPost(int id, int category);
 	
 	BlogDto blogEntityToDto(Blog blog);
 	
 	Blog blogDtoToEntity(BlogDto blogDto);
+
 	
 }
