@@ -52,7 +52,10 @@ public class PostheartController {
 	    
 	    PostheartDto postheartDto = postheartService.getHeart(member, post);
 		
-		return postheartDto.getIs_active();
+	    if(postheartDto == null) 
+	    	return 0;
+	    
+		return 1;
 	}
 	
 	

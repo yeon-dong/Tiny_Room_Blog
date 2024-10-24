@@ -15,6 +15,4 @@ public class PostheartDto {
 	private Member member;
 
 	private Post post;
-	
-	private int is_active;
 }
