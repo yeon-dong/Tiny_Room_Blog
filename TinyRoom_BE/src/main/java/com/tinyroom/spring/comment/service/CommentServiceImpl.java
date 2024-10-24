@@ -58,7 +58,7 @@ public class CommentServiceImpl implements CommentService{
 	}
     
     public List<ResponseCommentDto> getCommentsByPost(Post post) {
-        List<Comment> comments = commentDao.findByPost(post);
+        List<Comment> comments = commentDao.findByPostOrderByDateDesc(post);
         Map<Integer, ResponseCommentDto> commentMap = new HashMap<>();
 
         // 모든 댓글을 ResponseCommentDto로 변환하고 맵에 저장
@@ -67,6 +67,7 @@ public class CommentServiceImpl implements CommentService{
             dto.setComment_id(comment.getComment_id());
             dto.setContent(comment.getContent());
             dto.setPost_id(post.getPost_id());
+            dto.setDate(comment.getDate());
             dto.setParent_id(comment.getParent() != null ? comment.getParent().getComment_id() : 0); // 부모 ID 설정
 
             commentMap.put(dto.getComment_id(), dto);

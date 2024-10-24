@@ -1,5 +1,6 @@
 package com.tinyroom.spring.comment.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.tinyroom.spring.comment.domain.Comment;
@@ -23,4 +24,5 @@ public class ResponseCommentDto {
 	private int post_id;
 	private int parent_id;
 	private List<ResponseCommentDto> children; 
+	private LocalDate date;
 }
