@@ -156,15 +156,14 @@ public class MemberController {
 		
 		Map map = new HashMap();
 		
-		map.put("member_id", member.getMember_id());
+		map.put("id", member.getMember_id());
 		map.put("email", member.getEmail());
-		map.put("pw", member.getPw());
 		map.put("name", member.getName());
 		map.put("nickname", member.getNickname());
 		map.put("phone_number", member.getPhone_number());
 		map.put("profile_img", member.getProfile_img());
 		map.put("description", member.getDescription());
-		map.put("is_active", member.getIs_active());
+		map.put("type", member.getType());
 		
 		return map;
 	}
