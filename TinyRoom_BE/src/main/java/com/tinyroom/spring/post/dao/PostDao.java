@@ -37,4 +37,7 @@ public interface PostDao extends JpaRepository<Post, Integer>, PostSearch{
 	int countByConditions(@Param("isActive") int isActive, 
 						@Param("memberId") int memberId, 
 						@Param("categoryId") int categoryId);
+	  
+	    @Query("SELECT p FROM Post p WHERE YEAR(p.w_date) = :year AND MONTH(p.w_date) = :month AND p.member.member_id = :memberId")
+	    List<Post> findByYearAndMonthAndMember(@Param("year") int year, @Param("month") int month, @Param("memberId") int memberId);
 }

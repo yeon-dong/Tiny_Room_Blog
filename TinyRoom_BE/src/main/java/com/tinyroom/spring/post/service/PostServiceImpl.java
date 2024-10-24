@@ -101,6 +101,11 @@ public class PostServiceImpl implements PostService {
 	public List<Post> findTopByOrderByHeartCountDesc(PageRequest of) {
 		return postDao.findTopByOrderByHeartCountDesc(PageRequest.of(0, 3));
 	}
+
+	@Override
+	public List<Post> getCalendarList(int year, int month, int member_id) {
+		return postDao.findByYearAndMonthAndMember(year, month, member_id);
+	}
 	
 
 }
