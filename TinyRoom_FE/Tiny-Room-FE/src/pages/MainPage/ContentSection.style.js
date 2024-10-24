@@ -52,6 +52,7 @@ export const CardTitle = styled.h3`
   height: 36px;
   margin-bottom: 8px;
   color: #4f4c4c;
+  line-height: 1.2;
 `;
 
 // 본문 작성자 정보

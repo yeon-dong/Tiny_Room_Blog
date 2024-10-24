@@ -13,14 +13,19 @@ import {
   MenuItem,
   LoginButton,
   Divider,
+  UserImg,
 } from "./MainPage.style";
 import ContentSection from "./ContentSection";
 import RecentContentSection from "./RecentContentSection";
 import { useNavigate } from "react-router-dom";
+import useStore from "../../stores/store";
 
 function MainPage() {
   const navigate = useNavigate();
+  const { userInfo } = useStore();
   const [recommendPost, setRecommendPost] = useState({});
+  const isLogin = localStorage.getItem("token") ? true : false;
+  console.log(userInfo);
 
   // 추천 게시물 가져오기
   useEffect(() => {
@@ -44,6 +49,9 @@ function MainPage() {
   const handleLoginPage = () => {
     navigate("/login");
   };
+  const handleGoToMyRoom = (myId) => {
+    navigate(`/${myId}`);
+  };
   return (
     <Container>
       <MainHeader>
@@ -55,14 +63,21 @@ function MainPage() {
           {/* <SearchInput type="text" placeholder="검색어를 입력하세요..." /> */}
         </SearchContainer>
       </MainHeader>
-      <HeaderContainer>
+      <HeaderContainer $isLogin={isLogin}>
         <MenuList>
           <MenuItem>전체보기</MenuItem>
           <MenuItem>주방가전제품</MenuItem>
           <MenuItem>홈인테리어</MenuItem>
           <MenuItem>실내가구</MenuItem>
           <MenuItem>전자제품</MenuItem>
-          <LoginButton onClick={handleLoginPage}>로그인</LoginButton>
+          {localStorage.getItem("token") ? (
+            <UserImg
+              src={`http://localhost:8080${userInfo.profileImg}`}
+              onClick={() => handleGoToMyRoom(userInfo.id)}
+            />
+          ) : (
+            <LoginButton onClick={handleLoginPage}>로그인</LoginButton>
+          )}
         </MenuList>
       </HeaderContainer>
       <Divider />
