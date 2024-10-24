@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tinyroom.spring.member.domain.Member;
 import com.tinyroom.spring.member.dto.MemberDto;
 import com.tinyroom.spring.member.service.MemberService;
+import com.tinyroom.spring.neighbour.domain.Neighbour;
 import com.tinyroom.spring.neighbour.dto.NeighbourDto;
 import com.tinyroom.spring.neighbour.service.NeighbourService;
 
@@ -47,6 +48,18 @@ public class NeighbourController {
 	    		.build();
 	    
 	    neighbourService.sendApprove(neighbourDto);
+		return Map.of("result", "success");
+	}
+	
+	@GetMapping("/Approve")
+	public Map<String, String> approve(
+			@RequestParam(name="neighbour_id")int neighbour_id
+			){
+		Neighbour neighbour = neighbourService.getNeighbour(neighbour_id);
+		NeighbourDto neighbourDto = neighbourService.entityNeighbourDto(neighbour);
+		neighbourDto.setStatus(1);
+		neighbourService.modifyStatus(neighbourDto);
+		
 		return Map.of("result", "success");
 	}
 }

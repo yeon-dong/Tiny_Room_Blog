@@ -21,4 +21,16 @@ public class NeighbourServiceImpl implements NeighbourService{
 		Neighbour neighbour = dtoToEntity(neighbourDto);
 		neighbourDao.save(neighbour);
 	}
+
+	@Override
+	public Neighbour getNeighbour(int neighbour_id) {
+		Neighbour neighbour = neighbourDao.getById(neighbour_id);
+		return neighbour;
+	}
+
+	@Override
+	public void modifyStatus(NeighbourDto neighbourDto) {
+		Neighbour neighbour = dtoToEntity(neighbourDto);
+		neighbourDao.save(neighbour);
+	}
 }
