@@ -9,12 +9,12 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 
-const MyEditor = forwardRef((props, ref) => {
+const MyEditor = forwardRef(({ value, onChange }, ref) => {
   const editorRef = useRef(null);
 
   useImperativeHandle(ref, () => ({
     getEditor: () => {
-      editorRef.current?.getEditor();
+      return editorRef.current?.getEditor();
     },
   }));
 
@@ -67,10 +67,8 @@ const MyEditor = forwardRef((props, ref) => {
     <ReactQuill
       ref={editorRef}
       theme="snow"
-      onChange={(v, d, s, e) => {
-        console.log(e.getContents());
-        console.log(e.getText());
-      }}
+      value={value}
+      onChange={onChange}
       style={{ height: "100%" }}
       formats={[
         "header",

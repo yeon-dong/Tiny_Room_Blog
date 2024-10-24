@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -25,19 +26,41 @@ export const ProfileBox = styled.div`
 export const ProfileImageBox = styled.div`
   width: 100%;
   flex: 0 0 230px;
-  background-color: skyblue;
   border-radius: 10px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 export const UsernameBox = styled.div`
   width: 100%;
   flex: 0 0 18px;
-  background-color: pink;
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const EditButton = styled(Link)`
+  font-size: 14px;
+  font-weight: bold;
+  color: #ff80a0;
+  height: 18px;
+  line-height: 18px;
+  text-decoration: underline;
 `;
 
 export const DescriptionBox = styled.div`
   width: 100%;
   flex: 0 0 112px;
   border-radius: 10px;
-  background-color: yellowgreen;
+  background-color: var(--gray3);
+  font-size: 16px;
+  padding: 10px;
+  color: #585858;
 `;

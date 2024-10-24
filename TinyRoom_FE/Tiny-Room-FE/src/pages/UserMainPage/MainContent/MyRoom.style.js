@@ -36,7 +36,7 @@ export const KitchenImg = styled.img`
   width: 240px;
   height: 400px;
   cursor: pointer;
-  ${(p) => (p.isHovered ? "z-index: 10;" : "")}
+  ${(p) => (p.is_hovered ? "z-index: 10;" : "")}
 `;
 
 export const InteriorImg = styled.img`
@@ -46,7 +46,7 @@ export const InteriorImg = styled.img`
   width: 160px;
   height: 400px;
   cursor: pointer;
-  ${(p) => (p.isHovered ? "z-index: 10;" : "")}
+  ${(p) => (p.is_hovered ? "z-index: 10;" : "")}
 `;
 
 export const LivingImg = styled.img`
@@ -56,7 +56,7 @@ export const LivingImg = styled.img`
   width: 150px;
   height: 400px;
   cursor: pointer;
-  ${(p) => (p.isHovered ? "z-index: 10;" : "")}
+  ${(p) => (p.is_hovered ? "z-index: 10;" : "")}
 `;
 
 export const ElectronicsImg = styled.img`
@@ -66,7 +66,7 @@ export const ElectronicsImg = styled.img`
   width: 220px;
   height: 400px;
   cursor: pointer;
-  ${(p) => (p.isHovered ? "z-index: 10;" : "")}
+  ${(p) => (p.is_hovered ? "z-index: 10;" : "")}
 `;
 
 export const BubbleImg = styled.img`
