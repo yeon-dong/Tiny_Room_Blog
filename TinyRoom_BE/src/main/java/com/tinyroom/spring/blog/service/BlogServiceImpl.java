@@ -15,6 +15,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tinyroom.spring.blog.dao.BlogDao;
 import com.tinyroom.spring.blog.domain.Blog;
 import com.tinyroom.spring.blog.dto.BlogDto;
+import com.tinyroom.spring.blog.dto.PostPageDto;
 import com.tinyroom.spring.member.dao.MemberDao;
 import com.tinyroom.spring.member.domain.Member;
 import com.tinyroom.spring.member.dto.MemberDto;
@@ -48,10 +49,10 @@ public class BlogServiceImpl implements BlogService {
 	}
 	
 	@Override
-	public List<Post> getPostList(int id, int category, int page) {
+	public List<PostPageDto> getPostList(int id, int category, int page) {
 		
 		Pageable pageable = PageRequest.of(page, 4, Sort.by(Sort.Direction.DESC, "w_date"));
-		org.springframework.data.domain.Page<Post> postPage = postDao.findByConditions(1, id, category, pageable);
+		org.springframework.data.domain.Page<PostPageDto> postPage = postDao.findByConditions(1, id, category, pageable);
 		
 		return postPage.getContent();
 	}
