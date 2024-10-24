@@ -16,6 +16,7 @@ export const ContentContainer = styled.div`
   justify-content: center;
   gap: 24px;
   padding: 20px;
+  cursor: pointer;
   // margin-top: 20px;
 `;
 

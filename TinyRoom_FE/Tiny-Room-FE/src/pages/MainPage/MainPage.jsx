@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Container,
@@ -20,6 +20,24 @@ import { useNavigate } from "react-router-dom";
 
 function MainPage() {
   const navigate = useNavigate();
+  const [recommendPost, setRecommendPost] = useState({});
+
+  // 추천 게시물 가져오기
+  useEffect(() => {
+    const fetchRecommendPost = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/posts/recommend"
+        );
+        setRecommendPost(response.data); // 응답 데이터를 recommendPost에 저장
+      } catch (error) {
+        console.error("추천 게시물 가져오기 실패:", error);
+      }
+    };
+
+    fetchRecommendPost();
+  }, []); // 빈 배열을 의존성으로 주어 컴포넌트가 마운트될 때만 실행
+
   const handleSearchClick = () => {
     alert("검색 버튼이 눌렸습니다!"); // 여기에 실제 검색 동작을 추가할 수 있습니다.
   };
@@ -48,7 +66,7 @@ function MainPage() {
         </MenuList>
       </HeaderContainer>
       <Divider />
-      <ContentSection />
+      <ContentSection recommendPost={recommendPost} />
       <RecentContentSection />
     </Container>
   );
