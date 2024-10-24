@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import {
   Container,
   LogoContainer,
@@ -15,10 +16,15 @@ import {
 } from "./MainPage.style";
 import ContentSection from "./ContentSection";
 import RecentContentSection from "./RecentContentSection";
+import { useNavigate } from "react-router-dom";
 
 function MainPage() {
+  const navigate = useNavigate();
   const handleSearchClick = () => {
     alert("검색 버튼이 눌렸습니다!"); // 여기에 실제 검색 동작을 추가할 수 있습니다.
+  };
+  const handleLoginPage = () => {
+    navigate("/login");
   };
   return (
     <Container>
@@ -38,7 +44,7 @@ function MainPage() {
           <MenuItem>홈인테리어</MenuItem>
           <MenuItem>실내가구</MenuItem>
           <MenuItem>전자제품</MenuItem>
-          <LoginButton>로그인</LoginButton>
+          <LoginButton onClick={handleLoginPage}>로그인</LoginButton>
         </MenuList>
       </HeaderContainer>
       <Divider />
