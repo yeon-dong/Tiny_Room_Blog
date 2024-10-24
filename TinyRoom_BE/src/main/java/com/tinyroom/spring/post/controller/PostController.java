@@ -131,7 +131,8 @@ public class PostController {
 			@RequestParam("title") String title,
 			@RequestParam("content") String content,
 			@RequestParam("category_id") int category_id,
-			@RequestParam("post_img_files") List<MultipartFile> post_img_files
+			@RequestParam("text_content")String text_content,
+			@RequestParam("thumbnail")String thumbnail
 	        ) {
 	    PostDto postDto = postService.get(post_id);
 	    
@@ -152,8 +153,10 @@ public class PostController {
 	    
 	    LocalDate w_date = LocalDate.now(); 
 	    postDto.setW_date(w_date);
+	    postDto.setText_content(text_content);
+	    postDto.setThumbnail(thumbnail);
 	    
-	    postService.modify(postDto, post_img_files);
+	    postService.modify(postDto);
 	    
 	    return Map.of("result", "success");
 	}
@@ -178,7 +181,9 @@ public class PostController {
 			@RequestParam("title") String title,
 			@RequestParam("content") String content,
 			@RequestParam("category_id") int category_id,
-			@RequestParam("post_img_files") List<MultipartFile> post_img_files
+			@RequestParam("text_content")String text_content,
+			@RequestParam("thumbnail")String thumbnail
+			
 	) {
 	    // 로그인된 사용자 이메일 추출
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -210,10 +215,12 @@ public class PostController {
 	            .w_date(w_date)     // 작성일 설정
 	            .title(title)       // 제목 설정
 	            .content(content)    // 내용 설정 
+	            .text_content(text_content)
+	            .thumbnail(thumbnail)
 	            .is_active(1)       // 활성화 상태 설정 (예: 1 = 활성)
 	            .build();
 
-	    int post_id = postService.postWrite(post, post_img_files);
+	    int post_id = postService.postWrite(post);
 
 	    return Map.of("No", post_id);
 	}
