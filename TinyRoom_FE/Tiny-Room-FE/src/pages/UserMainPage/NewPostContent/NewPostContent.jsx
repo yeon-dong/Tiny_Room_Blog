@@ -134,6 +134,8 @@ const NewPostContent = () => {
             headers: { auth_token: at },
           }
         );
+
+        navigate(`/${id}`);
       } catch (e) {
         alert("글 수정 실패");
       }

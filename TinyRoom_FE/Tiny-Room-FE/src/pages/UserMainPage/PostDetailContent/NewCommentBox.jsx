@@ -37,6 +37,7 @@ const NewCommentBox = ({ getComments }) => {
 
     // TODO getComments
     getComments();
+    setComment("");
   }, [comment]);
 
   return (

@@ -13,10 +13,10 @@ import {
 
 const furniturePositions = [
   undefined,
-  [25, 100],
-  [230, 5],
-  [380, 15],
-  [590, 100],
+  [100, 125],
+  [300, 25],
+  [300, 30],
+  [500, 150],
 ];
 const furnitureNames = ["", "kitchen", "interior", "living", "electronic"];
 
