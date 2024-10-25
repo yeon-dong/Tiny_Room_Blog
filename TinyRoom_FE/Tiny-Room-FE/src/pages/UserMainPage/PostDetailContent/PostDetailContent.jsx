@@ -63,7 +63,7 @@ const PostDetailContent = () => {
     );
 
     setComments(response.data);
-  }, [commentsPage]);
+  }, [commentsPage, postId]);
 
   const checkHeart = useCallback(async () => {
     const response = await axios.get(
@@ -73,10 +73,8 @@ const PostDetailContent = () => {
       }
     );
 
-    console.log(response.data);
-
     setHeart(response.data === 1);
-  }, []);
+  }, [postId]);
 
   const addHeart = useCallback(async () => {
     const response = await axios.get(
@@ -132,7 +130,7 @@ const PostDetailContent = () => {
 
   const handleUpdateClick = useCallback(() => {
     navigate(`/${userId}/post/update/${postId}`);
-  }, []);
+  }, [userId, postId]);
 
   return (
     <Container>

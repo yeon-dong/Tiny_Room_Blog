@@ -37,19 +37,22 @@ const MainContent = () => {
     setSelectedCategoryIdx(categoryIdx);
   }, []);
 
-  const getPosts = useCallback(async (p, categoryIdx) => {
-    const response = await axios.get(
-      `http://localhost:8080/user/${userId}?category=${categoryIdx}&page=${
-        p - 1
-      }`
-    );
+  const getPosts = useCallback(
+    async (p, categoryIdx) => {
+      const response = await axios.get(
+        `http://localhost:8080/user/${userId}?category=${categoryIdx}&page=${
+          p - 1
+        }`
+      );
 
-    setPosts(response.data);
-  }, []);
+      setPosts(response.data);
+    },
+    [userId]
+  );
 
   useEffect(() => {
     getPosts(page, selectedCategoryIdx);
-  }, [page, selectedCategoryIdx]);
+  }, [page, selectedCategoryIdx, userId]);
 
   const handlePageChange = useCallback((e, page) => {
     setPage(page);
