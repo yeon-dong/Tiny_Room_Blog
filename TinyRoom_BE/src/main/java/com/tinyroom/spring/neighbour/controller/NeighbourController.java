@@ -130,6 +130,7 @@ public class NeighbourController {
 	    
 	    for (NeighbourPageDto neighbour : neighbourList) {
 	        int member_id = neighbour.getFromMember().getMember_id();
+	        int neighbour_id = neighbour.getNeighbourId();
 	        String nickname = neighbour.getFromMember().getNickname();
 	        String description = neighbour.getFromMember().getDescription();
 	        String profile_img = neighbour.getFromMember().getProfile_img();
@@ -140,7 +141,7 @@ public class NeighbourController {
 	        BlogDto blogDto = blogService.getBlog(from_member);
 	        Blog blog = blogService.blogDtoToEntity(blogDto);
 	        
-	        Re_NeighbourPageDto list_dto = new Re_NeighbourPageDto(blog.getBlog_title(), member_id, nickname, description, profile_img);
+	        Re_NeighbourPageDto list_dto = new Re_NeighbourPageDto(blog.getBlog_title(), neighbour_id, member_id, nickname, description, profile_img);
 	        re_neighbourList.add(list_dto);
 	    }
 
