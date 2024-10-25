@@ -12,8 +12,10 @@ import { useNavigate } from "react-router-dom";
 const NeighbourItem = ({ neighbour, idx }) => {
   const navigate = useNavigate();
 
+  console.log(neighbour);
+
   const handleClick = useCallback(() => {
-    navigate(`/${neighbour.user_id}`);
+    navigate(`/${neighbour.member_id}`);
   }, []);
 
   return (

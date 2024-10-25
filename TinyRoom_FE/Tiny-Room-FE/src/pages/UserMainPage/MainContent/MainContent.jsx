@@ -31,24 +31,28 @@ const MainContent = () => {
     totalCount: 0,
   });
 
-  console.log(posts);
   const [page, setPage] = useState(1);
 
   const handleFurnitureClick = useCallback((categoryIdx) => {
     setSelectedCategoryIdx(categoryIdx);
   }, []);
 
-  const getPosts = useCallback(async () => {
-    const response = await axios.get(
-      `http://localhost:8080/user/${userId}?category=${selectedCategoryIdx}&page=${page}`
-    );
+  const getPosts = useCallback(
+    async (p, categoryIdx) => {
+      const response = await axios.get(
+        `http://localhost:8080/user/${userId}?category=${categoryIdx}&page=${
+          p - 1
+        }`
+      );
 
-    setPosts(response.data);
-  }, [page]);
+      setPosts(response.data);
+    },
+    [userId]
+  );
 
   useEffect(() => {
-    getPosts();
-  }, [page]);
+    getPosts(page, selectedCategoryIdx);
+  }, [page, selectedCategoryIdx, userId]);
 
   const handlePageChange = useCallback((e, page) => {
     setPage(page);

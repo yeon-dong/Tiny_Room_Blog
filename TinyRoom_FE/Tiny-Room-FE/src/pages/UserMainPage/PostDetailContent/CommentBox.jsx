@@ -1,12 +1,17 @@
 import { Container } from "./CommentBox.style";
 import CommentItem from "./CommentItem";
 
-const CommentBox = () => {
+const CommentBox = ({ comments, getComments }) => {
+  console.log(comments.comments);
   return (
     <Container>
-      <CommentItem />
-      <CommentItem />
-      <CommentItem />
+      {comments.comments.map((comment) => (
+        <CommentItem
+          key={comment.commentId}
+          comment={comment}
+          getComments={getComments}
+        />
+      ))}
     </Container>
   );
 };

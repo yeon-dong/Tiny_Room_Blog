@@ -110,4 +110,60 @@ export const RoomThemeOptionContainer = styled.div`
   gap: 20px;
 `;
 
-export const RoomThemeImgWrapper = styled.div``;
+export const RoomThemeImgWrapper = styled.div`
+  width: 136px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+`;
+
+export const InteriorImgWrapper = styled.div`
+  width: 100px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+`;
+
+export const LivingImgWrapper = styled.div`
+  width: 80px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+`;
+
+export const AgreeBox = styled.div`
+  margin-top: 40px;
+  margin-bottom: 40px;
+  display: flex;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  align-items: center;
+  user-select: none;
+  cursor: pointer;
+`;
+
+export const IconWrapper = styled.div`
+  width: 30px;
+  height: 30px;
+
+  img {
+    width: 100%;
+    height: 100%:
+  }
+`;
+
+export const SubmitButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;

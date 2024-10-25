@@ -3,7 +3,7 @@ import CommentBox from "./CommentBox";
 import NewCommentBox from "./NewCommentBox";
 import MainButton from "../../../components/MainButton/MainButton";
 import RoundedButton from "../../../components/RoundedButton/RoundedButton";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
 import {
@@ -24,12 +24,14 @@ import {
   PostWeekday,
 } from "./PostDetailContent.style";
 import Viewer from "../../../components/MyEditor/Viewer";
+import MyPagination from "../../../components/Pagination/MyPagination";
 
 const PostDetailContent = () => {
   const location = useLocation();
+  const userId = location.pathname.split("/")[1];
   const postId = location.pathname.split("/")[3];
 
-  const at = localStorage.getItem("at");
+  const navigate = useNavigate();
 
   const [postData, setPostData] = useState(null);
   const [hasHeart, setHeart] = useState(false);
@@ -39,6 +41,11 @@ const PostDetailContent = () => {
       return postData;
     }
   }, [postData]);
+  const [comments, setComments] = useState({
+    totalCount: 0,
+    comments: [],
+  });
+  const [commentsPage, setCommentsPage] = useState(1);
 
   const getPostData = useCallback(async () => {
     const response = await axios.get(
@@ -48,47 +55,66 @@ const PostDetailContent = () => {
     setPostData(response.data);
   }, [postId]);
 
-  const checkHeart = useCallback(async () => {
-    // const response = await axios.get(
-    //   `http://localhost:8080/hearts/view?post_id=${postId}`,
-    //   {
-    //     headers: { auth_token: at },
-    //   }
-    // );
+  const getComments = useCallback(async () => {
+    const response = await axios.get(
+      `http://localhost:8080/comments/view?post_id=${postId}&page=${
+        commentsPage - 1
+      }`
+    );
 
-    setHeart(true);
+    setComments(response.data);
+  }, [commentsPage, postId]);
+
+  const checkHeart = useCallback(async () => {
+    const response = await axios.get(
+      `http://localhost:8080/hearts/view?post_id=${postId}`,
+      {
+        headers: { auth_token: localStorage.getItem("token") },
+      }
+    );
+
+    setHeart(response.data === 1);
   }, [postId]);
 
   const addHeart = useCallback(async () => {
     const response = await axios.get(
       `http://localhost:8080/hearts/add?post_id=${postId}`,
       {
-        headers: { auth_token: at },
+        headers: { auth_token: localStorage.getItem("token") },
       }
     );
 
-    console.log(response);
+    if (response.data.result === "success") {
+      getPostData();
+      checkHeart();
+    }
   }, [postId]);
 
   const deleteHeart = useCallback(async () => {
     const response = await axios.delete(
       `http://localhost:8080/hearts/delete?post_id=${postId}`,
       {
-        headers: { auth_token: at },
+        headers: { auth_token: localStorage.getItem("token") },
       }
     );
 
-    console.log(response);
+    if (response.data.result === "success") {
+      getPostData();
+      checkHeart();
+    }
   }, [postId]);
 
   useEffect(() => {
     getPostData();
 
-    // TODO if loged in,
-    if (true) {
+    if (localStorage.getItem("token") !== null) {
       checkHeart();
     }
   }, [location.pathname, getPostData, checkHeart]);
+
+  useEffect(() => {
+    getComments();
+  }, [commentsPage]);
 
   const handleHeartClick = useCallback(() => {
     if (hasHeart) {
@@ -97,6 +123,14 @@ const PostDetailContent = () => {
       addHeart();
     }
   }, [hasHeart, addHeart, deleteHeart]);
+
+  const handleCommentsPageChange = useCallback((e, val) => {
+    setCommentsPage(val);
+  }, []);
+
+  const handleUpdateClick = useCallback(() => {
+    navigate(`/${userId}/post/update/${postId}`);
+  }, [userId, postId]);
 
   return (
     <Container>
@@ -133,13 +167,19 @@ const PostDetailContent = () => {
           </RoundedButton>
         </PostInfoBox>
         <PostControlBox>
-          <MainButton>수정</MainButton>
+          <MainButton onClick={handleUpdateClick}>수정</MainButton>
           <MainButton>삭제</MainButton>
         </PostControlBox>
       </PostFooter>
-      <CommentBox />
-      <PaginationBox></PaginationBox>
-      <NewCommentBox />
+      <CommentBox comments={comments} getComments={getComments} />
+      <PaginationBox>
+        <MyPagination
+          count={Math.ceil(comments.totalCount / 10)}
+          page={commentsPage}
+          onChange={handleCommentsPageChange}
+        />
+      </PaginationBox>
+      <NewCommentBox getComments={getComments} />
     </Container>
   );
 };

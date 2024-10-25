@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tinyroom.spring.comment.domain.Comment;
 import com.tinyroom.spring.comment.dto.CommentDto;
+import com.tinyroom.spring.comment.dto.RequestCommentWriteDto;
 import com.tinyroom.spring.comment.dto.ResponseCommentDto;
 import com.tinyroom.spring.comment.dto.ResponseCommentListDto;
 import com.tinyroom.spring.comment.service.CommentService;
@@ -57,7 +59,7 @@ public class CommentController {
 		public Map<String, String> writeComment(
 				@RequestParam(name="post_id") int post_id,
 				@RequestParam(name="parent_id") int parent_id,
-				@RequestParam(name="content") String content
+				@RequestBody RequestCommentWriteDto requestCommentWriteDto
 				){
 			
 		    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -75,8 +77,9 @@ public class CommentController {
 			    Comment comment = Comment.builder()
 			    		.member(member)
 			    		.post(post)
-			    		.content(content)
+			    		.content(requestCommentWriteDto.getContent())
 			    		.date(date)
+			    		.is_active(1)
 			    		.build();
 			    
 			    commentService.addComment(comment);
@@ -87,9 +90,10 @@ public class CommentController {
 		    	   Comment comment = Comment.builder()
 				    		.member(member)
 				    		.post(post)
-				    		.content(content)
+				    		.content(requestCommentWriteDto.getContent())
 				    		.date(date)
 				    		.parent(parent)
+				    		.is_active(1)
 				    		.build();
 		    	   
 		    	   commentService.addComment(comment);

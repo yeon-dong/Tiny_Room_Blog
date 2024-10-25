@@ -1,13 +1,30 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
-  width: 100%;
-`;
-
 export const Container = styled.div`
   width: 100%;
+  min-height: 31px;
   padding: 5px 0;
   border-bottom: 1px solid var(--gray2);
+  display: flex;
+  align-items: flex-start;
+`;
+
+export const IconWrapper = styled.div`
+  flex: 0 0 50px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+export const CommentWrapper = styled.div`
+  flex: 1 0;
+  word-break: break-all;
 `;
 
 export const MarginRightSpan = styled.span`
@@ -31,15 +48,4 @@ export const Content = styled(MarginRightSpan)`
 export const Date = styled(MarginRightSpan)`
   font-size: 13px;
   color: var(--gray5);
-`;
-
-export const ReplyButton = styled.button`
-  height: 20px;
-  padding: 0 15px;
-  border: 1px solid var(--gray2);
-  border-radius: 10px;
-`;
-
-export const Children = styled.div`
-  width: 100%;
 `;

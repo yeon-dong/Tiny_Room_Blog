@@ -5,7 +5,7 @@ export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 20px;
   align-items: center;
   height: 100%;
   overflow-y: auto;
@@ -22,7 +22,7 @@ export const BoardBox = styled.div`
   height: 280px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 10px;
 `;
 
 export const BoardHeader = styled.div`
@@ -53,10 +53,12 @@ export const WriteButton = styled(Link)`
 
 export const BoardContent = styled.div`
   display: flex;
-  flex: 0 0 200px;
-  justify-content: center;
+  width: 100%;
+  flex: 0 0 232px;
+  margin: 0 auto;
   gap: 20px 40px;
   flex-wrap: wrap;
+  justify-content: flex-start;
 `;
 
 export const BoardFooter = styled.div`

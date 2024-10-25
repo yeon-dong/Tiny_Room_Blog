@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import {
   Container,
   Content,
@@ -6,23 +7,33 @@ import {
   ThumbnailWrapper,
   Title,
 } from "./PostPreview.style";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const PostPreview = ({ post }) => {
-  const { thumbnail, title, text_content } = post;
+  const location = useLocation();
+  const userId = location.pathname.split("/")[1];
+  const navigate = useNavigate();
+
+  const { postId, thumbnail, title, textContent } = post;
+
+  const handleClick = useCallback(() => {
+    navigate(`/${userId}/post/${postId}`);
+  }, []);
+
   return (
-    <Container>
+    <Container onClick={handleClick}>
       {thumbnail && (
         <ThumbnailWrapper>
-          <Thumbnail src="/images/room0.png" alt="PostThumbnail" />
+          <Thumbnail
+            src={`http://localhost:8080${thumbnail}`}
+            alt="PostThumbnail"
+          />
         </ThumbnailWrapper>
       )}
 
       <Info>
-        <Title>sdkfjnadskfnaskdjfbkjsdjbfkjsbksadfasdfasdfasdfasdfasdfjf</Title>
-        <Content>
-          dlfjasdfkjabiuefiwybfiywbfiywebfiywbfiywbefiywbefyiwefbib
-          sjadnfkjsandfkjnsdfjknskjnfksjasdfsadfasdfsadfkhjsdbfjhsf
-        </Content>
+        <Title>{title}</Title>
+        <Content>{textContent}</Content>
       </Info>
     </Container>
   );

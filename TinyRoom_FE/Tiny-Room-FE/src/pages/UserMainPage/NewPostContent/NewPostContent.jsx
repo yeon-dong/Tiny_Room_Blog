@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Dropdown from "../../../components/Dropdown/Dropdown";
 import MainButton from "../../../components/MainButton/MainButton";
 import MyEditor from "../../../components/MyEditor/MyEditor";
@@ -20,7 +20,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const categoryToIdx = {
-  "주방/가전제품": 0,
+  주방가전제품: 0,
   "홈 인테리어": 1,
   실내가구: 2,
   전자제품: 3,
@@ -30,8 +30,9 @@ const NewPostContent = () => {
   const location = useLocation();
   const isUpdate = location.pathname.split("/").length === 5;
   const postId = isUpdate ? location.pathname.split("/")[4] : -1;
+  const navigate = useNavigate();
 
-  const at = localStorage.getItem("at");
+  const at = localStorage.getItem("token");
 
   const editorRef = useRef(null);
 
@@ -71,6 +72,10 @@ const NewPostContent = () => {
 
   const handleTitleChange = useCallback((e) => {
     setTitle(e.target.value);
+  }, []);
+
+  const handleContentChange = useCallback((value) => {
+    setContent(value);
   }, []);
 
   const getThumbnail = useCallback(() => {
@@ -133,10 +138,14 @@ const NewPostContent = () => {
     }
   }, [categoryIdx, date, title, content]);
 
+  const handleBackClick = useCallback(() => {
+    navigate(-1);
+  }, []);
+
   return (
     <Container>
       <Header>
-        <BackButton>
+        <BackButton onClick={handleBackClick}>
           <img src="/images/arrow_back.svg" alt="BackButton" />
         </BackButton>
         홈 인테리어
@@ -169,9 +178,7 @@ const NewPostContent = () => {
         <MyEditor
           value={content}
           ref={editorRef}
-          onChange={(a, b, c, e) => {
-            console.log(e.getContents());
-          }}
+          onChange={handleContentChange}
         />
       </EditorWrapper>
       <ButtonBox>

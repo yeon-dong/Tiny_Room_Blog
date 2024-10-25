@@ -212,7 +212,6 @@ public class MemberController {
 	// 회원정보 수정 기능(form 형태로 데이터를 받아온다는 가정에서 @RequestParam으로 인자 받아옴)
 	@PutMapping("/member/modify")
 	public ResponseEntity<?> modifyMemberInfo(
-				@RequestParam("name") String name,
 				@RequestParam("nickname") String nickname,
 				@RequestParam("description") String description,
 				@RequestParam("blogTheme") int blog_theme,
@@ -222,50 +221,17 @@ public class MemberController {
 				@RequestParam("furniture3") int furniture3,
 				@RequestParam("furniture4") int furniture4,
 				@RequestParam("characterId") int characterId,
-				@RequestParam(value="profile_img", required = false) MultipartFile profile_img
+				@RequestParam("profileImg") String profileImg
 				) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String username = auth.getName(); // username 추출
 			
-			String imageName;
-			   
-		   if(profile_img == null) {
-			   imageName = "Group 46.svg";
-		   } else {
-			   String[] temp = profile_img.getOriginalFilename().split(" .");
-			   String extension = temp[temp.length - 1];
-			   LocalDateTime current = LocalDateTime.now();
-			   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-			   imageName = current.format(formatter) + "." + extension;
-			   
-		       log.info("upload file : " + imageName);
-		      
-		       String filePath;
-			    String os = System.getProperty("os.name").toLowerCase();
-			    if(os.contains("win")) {
-			    	filePath = FOLDER_PATH + imageName;
-			    } else {
-			    	filePath = System.getProperty("user.dir") + "/files/image/" + imageName;
-			  }
-		      
-		       try {
-		    	   profile_img.transferTo(new File(filePath));
-		       } catch (IllegalStateException e) {
-		    	   e.printStackTrace();
-		       } catch (IOException e) {
-		    	   e.printStackTrace();
-		       }
-		   }
-			   
-			   log.info("upload file : " + imageName);
-			
 			// name, nickname, description은 Member 엔티티의 정보를 수정하는 것이므로 여기에 넣을 것
 			MemberDto member = service.getMember(username);
 			
-			member.setName(name);
 			member.setNickname(nickname);
 			member.setDescription(description);
-			member.setProfile_img("/image/" + imageName);
+			member.setProfile_img(profileImg);
 			
 			
 			// blog_theme는 Blog 엔티티의 정보
