@@ -8,21 +8,21 @@ import {
 } from "./PostPreview.style";
 
 const PostPreview = ({ post }) => {
-  const { thumbnail, title, text_content } = post;
+  const { thumbnail, title, textContent } = post;
   return (
     <Container>
       {thumbnail && (
         <ThumbnailWrapper>
-          <Thumbnail src="/images/room0.png" alt="PostThumbnail" />
+          <Thumbnail
+            src={`http://localhost:8080${thumbnail}`}
+            alt="PostThumbnail"
+          />
         </ThumbnailWrapper>
       )}
 
       <Info>
-        <Title>sdkfjnadskfnaskdjfbkjsdjbfkjsbksadfasdfasdfasdfasdfasdfjf</Title>
-        <Content>
-          dlfjasdfkjabiuefiwybfiywbfiywebfiywbfiywbefiywbefyiwefbib
-          sjadnfkjsandfkjnsdfjknskjnfksjasdfsadfasdfsadfkhjsdbfjhsf
-        </Content>
+        <Title>{title}</Title>
+        <Content>{textContent}</Content>
       </Info>
     </Container>
   );

@@ -53,10 +53,12 @@ export const WriteButton = styled(Link)`
 
 export const BoardContent = styled.div`
   display: flex;
-  flex: 0 0 200px;
-  justify-content: center;
+  width: 100%;
+  flex: 0 0 232px;
+  margin: 0 auto;
   gap: 20px 40px;
   flex-wrap: wrap;
+  justify-content: flex-start;
 `;
 
 export const BoardFooter = styled.div`

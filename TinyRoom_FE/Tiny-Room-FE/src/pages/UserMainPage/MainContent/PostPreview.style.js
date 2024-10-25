@@ -2,9 +2,16 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  flex: 0 0 360px;
-  height: 86px;
+  flex: 0 0 380px;
+  height: 106px;
   gap: 14px;
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 10px;
+
+  &:hover {
+    background-color: #eeeeee;
+  }
 `;
 
 export const ThumbnailWrapper = styled.div`
