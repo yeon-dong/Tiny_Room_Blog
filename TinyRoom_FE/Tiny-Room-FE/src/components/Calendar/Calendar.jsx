@@ -28,7 +28,7 @@ const months = [
   "DECEMBER",
 ];
 
-const Calendar = () => {
+const Calendar = ({ userId }) => {
   const [currentDate, setCurrentDate] = useState(
     dayjs(dayjs().year() + "-" + (dayjs().month() + 1))
   );
@@ -71,119 +71,13 @@ const Calendar = () => {
   }, [currentDate]);
 
   const getPostsByDate = useCallback(async (date) => {
-    // const response = await axios.get(`http://localhost:8080/posts/calendar?year=${date.year()}&month=${date.month()+1}`);
+    const response = await axios.get(
+      `http://localhost:8080/posts/calendar?year=${date.year()}&month=${
+        date.month() + 1
+      }&user_id=${userId}`
+    );
 
-    // const posts = response.data;
-    const posts = [
-      {
-        post_id: 12,
-        category_id: 1,
-        day: 24,
-        title: "write_title",
-        content: "write_test-수정중2222",
-        thumbnail: null,
-        text_content: null,
-      },
-      {
-        post_id: 13,
-        category_id: 1,
-        day: 23,
-        title: "write_title",
-        content: "write_test",
-        thumbnail: null,
-        text_content: null,
-      },
-      {
-        post_id: 17,
-        category_id: 1,
-        day: 23,
-        title: "write_title",
-        content: "write_test",
-        thumbnail: null,
-        text_content: null,
-      },
-      {
-        post_id: 18,
-        category_id: 1,
-        day: 23,
-        title: "write_title",
-        content: "write_test",
-        thumbnail: null,
-        text_content: null,
-      },
-      {
-        post_id: 19,
-        category_id: 1,
-        day: 23,
-        title: "write_title",
-        content: "write_test",
-        thumbnail: null,
-        text_content: null,
-      },
-      {
-        post_id: 20,
-        category_id: 1,
-        day: 23,
-        title: "write_title",
-        content: "write_test",
-        thumbnail: null,
-        text_content: null,
-      },
-      {
-        post_id: 21,
-        category_id: 1,
-        day: 23,
-        title: "write_title",
-        content: "write_test",
-        thumbnail: null,
-        text_content: null,
-      },
-      {
-        post_id: 22,
-        category_id: 1,
-        day: 24,
-        title: "Sample Post Title222",
-        content: "This is the content of the post.",
-        thumbnail: "https://example.com/thumbnail.jpg",
-        text_content: "This is the text version of the content.",
-      },
-      {
-        post_id: 23,
-        category_id: 1,
-        day: 24,
-        title: "write_title",
-        content: "write_test",
-        thumbnail: "thumbnail",
-        text_content: "text_content",
-      },
-      {
-        post_id: 24,
-        category_id: 1,
-        day: 24,
-        title: "write_title",
-        content: "write_test",
-        thumbnail: "thumbnail",
-        text_content: "text_content",
-      },
-      {
-        post_id: 25,
-        category_id: 1,
-        day: 24,
-        title: "write_title",
-        content: "write_test",
-        thumbnail: "thumbnail",
-        text_content: "text_content",
-      },
-      {
-        post_id: 26,
-        category_id: 1,
-        day: 24,
-        title: "Sample Post Title",
-        content: "This is the content of the post.",
-        thumbnail: "https://example.com/thumbnail.jpg",
-        text_content: "This is the text version of the content.",
-      },
-    ];
+    const posts = response.data;
 
     const lastDay = date.daysInMonth();
     const newPostsByDay = Array.from({ length: lastDay }, () => []);
