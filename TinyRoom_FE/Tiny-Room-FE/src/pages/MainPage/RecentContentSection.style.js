@@ -31,10 +31,12 @@ export const PostCoverImage = styled.img`
   height: 100px;
   object-fit: cover;
   border-radius: 8px; /* 살짝 둥근 모서리 */
+  cursor: pointer;
 `;
 
 // 게시글 내용
 export const PostContent = styled.div`
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   margin-left: 30px;
@@ -104,4 +106,12 @@ export const PostFooterItem = styled.span`
 
 export const Icon = styled.span`
   margin-right: 5px;
+`;
+
+export const PagenationContainer = styled.div`
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
 `;

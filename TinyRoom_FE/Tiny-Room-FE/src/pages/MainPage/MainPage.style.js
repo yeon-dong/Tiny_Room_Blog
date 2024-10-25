@@ -107,7 +107,7 @@ export const MenuItem = styled.span`
   font-size: 18px;
   font-weight: 600;
   cursor: pointer;
-
+  color: ${(props) => (props.$isClicked ? "#ff6781" : "black")};
   &:hover {
     color: #ff6781; /* 호버 시 색상 변경 */
   }
