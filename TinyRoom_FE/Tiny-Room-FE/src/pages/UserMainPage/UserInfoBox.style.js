@@ -13,6 +13,11 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 60px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0; /* 세로 스크롤 바의 너비를 0으로 설정 */
+    background: transparent; /* 배경을 투명하게 설정 */
+  }
 `;
 
 export const ProfileBox = styled.div`
