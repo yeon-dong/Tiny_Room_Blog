@@ -5,7 +5,7 @@ export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 20px;
   align-items: center;
   height: 100%;
   overflow-y: auto;
@@ -22,7 +22,7 @@ export const BoardBox = styled.div`
   height: 280px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 10px;
 `;
 
 export const BoardHeader = styled.div`
