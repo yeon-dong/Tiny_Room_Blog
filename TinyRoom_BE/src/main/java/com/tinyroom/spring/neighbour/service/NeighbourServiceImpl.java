@@ -1,5 +1,6 @@
 package com.tinyroom.spring.neighbour.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,7 @@ public class NeighbourServiceImpl implements NeighbourService{
 	public List<NeighbourPageDto2> getNeighbourList2(Member member, int page) {
 		Pageable pageable = PageRequest.of(page, 3, Sort.by(Sort.Direction.DESC, "neighbour_id"));
 		org.springframework.data.domain.Page<NeighbourPageDto2> neighbourPage = neighbourDao.findByConditions2(member, pageable);
+		
 		return neighbourPage.getContent();
 	}
 
