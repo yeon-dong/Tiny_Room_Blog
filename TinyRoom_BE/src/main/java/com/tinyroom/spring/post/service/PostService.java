@@ -15,6 +15,7 @@ import com.tinyroom.spring.post.domain.Post;
 import com.tinyroom.spring.post.dto.PageRequestDto;
 import com.tinyroom.spring.post.dto.PageResponseDto;
 import com.tinyroom.spring.post.dto.PostDto;
+import com.tinyroom.spring.post.dto.ResponsePostMainDto;
 import com.tinyroom.spring.post.dto.ResponsePostRecommendDto;
 
 
@@ -63,5 +64,7 @@ public interface PostService {
 	public void modifyForDelete(PostDto postDto);
     public Optional<Post> findById(int post_id);
 	public List<Post> findTopByOrderByHeartCountDesc(PageRequest of);
+	public List<ResponsePostMainDto> getPosts(int category, int page);
+	public int countPosts(int category);
 	
 }
