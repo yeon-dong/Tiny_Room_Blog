@@ -9,6 +9,7 @@ import {
 import NeighbourItem from "./NeighbourItem";
 import axios from "axios";
 import MainButton from "../../../components/MainButton/MainButton";
+import NewNeighbourModal from "./NewNeighbourModal";
 
 const NeighbourContent = () => {
   const [neighbours, setNeighbours] = useState({
@@ -16,6 +17,7 @@ const NeighbourContent = () => {
     data: [],
   });
   const [page, setPage] = useState(1);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const getNeighbours = useCallback(async (p) => {
     const response = await axios.get(
@@ -36,6 +38,15 @@ const NeighbourContent = () => {
     setPage(newPage);
   }, []);
 
+  const openModal = useCallback(() => {
+    setModalOpen(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setModalOpen(false);
+    getNeighbours(page);
+  }, [page]);
+
   return (
     <Container>
       <NeighbourList>
@@ -50,9 +61,10 @@ const NeighbourContent = () => {
           onChange={handlePageChange}
         />
         <ButtonWrapper>
-          <MainButton>받은 신청</MainButton>
+          <MainButton onClick={() => openModal()}>받은 신청</MainButton>
         </ButtonWrapper>
       </PaginationWrapper>
+      {isModalOpen && <NewNeighbourModal closeModal={closeModal} />}
     </Container>
   );
 };
