@@ -61,7 +61,7 @@ public class NeighbourServiceImpl implements NeighbourService{
 
 	@Override
 	public List<NeighbourPageDto> getSendNeighbourList(Member member, int page) {
-		Pageable pageable = PageRequest.of(page, 3, Sort.by(Sort.Direction.DESC, "neighbour_id"));
+		Pageable pageable = PageRequest.of(page, 100, Sort.by(Sort.Direction.DESC, "neighbour_id"));
 		org.springframework.data.domain.Page<NeighbourPageDto> neighbourPage = neighbourDao.findByConditions(member, pageable);
 		return neighbourPage.getContent();
 	}
@@ -73,7 +73,7 @@ public class NeighbourServiceImpl implements NeighbourService{
 
 	@Override
 	public List<NeighbourPageDto2> getNeighbourList2(Member member, int page) {
-		Pageable pageable = PageRequest.of(page, 100, Sort.by(Sort.Direction.DESC, "neighbour_id"));
+		Pageable pageable = PageRequest.of(page, 3, Sort.by(Sort.Direction.DESC, "neighbour_id"));
 		org.springframework.data.domain.Page<NeighbourPageDto2> neighbourPage = neighbourDao.findByConditions2(member, pageable);
 		
 		return neighbourPage.getContent();
