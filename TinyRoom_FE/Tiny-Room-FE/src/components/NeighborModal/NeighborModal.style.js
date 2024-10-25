@@ -10,7 +10,7 @@ export const BackgroundContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
+  z-index: 21;
 `;
 
 export const ModalContainer = styled.div`
@@ -18,7 +18,7 @@ export const ModalContainer = styled.div`
   height: 683px; /* 모달 높이 */
   background-color: white; /* 모달 배경색 */
   border-radius: 15px; /* 모서리 둥글게 */
-  z-index: 2;
+  z-index: 22;
   display: flex;
   flex-direction: column;
   align-items: center;
