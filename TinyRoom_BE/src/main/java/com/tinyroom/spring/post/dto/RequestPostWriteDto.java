@@ -1,6 +1,5 @@
 package com.tinyroom.spring.post.dto;
 
-import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
