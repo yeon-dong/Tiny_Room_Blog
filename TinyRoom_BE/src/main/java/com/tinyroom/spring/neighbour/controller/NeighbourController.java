@@ -25,6 +25,7 @@ import com.tinyroom.spring.member.service.MemberService;
 import com.tinyroom.spring.neighbour.domain.Neighbour;
 import com.tinyroom.spring.neighbour.dto.NeighbourDto;
 import com.tinyroom.spring.neighbour.dto.NeighbourPageDto;
+import com.tinyroom.spring.neighbour.dto.NeighbourPageDto2;
 import com.tinyroom.spring.neighbour.dto.RequestSendNeighbourDto;
 import com.tinyroom.spring.neighbour.dto.ResponseNeighbourDto;
 import com.tinyroom.spring.neighbour.service.NeighbourService;
@@ -55,7 +56,7 @@ public class NeighbourController {
 	    MemberDto from_memberDto = memberService.getMember(email);
 	    Member from_member = memberService.dtoToEntity(from_memberDto);
 	    
-	    MemberDto to_memberDto = memberService.getMember(requestSendNeighbourDto.getTo_member_email());
+	    MemberDto to_memberDto = memberService.getMemberById(requestSendNeighbourDto.getTo_member_id());
 	    Member to_member = memberService.dtoToEntity(to_memberDto);
 	    
 	    NeighbourDto neighbourDto = NeighbourDto.builder()
@@ -112,35 +113,45 @@ public class NeighbourController {
 	}
 	
 	@GetMapping("/neighbourList")
-	public List<ResponseNeighbourDto> NeighbourList(){
+	public Map NeighbourList(
+			@RequestParam(required = false, defaultValue = "0", value = "page") int page
+			){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    String email = auth.getName();
 	    MemberDto memberDto = memberService.getMember(email);
 	    Member member = memberService.dtoToEntity(memberDto);
 	    
-	    List <Neighbour> neighbourList = neighbourService.getNeighbourList(member);
-	    List<ResponseNeighbourDto> neighbourResponseList = new ArrayList<>();
+	    Map result = new HashMap();
 	    
-        for (int i=0; i<neighbourList.size(); i++) {
-        	if(member.getMember_id()== neighbourList.get(i).getFromMember().getMember_id()){
-            	BlogDto blogDto = blogService.getBlog(neighbourList.get(i).getToMember());
-            	ResponseNeighbourDto dto = ResponseNeighbourDto.builder()
-            	.blog_title(blogDto.getBlog_title())
-            	.neighbour(neighbourList.get(i).getToMember())
-            	.message(neighbourList.get(i).getMessage())
-            	.build();
-            	neighbourResponseList.add(dto);
-        	}else {
-        		BlogDto blogDto = blogService.getBlog(neighbourList.get(i).getFromMember());
-            	ResponseNeighbourDto dto = ResponseNeighbourDto.builder()
-            	.blog_title(blogDto.getBlog_title())
-            	.neighbour(neighbourList.get(i).getFromMember())
-            	.message(neighbourList.get(i).getMessage())
-            	.build();
-            	neighbourResponseList.add(dto);
-        	}
-        }      
+	    List <NeighbourPageDto2> neighbourList = neighbourService.getNeighbourList2(member, page);
+	    int totalCount = neighbourService.countNeighbour(member);
+	    
+//	    List<ResponseNeighbourDto> neighbourResponseList = new ArrayList<>();
+	    
+//        for (int i=0; i<neighbourList.size(); i++) {
+//        	if(member.getMember_id()== neighbourList.get(i).getFromMember().getMember_id()){
+//            	BlogDto blogDto = blogService.getBlog(neighbourList.get(i).getToMember());
+//            	ResponseNeighbourDto dto = ResponseNeighbourDto.builder()
+//            	.blog_title(blogDto.getBlog_title())
+//            	.neighbour(neighbourList.get(i).getToMember())
+//            	.message(neighbourList.get(i).getMessage())
+//            	.build();
+//            	neighbourResponseList.add(dto);
+//        	}else {
+//        		BlogDto blogDto = blogService.getBlog(neighbourList.get(i).getFromMember());
+//            	ResponseNeighbourDto dto = ResponseNeighbourDto.builder()
+//            	.blog_title(blogDto.getBlog_title())
+//            	.neighbour(neighbourList.get(i).getFromMember())
+//            	.message(neighbourList.get(i).getMessage())
+//            	.build();
+//            	neighbourResponseList.add(dto);
+//        	}
+//        }      
         
-        return neighbourResponseList ;
+//        return neighbourResponseList ;
+	    result.put("totalCount", totalCount);
+		result.put("data", neighbourList);
+		
+		return result;
 	}
 }
