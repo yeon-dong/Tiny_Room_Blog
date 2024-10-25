@@ -126,7 +126,7 @@ const PostDetailContent = () => {
     }
   }, [hasHeart, addHeart, deleteHeart]);
 
-  const handleCommentsPageChange = useCallback((val) => {
+  const handleCommentsPageChange = useCallback((e, val) => {
     setCommentsPage(val);
   }, []);
 

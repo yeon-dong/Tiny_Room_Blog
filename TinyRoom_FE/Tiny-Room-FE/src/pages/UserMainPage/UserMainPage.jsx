@@ -35,11 +35,11 @@ function UserMainPage() {
     const response = await axios.get(`http://localhost:8080/blog/${userId}`);
 
     setBlogData(response.data);
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     getBlogData();
-  }, []);
+  }, [userId]);
 
   const handleBlogTitleClick = useCallback(() => {
     navigate(`/${userId}`);
