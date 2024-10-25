@@ -8,7 +8,12 @@ export const Container = styled.div`
   gap: 20px;
   align-items: center;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: scroll; /* 스크롤 가능하도록 설정 */
+  /* 스크롤 바 숨기기 */
+  &::-webkit-scrollbar {
+    width: 0; /* 세로 스크롤 바의 너비를 0으로 설정 */
+    background: transparent; /* 배경을 투명하게 설정 */
+  }
 `;
 
 export const UserTinyRoom = styled.img`
@@ -42,7 +47,7 @@ export const CategoryList = styled.div`
 export const CategoryItem = styled.button`
   height: 100%;
   font-size: 18px;
-  ${(p) => (p.selected === 1 ? "font-weight: bold;" : "")}
+  ${(p) => (p.selected === 1 ? "font-weight: bold; color: #FF8CAA;" : "")}
 `;
 
 export const WriteButton = styled(Link)`

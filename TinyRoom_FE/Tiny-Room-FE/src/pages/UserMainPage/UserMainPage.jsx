@@ -16,7 +16,7 @@ import {
   LogoutButton,
 } from "./UserMainPage.style";
 import UserInfoBox from "./UserInfoBox";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import useStore from "../../stores/store";
 
@@ -24,10 +24,11 @@ function UserMainPage() {
   const location = useLocation();
   const userId = location.pathname.split("/")[1];
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const token = localStorage.getItem("token");
 
-  const { resetUserInfo } = useStore();
+  const { userInfo, resetUserInfo } = useStore();
 
   const [blogData, setBlogData] = useState(null);
 
@@ -77,10 +78,16 @@ function UserMainPage() {
               <UserBlogHeaderContainer>
                 <MenuBox>
                   <UserBlogHeaderLink to="/">메인페이지</UserBlogHeaderLink>
-                  <UserBlogHeaderTextBetweenLine src="/images/Line 2.svg" />
-                  <UserBlogHeaderLink to={`/${userId}/neighbour`}>
-                    이웃목록
-                  </UserBlogHeaderLink>
+                  {userInfo && id == userInfo.id ? (
+                    <>
+                      <UserBlogHeaderTextBetweenLine src="/images/Line 2.svg" />
+                      <UserBlogHeaderLink to={`/${userId}/neighbour`}>
+                        이웃목록
+                      </UserBlogHeaderLink>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </MenuBox>
                 <LogoutButton onClick={handleLogoutClick}>
                   {token === null ? "로그인" : "로그아웃"}

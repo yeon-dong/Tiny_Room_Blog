@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public class Re_NeighbourPageDto {
 	private String blog_name;
+	private int neighbour_id;
 	private int member_id;
 	private String nickname;
 	private String description;

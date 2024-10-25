@@ -28,6 +28,7 @@ export const LoginBox = styled.div`
 `;
 
 export const LoginTextContainer = styled.div`
+  cursor: pointer;
   height: 124px;
   width: 391px;
   background-image: url("/images/tinyroomtext.svg");

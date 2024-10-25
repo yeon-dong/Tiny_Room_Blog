@@ -132,10 +132,14 @@ const PostDetailContent = () => {
     navigate(`/${userId}/post/update/${postId}`);
   }, [userId, postId]);
 
+  const handleGoToBack = useCallback(() => {
+    navigate(`/${userId}`);
+  }, [userId, postId]);
+
   return (
     <Container>
       <Header>
-        <BackButton>
+        <BackButton onClick={() => handleGoToBack()}>
           <img src="/images/arrow_back.svg" alt="BackButton" />
         </BackButton>
         {post?.category.category_name}

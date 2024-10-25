@@ -76,6 +76,7 @@ export const BubbleImg = styled.img`
   width: 183px;
   height: 84px;
   z-index: 11;
+  pointer-events: none; /* hover를 무시하도록 설정 */
 `;
 
 export const CharacterImg = styled.img`
@@ -85,4 +86,5 @@ export const CharacterImg = styled.img`
   width: 120px;
   height: 120px;
   object-fit: cover;
+  z-index: 20;
 `;
