@@ -2,6 +2,7 @@ package com.tinyroom.spring.comment.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import com.tinyroom.spring.comment.domain.Comment;
 import com.tinyroom.spring.comment.dto.CommentDto;
 import com.tinyroom.spring.comment.dto.RequestCommentWriteDto;
 import com.tinyroom.spring.comment.dto.ResponseCommentDto;
+import com.tinyroom.spring.comment.dto.ResponseCommentListDto;
 import com.tinyroom.spring.comment.service.CommentService;
 import com.tinyroom.spring.member.domain.Member;
 import com.tinyroom.spring.member.dto.MemberDto;
@@ -131,5 +133,23 @@ public class CommentController {
 			
 			return Map.of("result", "success");
 		}
-
+		
+		@GetMapping("/view")
+		public Map commentsList(
+				@RequestParam("post_id") int postId,
+				@RequestParam("page") int page
+				) {
+			
+			log.info("################################## 나오니? ########################################");
+			
+			Map result = new HashMap();
+			
+			int totalCount = commentService.countParent(postId);
+			List<ResponseCommentListDto> commentsList = commentService.getCommentsList(postId, page);
+			
+			result.put("totalCount", totalCount);
+			result.put("comments", commentsList);
+			
+			return result;
+		}
 }

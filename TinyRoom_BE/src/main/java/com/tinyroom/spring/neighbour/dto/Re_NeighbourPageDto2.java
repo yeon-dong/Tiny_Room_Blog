@@ -4,11 +4,13 @@ import com.tinyroom.spring.member.domain.Member;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-//이웃 신청 목록 조회 페이지네이션
+
 @AllArgsConstructor
 @Getter
-public class NeighbourPageDto {
-	  private int neighbourId;
-	  private Member fromMember;
-	  private String message;
+public class Re_NeighbourPageDto2 {
+	private String blog_name;
+	private int member_id;
+	private String nickname;
+	private String description;
+	private String profile_img;
 }
