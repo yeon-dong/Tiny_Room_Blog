@@ -1,4 +1,4 @@
-import { useLocation, useOutletContext } from "react-router-dom";
+import { useLocation, useOutletContext, useParams } from "react-router-dom";
 import {
   BoardBox,
   BoardContent,
@@ -19,9 +19,10 @@ import MyPagination from "../../../components/Pagination/MyPagination";
 const MainContent = () => {
   const location = useLocation();
   const userId = location.pathname.split("/")[1];
+  const { id } = useParams();
 
-  const at = localStorage.getItem("at");
-  const { userId: loginUserId } = useStore();
+  const token = localStorage.getItem("token");
+  const { userInfo } = useStore();
 
   const blogData = useOutletContext();
 
@@ -35,6 +36,7 @@ const MainContent = () => {
 
   const handleFurnitureClick = useCallback((categoryIdx) => {
     setSelectedCategoryIdx(categoryIdx);
+    setPage(1);
   }, []);
 
   const getPosts = useCallback(
@@ -101,7 +103,7 @@ const MainContent = () => {
               전자제품
             </CategoryItem>
           </CategoryList>
-          {at !== null && String(loginUserId) === userId && (
+          {token != null && userInfo.id == id && (
             <WriteButton to={`/${userId}/post/new`}>글쓰기</WriteButton>
           )}
         </BoardHeader>
