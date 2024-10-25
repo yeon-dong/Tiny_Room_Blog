@@ -38,6 +38,11 @@ function UserMainPage() {
     setBlogData(response.data);
   }, [userId]);
 
+  const props = {
+    blogData,
+    getBlogData,
+  };
+
   useEffect(() => {
     getBlogData();
   }, [userId]);
@@ -94,7 +99,7 @@ function UserMainPage() {
                 </LogoutButton>
               </UserBlogHeaderContainer>
               <UserBlogBox>
-                <Outlet context={blogData} />
+                <Outlet context={props} />
               </UserBlogBox>
             </UserBlogContainer>
           </Container>

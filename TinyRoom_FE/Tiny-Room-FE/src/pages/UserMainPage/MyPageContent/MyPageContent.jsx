@@ -32,7 +32,8 @@ const MyPageContent = () => {
   const userId = location.pathname.split("/")[1];
   const navigate = useNavigate();
 
-  const { blog, room, user } = useOutletContext();
+  const { blogData, getBlogData } = useOutletContext();
+  const { blog, room, user } = blogData;
   console.log(blog);
 
   const [profileImg, setProfileImg] = useState(user.profileImg);
@@ -96,7 +97,8 @@ const MyPageContent = () => {
       }
     );
 
-    navigate("/" + userId);
+    getBlogData();
+    // navigate("/" + userId);
   }, [
     nickname,
     description,

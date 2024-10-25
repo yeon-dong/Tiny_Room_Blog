@@ -24,7 +24,7 @@ const MainContent = () => {
   const token = localStorage.getItem("token");
   const { userInfo } = useStore();
 
-  const blogData = useOutletContext();
+  const { blogData } = useOutletContext();
 
   const [selectedCategoryIdx, setSelectedCategoryIdx] = useState(0);
   const [posts, setPosts] = useState({
