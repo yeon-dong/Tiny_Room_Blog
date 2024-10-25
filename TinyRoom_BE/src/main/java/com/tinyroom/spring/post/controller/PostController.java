@@ -265,7 +265,7 @@ public class PostController {
                 .map(post -> ResponseCalendarDto.builder()
                         .post_id(post.getPost_id())
                         .category_id(post.getCategory().getCategory_id())
-                        .day(post.getW_date().getDayOfMonth())
+                        .day(post.getDate().getDayOfMonth())
                         .title(post.getTitle())
                         .content(post.getContent())
                         .thumbnail(post.getThumbnail())

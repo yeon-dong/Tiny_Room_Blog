@@ -8,7 +8,7 @@ import {
   ProfileImageBox,
   UsernameBox,
 } from "./UserInfoBox.style";
-import useStore from "../../stores/store";
+import useStore from "../../stores/store.js";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import NeighborModal from "../../components/NeighborModal/NeighborModal";

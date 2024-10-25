@@ -53,7 +53,7 @@ const PostDetailContent = () => {
     );
 
     setPostData(response.data);
-  }, []);
+  }, [postId]);
 
   const getComments = useCallback(async () => {
     const response = await axios.get(
@@ -90,7 +90,7 @@ const PostDetailContent = () => {
       getPostData();
       checkHeart();
     }
-  }, []);
+  }, [postId]);
 
   const deleteHeart = useCallback(async () => {
     const response = await axios.delete(
@@ -104,7 +104,7 @@ const PostDetailContent = () => {
       getPostData();
       checkHeart();
     }
-  }, []);
+  }, [postId]);
 
   useEffect(() => {
     getPostData();
@@ -112,7 +112,7 @@ const PostDetailContent = () => {
     if (localStorage.getItem("token") !== null) {
       checkHeart();
     }
-  }, []);
+  }, [location.pathname, getPostData, checkHeart]);
 
   useEffect(() => {
     getComments();
@@ -124,7 +124,7 @@ const PostDetailContent = () => {
     } else {
       addHeart();
     }
-  }, [hasHeart]);
+  }, [hasHeart, addHeart, deleteHeart]);
 
   const handleCommentsPageChange = useCallback((val) => {
     setCommentsPage(val);
