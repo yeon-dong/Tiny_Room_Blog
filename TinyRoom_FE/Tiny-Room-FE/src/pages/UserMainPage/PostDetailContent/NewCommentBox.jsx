@@ -11,7 +11,7 @@ import useStore from "../../../stores/store";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 
-const NewCommentBox = () => {
+const NewCommentBox = ({ getComments }) => {
   const location = useLocation();
   const postId = location.pathname.split("/")[3];
   const { userInfo } = useStore();
@@ -36,12 +36,13 @@ const NewCommentBox = () => {
     );
 
     // TODO getComments
+    getComments();
   }, [comment]);
 
   return (
     <Container>
       <Editor>
-        <Username>{userInfo.nickname}</Username>
+        <Username>{userInfo?.nickname}</Username>
         <Textarea
           placeholder="블로그가 더 훈훈해지는 댓글 부탁드립니다."
           value={comment}

@@ -31,7 +31,6 @@ const MainContent = () => {
     totalCount: 0,
   });
 
-  console.log(posts);
   const [page, setPage] = useState(1);
 
   const handleFurnitureClick = useCallback((categoryIdx) => {

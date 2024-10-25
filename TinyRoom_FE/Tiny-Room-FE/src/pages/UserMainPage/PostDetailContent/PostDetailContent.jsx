@@ -43,7 +43,7 @@ const PostDetailContent = () => {
   }, [postData]);
   const [comments, setComments] = useState({
     totalCount: 0,
-    data: [],
+    comments: [],
   });
   const [commentsPage, setCommentsPage] = useState(1);
 
@@ -55,69 +55,15 @@ const PostDetailContent = () => {
     setPostData(response.data);
   }, []);
 
-  const getComments = useCallback(async (page) => {
-    // const response = await axios.get(`http://localhost:8080/comments/view?post_id=${postId}&page=${page}`);
+  const getComments = useCallback(async () => {
+    const response = await axios.get(
+      `http://localhost:8080/comments/view?post_id=${postId}&page=${
+        commentsPage - 1
+      }`
+    );
 
-    // setComments(response.data);
-
-    setComments({
-      totalCount: 7,
-      data: [
-        {
-          comment_id: 2,
-          content: "asdf",
-          post_id: 2,
-          user_id: 2,
-          username: "park",
-          parent_id: -1,
-          date: "2014.10.21 17:07",
-          children: [
-            {
-              comment_id: 2,
-              content:
-                "asdfasdfasdfasdfaksjdfhakjshdfkjahsdkjf@@@@@@@@@@@@@@@@@@@@@@@@@@@@@asdfasdfasdfasdfaksjdfhakjshdfkjahsdkjf@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
-              post_id: 2,
-              user_id: 2,
-              username: "park",
-              parent_id: 2,
-              date: "2014.10.21 17:07",
-            },
-            {
-              comment_id: 2,
-              content:
-                "asdfasdfasdfasdfaksjdfhakjshdfkjahsdkjf@@@@@@@@@@@@@@@@@@@@@@@@@@@@@asdfasdfasdfasdfaksjdfhakjshdfkjahsdkjf@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
-              post_id: 2,
-              user_id: 2,
-              username: "park",
-              parent_id: 2,
-              date: "2014.10.21 17:07",
-            },
-          ],
-        },
-        {
-          comment_id: 3,
-          content: "asdf",
-          post_id: 2,
-          user_id: 2,
-          username: "kim",
-          parent_id: -1,
-          date: "2014.10.21 17:07",
-          children: [
-            {
-              comment_id: 2,
-              content:
-                "asdfasdfasdfasdfaksjdfhakjshdfkjahsdkjf@@@@@@@@@@@@@@@@@@@@@@@@@@@@@asdfasdfasdfasdfaksjdfhakjshdfkjahsdkjf@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
-              post_id: 2,
-              user_id: 2,
-              username: "park",
-              parent_id: 2,
-              date: "2014.10.21 17:07",
-            },
-          ],
-        },
-      ],
-    });
-  }, []);
+    setComments(response.data);
+  }, [commentsPage]);
 
   const checkHeart = useCallback(async () => {
     const response = await axios.get(
@@ -169,7 +115,7 @@ const PostDetailContent = () => {
   }, []);
 
   useEffect(() => {
-    getComments(commentsPage);
+    getComments();
   }, [commentsPage]);
 
   const handleHeartClick = useCallback(() => {
@@ -227,7 +173,7 @@ const PostDetailContent = () => {
           <MainButton>삭제</MainButton>
         </PostControlBox>
       </PostFooter>
-      <CommentBox comments={comments} />
+      <CommentBox comments={comments} getComments={getComments} />
       <PaginationBox>
         <MyPagination
           count={Math.ceil(comments.totalCount / 10)}
@@ -235,7 +181,7 @@ const PostDetailContent = () => {
           onChange={handleCommentsPageChange}
         />
       </PaginationBox>
-      <NewCommentBox />
+      <NewCommentBox getComments={getComments} />
     </Container>
   );
 };
