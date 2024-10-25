@@ -11,11 +11,11 @@ export const Container = styled.button`
   font-size: 14px;
   ${(p) => (p.strong === 1 ? `font-weight: bold; color: white;` : "")}
   gap: 4px;
-  ${(p) =>
-    p.disabled
-      ? `
-  cursor: default;
-  color: black;
-  `
-      : ""}
+
+  &:disabled {
+    background-color: var(--gray1);
+    cursor: default;
+    color: black;
+    border: none;
+  }
 `;

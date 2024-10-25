@@ -1,9 +1,9 @@
 import { Container, Input } from "./RadioInput.style";
 
-const RadioInput = ({ children }) => {
+const RadioInput = ({ checked, onChange, children }) => {
   return (
     <Container>
-      <Input type="radio" />
+      <Input type="radio" checked={checked} onChange={onChange} />
       {children}
     </Container>
   );
