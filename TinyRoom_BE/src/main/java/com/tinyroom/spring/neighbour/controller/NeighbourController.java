@@ -75,11 +75,27 @@ public class NeighbourController {
 	public Map<String, String> approve(
 			@RequestParam(name="neighbour_id")int neighbour_id
 			){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String email = auth.getName();
+	    MemberDto memberDto = memberService.getMember(email);
+	    Member member = memberService.dtoToEntity(memberDto);
+	    
+	    //내가 to 상대방이 from 인경우,,,,,
 		Neighbour neighbour = neighbourService.getNeighbour(neighbour_id);
 		NeighbourDto neighbourDto = neighbourService.entityNeighbourDto(neighbour);
 		neighbourDto.setStatus(1);
 		neighbourService.modifyStatus(neighbourDto);
 		
+		Member neighbour_m = neighbour.getFromMember();
+		
+		Neighbour fromNeighbourTo = Neighbour.builder()
+				.fromMember(member)
+				.toMember(neighbour_m)
+				.status(1)
+				.message(neighbour.getMessage())
+				.build();
+		
+		neighbourService.approveNeighbour(fromNeighbourTo);
 		return Map.of("result", "success");
 	}
 	
@@ -127,28 +143,6 @@ public class NeighbourController {
 	    List <NeighbourPageDto2> neighbourList = neighbourService.getNeighbourList2(member, page);
 	    int totalCount = neighbourService.countNeighbour(member);
 	    
-//	    List<ResponseNeighbourDto> neighbourResponseList = new ArrayList<>();
-	    
-//        for (int i=0; i<neighbourList.size(); i++) {
-//        	if(member.getMember_id()== neighbourList.get(i).getFromMember().getMember_id()){
-//            	BlogDto blogDto = blogService.getBlog(neighbourList.get(i).getToMember());
-//            	ResponseNeighbourDto dto = ResponseNeighbourDto.builder()
-//            	.blog_title(blogDto.getBlog_title())
-//            	.neighbour(neighbourList.get(i).getToMember())
-//            	.message(neighbourList.get(i).getMessage())
-//            	.build();
-//            	neighbourResponseList.add(dto);
-//        	}else {
-//        		BlogDto blogDto = blogService.getBlog(neighbourList.get(i).getFromMember());
-//            	ResponseNeighbourDto dto = ResponseNeighbourDto.builder()
-//            	.blog_title(blogDto.getBlog_title())
-//            	.neighbour(neighbourList.get(i).getFromMember())
-//            	.message(neighbourList.get(i).getMessage())
-//            	.build();
-//            	neighbourResponseList.add(dto);
-//        	}
-//        }      
-        
 //        return neighbourResponseList ;
 	    result.put("totalCount", totalCount);
 		result.put("data", neighbourList);

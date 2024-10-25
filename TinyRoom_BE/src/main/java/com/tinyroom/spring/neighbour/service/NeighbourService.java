@@ -20,6 +20,7 @@ public interface NeighbourService {
 				.from_member(neighbour.getFromMember())
 				.to_member(neighbour.getToMember())
 				.status(neighbour.getStatus())
+				.message(neighbour.getMessage())
 				.build();
 		return neighbourDto;
 	}
@@ -30,6 +31,7 @@ public interface NeighbourService {
 				.fromMember(neighbourDto.getFrom_member())
 				.toMember(neighbourDto.getTo_member())
 				.status(neighbourDto.getStatus())
+				.message(neighbourDto.getMessage())
 				.build();
 		return neighbour;
 	}
@@ -51,4 +53,6 @@ public interface NeighbourService {
 	List<NeighbourPageDto2> getNeighbourList2(Member member, int page);
 
 	int countNeighbour(Member member);
+
+	void approveNeighbour(Neighbour fromNeighbourTo);
 }
