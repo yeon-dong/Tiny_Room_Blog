@@ -25,7 +25,7 @@ function MainPage() {
   const { userInfo } = useStore();
   const [recommendPost, setRecommendPost] = useState({});
   const isLogin = localStorage.getItem("token") ? true : false;
-  console.log(userInfo);
+  const [category, setCategory] = useState(0); // 초기 페이지 설정
 
   // 추천 게시물 가져오기
   useEffect(() => {
@@ -44,7 +44,7 @@ function MainPage() {
   }, []); // 빈 배열을 의존성으로 주어 컴포넌트가 마운트될 때만 실행
 
   const handleSearchClick = () => {
-    alert("검색 버튼이 눌렸습니다!"); // 여기에 실제 검색 동작을 추가할 수 있습니다.
+    alert("😭 검색은 다음 버전에서 만나요! 😭"); // 여기에 실제 검색 동작을 추가할 수 있습니다.
   };
   const handleLoginPage = () => {
     navigate("/login");
@@ -52,6 +52,11 @@ function MainPage() {
   const handleGoToMyRoom = (myId) => {
     navigate(`/${myId}`);
   };
+
+  const handleCategory = (categorySelect) => {
+    setCategory(categorySelect);
+  };
+
   return (
     <Container>
       <MainHeader>
@@ -65,11 +70,36 @@ function MainPage() {
       </MainHeader>
       <HeaderContainer $isLogin={isLogin}>
         <MenuList>
-          <MenuItem>전체보기</MenuItem>
-          <MenuItem>주방가전제품</MenuItem>
-          <MenuItem>홈인테리어</MenuItem>
-          <MenuItem>실내가구</MenuItem>
-          <MenuItem>전자제품</MenuItem>
+          <MenuItem
+            onClick={() => handleCategory(0)}
+            $isClicked={category == 0}
+          >
+            전체보기
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleCategory(1)}
+            $isClicked={category == 1}
+          >
+            주방가전제품
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleCategory(2)}
+            $isClicked={category == 2}
+          >
+            홈인테리어
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleCategory(3)}
+            $isClicked={category == 3}
+          >
+            실내가구
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleCategory(4)}
+            $isClicked={category == 4}
+          >
+            전자제품
+          </MenuItem>
           {localStorage.getItem("token") ? (
             <UserImg
               src={`http://localhost:8080${userInfo.profileImg}`}
@@ -82,7 +112,7 @@ function MainPage() {
       </HeaderContainer>
       <Divider />
       <ContentSection recommendPost={recommendPost} />
-      <RecentContentSection />
+      <RecentContentSection category={category} />
     </Container>
   );
 }
