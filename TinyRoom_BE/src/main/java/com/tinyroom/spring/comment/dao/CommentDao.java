@@ -22,23 +22,23 @@ public  interface  CommentDao extends JpaRepository<Comment, Integer> {
 	int countByPost(Post post);
 
 	@Query("SELECT new com.tinyroom.spring.comment.dto.ResponseCommentListDto( " +
-			"c.comment_id, c.content, c.post.post_id, c.parent.comment_id " +
+			"c.comment_id, c.member.nickname, c.content, c.post.post_id, c.date, c.parent.comment_id " +
 			") " +
 			"FROM Comment c " + 
 			"WHERE c.is_active = 1 " +
 			"AND c.post.post_id = :postId " +
 			"AND c.parent.comment_id IS NULL " +
-			"ORDER BY c.date DESC"
+			"ORDER BY c.date DESC "
 			)
 	Page<ResponseCommentListDto> findParentComments(@Param("postId") int postId, Pageable pageable);
 
 	@Query("SELECT new com.tinyroom.spring.comment.dto.ResponseChildren( " +
-			"c.comment_id, c.content, c.post.post_id, c.parent.comment_id " +
+			"c.comment_id, c.member.nickname, c.content, c.post.post_id, c.date, c.parent.comment_id " +
 			") " +
 			"FROM Comment c " + 
 			"WHERE c.is_active = 1 " +
 			"AND c.parent.comment_id = :commentId " +
-			"ORDER BY c.date DESC"
+			"ORDER BY c.date DESC "
 			)
 	List<ResponseChildren> findChildrenComments(@Param("commentId") int commentId);
 
