@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.querydsl.core.Tuple;
 import com.tinyroom.spring.blog.dto.BlogDto;
+import com.tinyroom.spring.blog.dto.PostPageDto;
 import com.tinyroom.spring.blog.service.BlogService;
 import com.tinyroom.spring.member.controller.MemberController;
 import com.tinyroom.spring.member.dto.MemberDto;
@@ -88,13 +89,15 @@ public class BlogController {
 	public Map getUserPostList(
 			@PathVariable("userId") int id,
 			@RequestParam("category") int category,
-			@RequestParam("page") int page
+			@RequestParam(required = false, defaultValue = "0", value = "page") int page
 			) {
 		log.info("############################### mypage ##############################");
 		Map result = new HashMap();
 		
-		List<Tuple> li = blogService.findPostByUserId(id, page, category);
-		int totalCount = blogService.getPostCount(id, category);
+		List<PostPageDto> li = blogService.getPostList(id, category, page);
+		int totalCount = blogService.countPost(id, category);
+		
+		
 		
 		result.put("totalCount", totalCount);
 		result.put("data", li);

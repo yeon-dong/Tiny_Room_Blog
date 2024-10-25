@@ -2,7 +2,11 @@ package com.tinyroom.spring.blog.service;
 
 import java.util.List;
 
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.querydsl.core.BooleanBuilder;
@@ -11,6 +15,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tinyroom.spring.blog.dao.BlogDao;
 import com.tinyroom.spring.blog.domain.Blog;
 import com.tinyroom.spring.blog.dto.BlogDto;
+import com.tinyroom.spring.blog.dto.PostPageDto;
 import com.tinyroom.spring.member.dao.MemberDao;
 import com.tinyroom.spring.member.domain.Member;
 import com.tinyroom.spring.member.dto.MemberDto;
@@ -18,6 +23,7 @@ import com.tinyroom.spring.post.dto.PostDto;
 
 import jakarta.persistence.EntityManager;
 
+import com.tinyroom.spring.post.dao.PostDao;
 import com.tinyroom.spring.post.domain.Post;
 import com.tinyroom.spring.post.domain.QPost;
 
@@ -30,58 +36,31 @@ public class BlogServiceImpl implements BlogService {
 	private BlogDao blogDao;
 	
 	@Autowired
-	private final JPAQueryFactory queryFactory;
-	
-	public BlogServiceImpl(EntityManager em){
-		this.queryFactory = new JPAQueryFactory(em);
-	}
+	private PostDao postDao;
 	
 	public BlogDto getBlog(Member member) {
 		
-	      Blog blog = blogDao.findByMember(member).orElse(null);// orElse(null): 검색결과 없으면 널 반환
-	      
-	      if (blog == null) {
-	         return null;
-	      }
-	      return blogEntityToDto(blog);
+      Blog blog = blogDao.findByMember(member).orElse(null);// orElse(null): 검색결과 없으면 널 반환
+      
+      if (blog == null) {
+         return null;
+      }
+      return blogEntityToDto(blog);
 	}
 	
 	@Override
-	public List<Tuple> findPostByUserId(int id, int category, int page) {
-		QPost post = QPost.post;
+	public List<PostPageDto> getPostList(int id, int category, int page) {
 		
-		BooleanBuilder builder = new BooleanBuilder();
+		Pageable pageable = PageRequest.of(page, 4, Sort.by(Sort.Direction.DESC, "w_date"));
+		org.springframework.data.domain.Page<PostPageDto> postPage = postDao.findByConditions(1, id, category, pageable);
 		
-		builder.and(QPost.post.member.member_id.eq(id));
-		
-		if(category != 0) builder.and(QPost.post.category.category_id.eq(category));
-		
-		builder.and(QPost.post.is_active.eq(1));
-		
-		return queryFactory.select(post.post_id, post.thumbnail, post.title, post.text_content, post.date, post.w_date)
-				.from(post)
-				.where(builder)
-				.offset(page * 4)	// size : 4로 고정
-				.limit(4)
-				.fetch();
+		return postPage.getContent();
 	}
 	
-	
 	@Override
-	public int getPostCount(int id, int category) {
-		QPost post = QPost.post;
+	public int countPost(int id, int category) {
 		
-		BooleanBuilder builder = new BooleanBuilder();
-		
-		builder.and(post.member.member_id.eq(id));
-		
-		if(category != 0) builder.and(post.category.category_id.eq(category));
-		
-		builder.and(post.is_active.eq(1));
-		
-		return queryFactory.selectFrom(post)
-				.where(builder)
-				.fetch().size();
+		return postDao.countByConditions(1, id, category);
 	}
 	
 	@Override
@@ -107,6 +86,8 @@ public class BlogServiceImpl implements BlogService {
 		
 		return blog;
 	}
+
+
 
 
 

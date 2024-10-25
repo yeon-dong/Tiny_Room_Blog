@@ -90,7 +90,7 @@ export const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center; /* 가로 가운데 정렬 */
-  padding: 20px 0 15px 0;
+  padding: ${(props) => (props.$isLogin ? "20px 0 11px 0" : "20px 0 15px 0")};
   /* margin-left: 236px;
   margin-right: 236px; */
   // background-color: #a3d7d9;
@@ -99,6 +99,7 @@ export const HeaderContainer = styled.div`
 // 메뉴 리스트 컨테이너
 export const MenuList = styled.div`
   display: flex;
+  align-items: center;
   gap: 64px; /* 각 메뉴 항목 사이의 간격 */
 `;
 
@@ -136,4 +137,13 @@ export const Divider = styled.div`
   height: 1px;
   background-color: #e9e9e9; /* 선의 색상 지정 */
   margin: 0 auto; /* 가운데 정렬 */
+`;
+
+// 로그인 후 마이페이지 버튼
+export const UserImg = styled.img`
+  margin-left: 298px;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  cursor: pointer;
 `;

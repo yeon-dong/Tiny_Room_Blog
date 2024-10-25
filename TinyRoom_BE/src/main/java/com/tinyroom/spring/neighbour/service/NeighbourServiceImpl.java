@@ -1,8 +1,11 @@
 package com.tinyroom.spring.neighbour.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tinyroom.spring.member.domain.Member;
 import com.tinyroom.spring.neighbour.dao.NeighbourDao;
 import com.tinyroom.spring.neighbour.domain.Neighbour;
 import com.tinyroom.spring.neighbour.dto.NeighbourDto;
@@ -32,5 +35,20 @@ public class NeighbourServiceImpl implements NeighbourService{
 	public void modifyStatus(NeighbourDto neighbourDto) {
 		Neighbour neighbour = dtoToEntity(neighbourDto);
 		neighbourDao.save(neighbour);
+	}
+
+	@Override
+	public void deleteNeighbour(int neighbour_id) {
+		neighbourDao.deleteById(neighbour_id);
+	}
+
+	@Override
+	public List<Neighbour> getSendNeighbourList(Member member) {
+		return neighbourDao.findByToMember(member);
+	}
+
+	@Override
+	public List<Neighbour> getNeighbourList(Member member) {
+		return neighbourDao.findByMember(member);
 	}
 }

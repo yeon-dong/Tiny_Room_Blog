@@ -46,7 +46,7 @@ function UserMainPage() {
   }, []);
 
   const handleLogoutClick = useCallback(() => {
-    if (token !== null) {
+    if (localStorage.getItem("token") !== null) {
       localStorage.removeItem("token");
       resetUserInfo();
       alert("로그아웃 되었습니다.");

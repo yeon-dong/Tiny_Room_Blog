@@ -45,6 +45,7 @@ import com.tinyroom.spring.post.dto.PageResponseDto;
 import com.tinyroom.spring.post.dto.PostDto;
 import com.tinyroom.spring.post.dto.RequestPostUpdateDto;
 import com.tinyroom.spring.post.dto.RequestPostWriteDto;
+import com.tinyroom.spring.post.dto.ResponseCalendarDto;
 import com.tinyroom.spring.post.dto.ResponsePostDetailDto;
 import com.tinyroom.spring.post.dto.ResponsePostRecommendDto;
 import com.tinyroom.spring.post.service.PostService;
@@ -232,5 +233,30 @@ public class PostController {
 
 	    return Map.of("No", post_id);
 	}	
+	
+	@GetMapping("/calendar")
+	public List<ResponseCalendarDto> calendarList(
+			@RequestParam(name="year") int year,
+			@RequestParam(name="month") int month
+			){
+	    // 로그인된 사용자 이메일 추출
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String email = auth.getName(); // username 추출
+	    MemberDto memberDto = memberService.getMember(email);
+	    
+		List<Post> postList = postService.getCalendarList(year,month, memberDto.getMember_id());
+		return postList.stream()
+                .map(post -> ResponseCalendarDto.builder()
+                        .post_id(post.getPost_id())
+                        .category_id(post.getCategory().getCategory_id())
+                        .day(post.getW_date().getDayOfMonth())
+                        .title(post.getTitle())
+                        .content(post.getContent())
+                        .thumbnail(post.getThumbnail())
+                        .text_content(post.getText_content())
+                        .build())
+                .collect(Collectors.toList());
+	}
+	
 	
 }
