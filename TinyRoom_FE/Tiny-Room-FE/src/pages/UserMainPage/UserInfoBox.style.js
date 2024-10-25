@@ -55,6 +55,15 @@ export const EditButton = styled(Link)`
   text-decoration: underline;
 `;
 
+export const NeighborButton = styled.button`
+  font-size: 14px;
+  font-weight: bold;
+  color: #ff80a0;
+  height: 18px;
+  line-height: 18px;
+  text-decoration: underline;
+`;
+
 export const DescriptionBox = styled.div`
   width: 100%;
   flex: 0 0 112px;
