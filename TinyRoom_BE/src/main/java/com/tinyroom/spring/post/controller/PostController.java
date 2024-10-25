@@ -47,6 +47,7 @@ import com.tinyroom.spring.post.dto.RequestPostUpdateDto;
 import com.tinyroom.spring.post.dto.RequestPostWriteDto;
 import com.tinyroom.spring.post.dto.ResponseCalendarDto;
 import com.tinyroom.spring.post.dto.ResponsePostDetailDto;
+import com.tinyroom.spring.post.dto.ResponsePostMainDto;
 import com.tinyroom.spring.post.dto.ResponsePostRecommendDto;
 import com.tinyroom.spring.post.service.PostService;
 import com.tinyroom.spring.postheart.service.PostheartService;
@@ -233,6 +234,25 @@ public class PostController {
 
 	    return Map.of("No", post_id);
 	}	
+	
+	@GetMapping("/main")
+	public Map getMainPosts(
+			@RequestParam("category") int category,
+			@RequestParam("page") int page
+			) {
+		log.info("################################## 실행 #########################################");
+		
+		Map result = new HashMap();
+
+		int totalCount = postService.countPosts(category);
+		List<ResponsePostMainDto> newPosts = postService.getPosts(category, page);
+		
+		result.put("totalCount", totalCount);
+//		result.put("totalCount", 0);/
+		result.put("newPosts", newPosts);
+		
+		return result;
+	}
 	
 	@GetMapping("/calendar")
 	public List<ResponseCalendarDto> calendarList(
