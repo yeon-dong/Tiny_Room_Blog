@@ -54,7 +54,7 @@ export const NeighborNameText = styled.div`
 export const NeighborBlogNameText = styled.div`
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 `;
 
 export const NeighborNameApplicationText = styled.div`

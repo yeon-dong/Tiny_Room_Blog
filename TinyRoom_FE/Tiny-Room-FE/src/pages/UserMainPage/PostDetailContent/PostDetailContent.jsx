@@ -46,7 +46,7 @@ const PostDetailContent = () => {
     );
 
     setPostData(response.data);
-  }, []);
+  }, [postId]);
 
   const checkHeart = useCallback(async () => {
     // const response = await axios.get(
@@ -57,7 +57,7 @@ const PostDetailContent = () => {
     // );
 
     setHeart(true);
-  }, []);
+  }, [postId]);
 
   const addHeart = useCallback(async () => {
     const response = await axios.get(
@@ -68,7 +68,7 @@ const PostDetailContent = () => {
     );
 
     console.log(response);
-  }, []);
+  }, [postId]);
 
   const deleteHeart = useCallback(async () => {
     const response = await axios.delete(
@@ -79,7 +79,7 @@ const PostDetailContent = () => {
     );
 
     console.log(response);
-  }, []);
+  }, [postId]);
 
   useEffect(() => {
     getPostData();
@@ -88,7 +88,7 @@ const PostDetailContent = () => {
     if (true) {
       checkHeart();
     }
-  }, []);
+  }, [location.pathname, getPostData, checkHeart]);
 
   const handleHeartClick = useCallback(() => {
     if (hasHeart) {
@@ -96,7 +96,7 @@ const PostDetailContent = () => {
     } else {
       addHeart();
     }
-  }, [hasHeart]);
+  }, [hasHeart, addHeart, deleteHeart]);
 
   return (
     <Container>
