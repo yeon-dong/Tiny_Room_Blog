@@ -93,7 +93,6 @@ public class PostController {
             // DTO로 변환
             ResponsePostRecommendDto dto = ResponsePostRecommendDto.builder()
             		.post_id(post.getPost_id())
-            		.post_img(post.getPost_img())
             		.title(post.getTitle())
             		.content(post.getContent())
             		.text_content(post.getText_content())
@@ -149,6 +148,7 @@ public class PostController {
 			@RequestParam(name="post_id") int post_id,
 			@RequestBody RequestPostUpdateDto requestPostUpdateDto
 	        ) {
+		log.info(requestPostUpdateDto);
 	    PostDto postDto = postService.get(post_id);
 	    
 	    CategoryDto categoryDto = categoryService.get(requestPostUpdateDto.getCategory_id());

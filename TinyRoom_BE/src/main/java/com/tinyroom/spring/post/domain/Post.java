@@ -20,6 +20,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -53,11 +54,13 @@ public class Post {
 
 	private LocalDate date;
 	private  LocalDate w_date;	// date -> 포스트 작성일자
+	
 	private String title;	// 포스트 제목
+	@Lob
 	private String content;	// 포스트 내용
-	private String post_img;	// 포스트 첨부 이미지
 	private int is_active; // 활성화 여부(삭제 여부) : 삭제했을 때 db에서 실제로 삭제되는 것이 아니라 상태값으로 관리
 	private String thumbnail;
+	@Lob
 	private String text_content;
 
 	  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
