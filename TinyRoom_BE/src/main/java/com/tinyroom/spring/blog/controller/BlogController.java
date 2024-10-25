@@ -77,6 +77,7 @@ public class BlogController {
 		room.put("furniture2", roomDto.getFurniture2());
 		room.put("furniture3", roomDto.getFurniture3());
 		room.put("furniture4", roomDto.getFurniture4());
+		room.put("character", roomDto.getCharacter());
 		
 		result.put("user", member);
 		result.put("blog", blog);
