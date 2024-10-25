@@ -121,6 +121,7 @@ public class PostServiceImpl implements PostService {
 		int count = postDao.countByConditions(category);
 		
 		return count;
+	}
 
 	public List<Post> getCalendarList(int year, int month, int member_id) {
 		return postDao.findByYearAndMonthAndMember(year, month, member_id);
