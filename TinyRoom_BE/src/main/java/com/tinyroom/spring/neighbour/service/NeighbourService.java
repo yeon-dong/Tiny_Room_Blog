@@ -5,6 +5,7 @@ import java.util.List;
 import com.tinyroom.spring.member.domain.Member;
 import com.tinyroom.spring.neighbour.domain.Neighbour;
 import com.tinyroom.spring.neighbour.dto.NeighbourDto;
+import com.tinyroom.spring.neighbour.dto.NeighbourPageDto;
 import com.tinyroom.spring.post.domain.Post;
 import com.tinyroom.spring.post.dto.PostDto;
 
@@ -41,4 +42,8 @@ public interface NeighbourService {
 	List<Neighbour> getSendNeighbourList(Member member);
 
 	List<Neighbour> getNeighbourList(Member member);
+
+	List<NeighbourPageDto> getSendNeighbourList(Member member, int page);
+
+	int countSendNeighbour(Member member);
 }

@@ -86,6 +86,7 @@ public class MemberServiceImpl implements MemberService{
     		  .furniture2(0)
     		  .furniture3(0)
     		  .furniture4(0)
+    		  .characterId(0)
     		  .build();
       
       // 생성한 엔티티를 dao로 넘겨서 데이터 저장

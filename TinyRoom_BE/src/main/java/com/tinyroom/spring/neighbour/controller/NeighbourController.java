@@ -1,6 +1,7 @@
 package com.tinyroom.spring.neighbour.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ import com.tinyroom.spring.member.dto.MemberDto;
 import com.tinyroom.spring.member.service.MemberService;
 import com.tinyroom.spring.neighbour.domain.Neighbour;
 import com.tinyroom.spring.neighbour.dto.NeighbourDto;
+import com.tinyroom.spring.neighbour.dto.NeighbourPageDto;
 import com.tinyroom.spring.neighbour.dto.RequestSendNeighbourDto;
 import com.tinyroom.spring.neighbour.dto.ResponseNeighbourDto;
 import com.tinyroom.spring.neighbour.service.NeighbourService;
@@ -91,20 +93,22 @@ public class NeighbourController {
 	//이웃 신청 목록 조회
 	//to = me
 	@GetMapping("/sendList")
-	public List<ResponseSendNeighbourDto> sendNeighbourList(){
+	public Map sendNeighbourList(
+			@RequestParam(required = false, defaultValue = "0", value = "page") int page
+			){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    String email = auth.getName();
 	    MemberDto memberDto = memberService.getMember(email);
 	    Member member = memberService.dtoToEntity(memberDto);
 	    
-	   List<Neighbour> neighbourList =  neighbourService.getSendNeighbourList(member);
+	    Map result = new HashMap();
+	    
+	    List<NeighbourPageDto> neighbourList =  neighbourService.getSendNeighbourList(member, page);
+	    int totalCount = neighbourService.countSendNeighbour(member);
 	   
-	   return neighbourList.stream()
-			    .map(neighbour -> new ResponseSendNeighbourDto(
-			        neighbour.getToMember(), // 발신 회원
-			        neighbour.getMessage() // 이웃의 메시지
-			    ))
-			    .collect(Collectors.toList());
+	    result.put("totalCount", totalCount);
+		result.put("data", neighbourList);
+		return result;
 	}
 	
 	@GetMapping("/neighbourList")
