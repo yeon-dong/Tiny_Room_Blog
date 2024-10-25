@@ -237,14 +237,10 @@ public class PostController {
 	@GetMapping("/calendar")
 	public List<ResponseCalendarDto> calendarList(
 			@RequestParam(name="year") int year,
-			@RequestParam(name="month") int month
+			@RequestParam(name="month") int month,
+			@RequestParam(name="user_id") int user_id
 			){
-	    // 로그인된 사용자 이메일 추출
-	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    String email = auth.getName(); // username 추출
-	    MemberDto memberDto = memberService.getMember(email);
-	    
-		List<Post> postList = postService.getCalendarList(year,month, memberDto.getMember_id());
+		List<Post> postList = postService.getCalendarList(year,month, user_id);
 		return postList.stream()
                 .map(post -> ResponseCalendarDto.builder()
                         .post_id(post.getPost_id())
