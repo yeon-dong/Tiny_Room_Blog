@@ -27,11 +27,13 @@ function NeighborModal({ handleModalClose, nickname, blogData }) {
       const response = await axios.post(
         "http://localhost:8080/neighbour/sendApprove",
         {
-          to_member_email: blogData.user.userId,
+          to_member_id: blogData.user.userId,
           message: applicationMessage,
-        }
+        },
+        { headers: { auth_token: localStorage.getItem("token") } }
       );
       alert(`${nickname}님께 이웃을 신청했습니다!`);
+      handleModalClose(); // 신청 후 모달 닫기
     } catch (error) {
       console.error("이웃 신청에 실패했습니다.", error);
       alert("이웃 신청에 실패했습니다. 다시 시도해주세요.");
@@ -73,7 +75,7 @@ function NeighborModal({ handleModalClose, nickname, blogData }) {
         </NeighborBlogBottomText>
         <BtnContainer>
           <CancelBtn onClick={() => handleModalClose()}>취소</CancelBtn>
-          <SuccessBtn>작성 완료</SuccessBtn>
+          <SuccessBtn onClick={() => handleApplication()}>작성 완료</SuccessBtn>
         </BtnContainer>
       </ModalContainer>
     </BackgroundContainer>

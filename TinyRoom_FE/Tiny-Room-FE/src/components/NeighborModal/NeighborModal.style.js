@@ -39,8 +39,8 @@ export const Divider = styled.div`
 `;
 
 export const NeighborImg = styled.img`
-  width: 45px;
-  height: 45px;
+  width: 100px;
+  height: 100px;
   border-radius: 100%;
   margin-bottom: 35px;
 `;
@@ -54,13 +54,13 @@ export const NeighborNameText = styled.div`
 export const NeighborBlogNameText = styled.div`
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 53px;
+  margin-bottom: 30px;
 `;
 
 export const NeighborNameApplicationText = styled.div`
   font-size: 15px;
   font-weight: normal;
-  margin-bottom: 6px;
+  margin-bottom: 20px;
 `;
 
 export const NeighborBlogApplicationMessage = styled.textarea`
@@ -120,5 +120,6 @@ export const CancelBtn = styled.button`
 `;
 
 export const NeighborNickname = styled.span`
-  color: #3b82f6;
+  color: #ff4a79;
+  font-weight: bold;
 `;

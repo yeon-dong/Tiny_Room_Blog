@@ -25,7 +25,6 @@ import jakarta.persistence.EntityManager;
 
 import com.tinyroom.spring.post.dao.PostDao;
 import com.tinyroom.spring.post.domain.Post;
-import com.tinyroom.spring.post.domain.QPost;
 
 @Service
 public class BlogServiceImpl implements BlogService {
