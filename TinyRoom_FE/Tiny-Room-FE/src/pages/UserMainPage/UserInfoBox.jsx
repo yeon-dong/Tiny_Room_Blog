@@ -25,7 +25,7 @@ const UserInfoBox = ({ userId, profileImg, nickname, description }) => {
         </UsernameBox>
         <DescriptionBox>{description}</DescriptionBox>
       </ProfileBox>
-      <Calendar />
+      <Calendar userId={userId} />
     </Container>
   );
 };
