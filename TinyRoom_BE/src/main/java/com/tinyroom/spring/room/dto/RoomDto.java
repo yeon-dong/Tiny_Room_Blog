@@ -20,4 +20,5 @@ public class RoomDto {
 	private int furniture2;
 	private int furniture3;
 	private int furniture4;
+	private int characterId;
 }

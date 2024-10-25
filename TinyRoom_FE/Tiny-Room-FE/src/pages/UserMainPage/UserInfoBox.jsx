@@ -54,7 +54,7 @@ const UserInfoBox = ({
         </UsernameBox>
         <DescriptionBox>{description}</DescriptionBox>
       </ProfileBox>
-      <Calendar />
+      <Calendar userId={userId} />
       {isModalOpen && (
         <NeighborModal
           handleModalClose={handleModalClose}
