@@ -14,6 +14,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RequestSendNeighbourDto {
-	private String to_member_email;
+	private int to_member_id;
 	private String message;
 }

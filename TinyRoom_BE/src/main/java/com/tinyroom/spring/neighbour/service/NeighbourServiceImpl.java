@@ -14,6 +14,7 @@ import com.tinyroom.spring.neighbour.dao.NeighbourDao;
 import com.tinyroom.spring.neighbour.domain.Neighbour;
 import com.tinyroom.spring.neighbour.dto.NeighbourDto;
 import com.tinyroom.spring.neighbour.dto.NeighbourPageDto;
+import com.tinyroom.spring.neighbour.dto.NeighbourPageDto2;
 import com.tinyroom.spring.post.service.PostServiceImpl;
 
 import lombok.extern.log4j.Log4j2;
@@ -59,14 +60,25 @@ public class NeighbourServiceImpl implements NeighbourService{
 
 	@Override
 	public List<NeighbourPageDto> getSendNeighbourList(Member member, int page) {
-		Pageable pageable = PageRequest.of(page, 4, Sort.Direction.DESC, "neighbour_id");
+		Pageable pageable = PageRequest.of(page, 4, Sort.by(Sort.Direction.DESC, "neighbour_id"));
 		org.springframework.data.domain.Page<NeighbourPageDto> neighbourPage = neighbourDao.findByConditions(member, pageable);
-		return null;
+		return neighbourPage.getContent();
 	}
 
 	@Override
 	public int countSendNeighbour(Member member) {
-		// TODO Auto-generated method stub
 		return neighbourDao.countByConditions(member);
+	}
+
+	@Override
+	public List<NeighbourPageDto2> getNeighbourList2(Member member, int page) {
+		Pageable pageable = PageRequest.of(page, 4, Sort.by(Sort.Direction.DESC, "neighbour_id"));
+		org.springframework.data.domain.Page<NeighbourPageDto2> neighbourPage = neighbourDao.findByConditions2(member, pageable);
+		return neighbourPage.getContent();
+	}
+
+	@Override
+	public int countNeighbour(Member member) {
+		return neighbourDao.countByConditions2(member);
 	}
 }
