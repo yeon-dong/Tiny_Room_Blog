@@ -26,6 +26,7 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 import { InteriorImg } from "../MainContent/MyRoom.style";
 import MainButton from "../../../components/MainButton/MainButton";
+import useStore from "../../../stores/store";
 
 const MyPageContent = () => {
   const location = useLocation();
@@ -34,7 +35,8 @@ const MyPageContent = () => {
 
   const { blogData, getBlogData } = useOutletContext();
   const { blog, room, user } = blogData;
-  console.log(blog);
+
+  const { userInfo, setUserInfo } = useStore();
 
   const [profileImg, setProfileImg] = useState(user.profileImg);
   const [nickname, setNickname] = useState(user.nickname);
@@ -97,9 +99,13 @@ const MyPageContent = () => {
       }
     );
 
+    const info = { ...userInfo, nickname, description, profileImg };
+    setUserInfo(info);
+
     getBlogData();
     // navigate("/" + userId);
   }, [
+    userInfo,
     nickname,
     description,
     blogTheme,

@@ -3,6 +3,7 @@ import MyPagination from "../../../components/Pagination/MyPagination";
 import {
   ButtonWrapper,
   Container,
+  NoContent,
   NeighbourList,
   PaginationWrapper,
 } from "./NeighbourContent.style";
@@ -49,21 +50,27 @@ const NeighbourContent = () => {
 
   return (
     <Container>
-      <NeighbourList>
-        {neighbours.data.map((neighbour, i) => (
-          <NeighbourItem key={i} neighbour={neighbour} idx={i} />
-        ))}
-      </NeighbourList>
-      <PaginationWrapper>
-        <MyPagination
-          page={page}
-          count={Math.ceil(neighbours.totalCount / 3)}
-          onChange={handlePageChange}
-        />
-        <ButtonWrapper>
-          <MainButton onClick={() => openModal()}>받은 신청</MainButton>
-        </ButtonWrapper>
-      </PaginationWrapper>
+      {neighbours.data.length === 0 ? (
+        <NoContent>이웃을 만들어 보세요!</NoContent>
+      ) : (
+        <>
+          <NeighbourList>
+            {neighbours.data.map((neighbour, i) => (
+              <NeighbourItem key={i} neighbour={neighbour} idx={i} />
+            ))}
+          </NeighbourList>
+          <PaginationWrapper>
+            <MyPagination
+              page={page}
+              count={Math.ceil(neighbours.totalCount / 3)}
+              onChange={handlePageChange}
+            />
+          </PaginationWrapper>
+        </>
+      )}
+      <ButtonWrapper>
+        <MainButton onClick={() => openModal()}>받은 신청</MainButton>
+      </ButtonWrapper>
       {isModalOpen && <NewNeighbourModal closeModal={closeModal} />}
     </Container>
   );

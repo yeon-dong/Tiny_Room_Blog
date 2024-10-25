@@ -132,6 +132,20 @@ const PostDetailContent = () => {
     navigate(`/${userId}/post/update/${postId}`);
   }, [userId, postId]);
 
+  const handleDeleteClick = useCallback(async () => {
+    const canDelete = confirm("포스트를 삭제하시겠습니까?");
+
+    if (canDelete) {
+      const response = await axios.put(
+        `http://localhost:8080/posts/delete?post_id=${postId}`,
+        undefined,
+        { headers: { auth_token: localStorage.getItem("token") } }
+      );
+
+      if (response.data.result === "success") navigate(`/${userId}`);
+    }
+  }, [userId, postId]);
+
   const handleGoToBack = useCallback(() => {
     navigate(`/${userId}`);
   }, [userId, postId]);
@@ -172,7 +186,7 @@ const PostDetailContent = () => {
         </PostInfoBox>
         <PostControlBox>
           <MainButton onClick={handleUpdateClick}>수정</MainButton>
-          <MainButton>삭제</MainButton>
+          <MainButton onClick={handleDeleteClick}>삭제</MainButton>
         </PostControlBox>
       </PostFooter>
       <CommentBox comments={comments} getComments={getComments} />

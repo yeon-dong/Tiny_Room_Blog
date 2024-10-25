@@ -18,7 +18,7 @@ const PostPreview = ({ post }) => {
 
   const handleClick = useCallback(() => {
     navigate(`/${userId}/post/${postId}`);
-  }, []);
+  }, [userId, postId]);
 
   return (
     <Container onClick={handleClick}>

@@ -7,6 +7,7 @@ import {
   CategoryItem,
   CategoryList,
   Container,
+  NoContent,
   WriteButton,
 } from "./MainContent.style";
 import MyRoom from "./MyRoom";
@@ -108,16 +109,22 @@ const MainContent = () => {
           )}
         </BoardHeader>
         <BoardContent>
-          {posts.data.map((post) => (
-            <PostPreview key={post.post_id} post={post} />
-          ))}
+          {posts.totalCount > 0 ? (
+            posts.data.map((post) => (
+              <PostPreview key={post.post_id} post={post} />
+            ))
+          ) : (
+            <NoContent>글을 작성해 보세요!</NoContent>
+          )}
         </BoardContent>
         <BoardFooter>
-          <MyPagination
-            count={Math.ceil(posts.totalCount / 4)}
-            page={page}
-            onChange={handlePageChange}
-          />
+          {posts.totalCount > 0 && (
+            <MyPagination
+              count={Math.ceil(posts.totalCount / 4)}
+              page={page}
+              onChange={handlePageChange}
+            />
+          )}
         </BoardFooter>
       </BoardBox>
     </Container>
