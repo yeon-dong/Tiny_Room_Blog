@@ -32,7 +32,7 @@ function NeighborModal({ handleModalClose, nickname, blogData }) {
         },
         { headers: { auth_token: localStorage.getItem("token") } }
       );
-      alert(`${nickname}님께 이웃을 신청했습니다!`);
+      alert(`🍀${nickname}님🍀께 이웃을 신청했습니다!`);
       handleModalClose(); // 신청 후 모달 닫기
     } catch (error) {
       console.error("이웃 신청에 실패했습니다.", error);
