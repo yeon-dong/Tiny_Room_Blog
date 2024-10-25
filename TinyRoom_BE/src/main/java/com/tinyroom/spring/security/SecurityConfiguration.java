@@ -48,8 +48,8 @@ public class SecurityConfiguration {
 		http.cors().configurationSource(corsConfigurationSource());
 		http.authorizeHttpRequests((authz)-> authz
 				.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()//forward 요청은 모두 허용
-				.requestMatchers("/member/**").hasRole("USER")  //url이 /auth/로 시작하면 인증을 요구 ROLE_USER
-				.requestMatchers("/", "/register", "/error", "/login", "/read-img/**").permitAll()
+				.requestMatchers("/member/**","/comments/writeComment", "/comments/updateComment", "/comments/delete", "/member/info", "/member/modify", "/neighbour/sendApprove", "/neighbour/approve", "/neighbour/refuse", "/neighbour/sendList", "/neighbour/neighbourList", "/posts/postUpdate", "/posts/delete", "/posts/writePost","/hearts/view","/hearts/add", "/hearts/delete").hasRole("USER")  //url이 /auth/로 시작하면 인증을 요구 ROLE_USER
+				.requestMatchers("/", "/register", "/error", "/login", "/read-img/**", "/blog/**", "/user/**", " /comments/commentList", "/comments/view", "/register", "/login", " /image/**", "/posts/recommend", "/posts/postDetail", "/posts/main", "/posts/calendar").permitAll()
 				.anyRequest().permitAll()
 				);
 		//토큰 처리하는 필터를 현재 필터 앞에 붙임

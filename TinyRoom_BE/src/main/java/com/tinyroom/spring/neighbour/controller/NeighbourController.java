@@ -27,6 +27,8 @@ import com.tinyroom.spring.neighbour.domain.Neighbour;
 import com.tinyroom.spring.neighbour.dto.NeighbourDto;
 import com.tinyroom.spring.neighbour.dto.NeighbourPageDto;
 import com.tinyroom.spring.neighbour.dto.NeighbourPageDto2;
+import com.tinyroom.spring.neighbour.dto.Re_NeighbourPageDto;
+import com.tinyroom.spring.neighbour.dto.Re_NeighbourPageDto2;
 import com.tinyroom.spring.neighbour.dto.RequestSendNeighbourDto;
 import com.tinyroom.spring.neighbour.dto.ResponseNeighbourDto;
 import com.tinyroom.spring.neighbour.service.NeighbourService;
@@ -124,8 +126,27 @@ public class NeighbourController {
 	    List<NeighbourPageDto> neighbourList =  neighbourService.getSendNeighbourList(member, page);
 	    int totalCount = neighbourService.countSendNeighbour(member);
 	   
+	    List <Re_NeighbourPageDto> re_neighbourList = new ArrayList<>();
+	    
+	    for (NeighbourPageDto neighbour : neighbourList) {
+	        int member_id = neighbour.getFromMember().getMember_id();
+	        String nickname = neighbour.getFromMember().getNickname();
+	        String description = neighbour.getFromMember().getDescription();
+	        String profile_img = neighbour.getFromMember().getProfile_img();
+	    	
+	        MemberDto from_memberDto = memberService.getMember(neighbour.getFromMember().getEmail());
+		    Member from_member = memberService.dtoToEntity(memberDto);
+		    
+	        BlogDto blogDto = blogService.getBlog(from_member);
+	        Blog blog = blogService.blogDtoToEntity(blogDto);
+	        
+	        Re_NeighbourPageDto list_dto = new Re_NeighbourPageDto(blog.getBlog_title(), member_id, nickname, description, profile_img);
+	        re_neighbourList.add(list_dto);
+	    }
+
+	    
 	    result.put("totalCount", totalCount);
-		result.put("data", neighbourList);
+		result.put("data", re_neighbourList);
 		return result;
 	}
 	
@@ -141,11 +162,31 @@ public class NeighbourController {
 	    Map result = new HashMap();
 	    
 	    List <NeighbourPageDto2> neighbourList = neighbourService.getNeighbourList2(member, page);
+	    //재가공
+	    List<Re_NeighbourPageDto2> re_neighbourList = new ArrayList<>();
+	    
+	    for (NeighbourPageDto2 neighbour : neighbourList) {
+	        int member_id = neighbour.getFromMember().getMember_id();
+	        String nickname = neighbour.getFromMember().getNickname();
+	        String description = neighbour.getFromMember().getDescription();
+	        String profile_img = neighbour.getFromMember().getProfile_img();
+	    	
+	        MemberDto from_memberDto = memberService.getMember(neighbour.getFromMember().getEmail());
+		    Member from_member = memberService.dtoToEntity(memberDto);
+		    
+	        BlogDto blogDto = blogService.getBlog(from_member);
+	        Blog blog = blogService.blogDtoToEntity(blogDto);
+	        
+	        Re_NeighbourPageDto2 list_dto = new Re_NeighbourPageDto2(blog.getBlog_title(), member_id, nickname, description, profile_img);
+	        re_neighbourList.add(list_dto);
+	    }
+
+	    
 	    int totalCount = neighbourService.countNeighbour(member);
 	    
 //        return neighbourResponseList ;
 	    result.put("totalCount", totalCount);
-		result.put("data", neighbourList);
+		result.put("data", re_neighbourList);
 		
 		return result;
 	}
