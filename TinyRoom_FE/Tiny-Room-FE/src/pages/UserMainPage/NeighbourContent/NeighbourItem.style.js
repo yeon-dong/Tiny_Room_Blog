@@ -14,6 +14,11 @@ export const Title = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const BlogName = styled(Link)`
@@ -36,13 +41,19 @@ export const Content = styled.div`
   display: flex;
   gap: 30px;
   margin-bottom: 20px;
+  cursor: pointer;
 `;
 
 export const ProfileImage = styled.div`
   flex: 0 0 128px;
   height: 128px;
-  background-color: skyblue;
   border-radius: 10px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 export const Description = styled.div`
