@@ -42,6 +42,7 @@ public class RoomServiceImpl implements RoomService {
 				.furniture2(room.getFurniture2())
 				.furniture3(room.getFurniture3())
 				.furniture4(room.getFurniture4())
+				.character(room.getCharacter())
 				.build();
 		
 		return roomDto;
@@ -57,6 +58,7 @@ public class RoomServiceImpl implements RoomService {
 				.furniture2(roomDto.getFurniture2())
 				.furniture3(roomDto.getFurniture3())
 				.furniture4(roomDto.getFurniture4())
+				.character(roomDto.getCharacter())
 				.build();
 		
 		return room;
