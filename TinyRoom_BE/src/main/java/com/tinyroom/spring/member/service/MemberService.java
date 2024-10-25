@@ -29,7 +29,9 @@ public interface MemberService {
 	public MemberDto getMember(String email);
 	public String uploadImage(MultipartFile img);
 	public MemberDto getProfile(int id);
-      
+    public MemberDto getMemberById(int member_id);
+	
+	
 	default MemberDto entityMemberDto(Member member) {
 		MemberDto memberDto = MemberDto.builder()
            .member_id(member.getMember_id())

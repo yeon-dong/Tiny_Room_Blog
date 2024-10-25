@@ -70,6 +70,7 @@ function UserMainPage() {
                 profileImg={blogData?.user.profileImg}
                 nickname={blogData?.user.nickname}
                 description={blogData?.user.description}
+                blogData={blogData}
               />
             </UserInfoContainer>
             <UserBlogContainer>
