@@ -35,4 +35,6 @@ public class Room {
 	private int furniture3;	// 가구 시리얼 넘버(카테고리 3)
 	private int furniture4;	// 가구 시리얼 넘버(카테고리 4)
 	
+	private int character;
+	
 }

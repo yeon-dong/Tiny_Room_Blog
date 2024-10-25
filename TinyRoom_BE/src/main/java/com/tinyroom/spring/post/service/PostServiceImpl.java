@@ -107,6 +107,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
+
 	public List<ResponsePostMainDto> getPosts(int category, int page) {
 		
 		Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "w_date"));
@@ -120,6 +121,10 @@ public class PostServiceImpl implements PostService {
 		int count = postDao.countByConditions(category);
 		
 		return count;
+
+	public List<Post> getCalendarList(int year, int month, int member_id) {
+		return postDao.findByYearAndMonthAndMember(year, month, member_id);
+
 	}
 	
 

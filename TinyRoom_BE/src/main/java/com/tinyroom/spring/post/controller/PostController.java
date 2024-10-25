@@ -45,6 +45,7 @@ import com.tinyroom.spring.post.dto.PageResponseDto;
 import com.tinyroom.spring.post.dto.PostDto;
 import com.tinyroom.spring.post.dto.RequestPostUpdateDto;
 import com.tinyroom.spring.post.dto.RequestPostWriteDto;
+import com.tinyroom.spring.post.dto.ResponseCalendarDto;
 import com.tinyroom.spring.post.dto.ResponsePostDetailDto;
 import com.tinyroom.spring.post.dto.ResponsePostMainDto;
 import com.tinyroom.spring.post.dto.ResponsePostRecommendDto;
@@ -252,5 +253,26 @@ public class PostController {
 		
 		return result;
 	}
+	
+	@GetMapping("/calendar")
+	public List<ResponseCalendarDto> calendarList(
+			@RequestParam(name="year") int year,
+			@RequestParam(name="month") int month,
+			@RequestParam(name="user_id") int user_id
+			){
+		List<Post> postList = postService.getCalendarList(year,month, user_id);
+		return postList.stream()
+                .map(post -> ResponseCalendarDto.builder()
+                        .post_id(post.getPost_id())
+                        .category_id(post.getCategory().getCategory_id())
+                        .day(post.getW_date().getDayOfMonth())
+                        .title(post.getTitle())
+                        .content(post.getContent())
+                        .thumbnail(post.getThumbnail())
+                        .text_content(post.getText_content())
+                        .build())
+                .collect(Collectors.toList());
+	}
+	
 	
 }

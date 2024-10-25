@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import {
   BubbleImg,
+  CharacterImg,
   Container,
   ElectronicsImg,
   InteriorImg,
@@ -92,6 +93,10 @@ const MyRoom = ({ selectedCategoryIdx, onFurnitureClick, roomData }) => {
         }}
         onClick={() => onFurnitureClick(4)}
         is_hovered={isHovered(selectedCategoryIdx, hoveredPart, 4)}
+      />
+      <CharacterImg
+        src={`/images/character${roomData.character}.gif`}
+        alt="Character"
       />
 
       {selectedCategoryIdx > 0 ? (

@@ -64,7 +64,11 @@ public interface PostService {
 	public void modifyForDelete(PostDto postDto);
     public Optional<Post> findById(int post_id);
 	public List<Post> findTopByOrderByHeartCountDesc(PageRequest of);
+
 	public List<ResponsePostMainDto> getPosts(int category, int page);
 	public int countPosts(int category);
+
+	public List<Post> getCalendarList(int year, int month, int member_id);
+
 	
 }
