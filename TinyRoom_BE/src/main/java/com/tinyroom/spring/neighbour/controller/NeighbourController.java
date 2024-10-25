@@ -173,7 +173,7 @@ public class NeighbourController {
 	        String profile_img = neighbour.getFromMember().getProfile_img();
 	    	
 	        MemberDto from_memberDto = memberService.getMember(neighbour.getFromMember().getEmail());
-		    Member from_member = memberService.dtoToEntity(memberDto);
+		    Member from_member = memberService.dtoToEntity(from_memberDto);
 		    
 	        BlogDto blogDto = blogService.getBlog(from_member);
 	        Blog blog = blogService.blogDtoToEntity(blogDto);
