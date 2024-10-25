@@ -10,6 +10,6 @@ import lombok.Getter;
 @Getter
 public class NeighbourPageDto2 {
 	  private int neighbourId;
-	  private Member neighbour;
+	  private Member fromMember;
 	  private String message;
 }

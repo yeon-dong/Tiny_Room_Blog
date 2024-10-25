@@ -81,4 +81,9 @@ public class NeighbourServiceImpl implements NeighbourService{
 	public int countNeighbour(Member member) {
 		return neighbourDao.countByConditions2(member);
 	}
+
+	@Override
+	public void approveNeighbour(Neighbour fromNeighbourTo) {
+		neighbourDao.save(fromNeighbourTo);
+	}
 }

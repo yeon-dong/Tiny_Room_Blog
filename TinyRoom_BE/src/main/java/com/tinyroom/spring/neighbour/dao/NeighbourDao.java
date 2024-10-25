@@ -28,18 +28,16 @@ public interface NeighbourDao extends JpaRepository<Neighbour, Integer>{
 	           "ORDER BY n.neighbour_id DESC ")
 	Page<NeighbourPageDto> findByConditions(@Param("member") Member member, Pageable pageable);
 	  
-    @Query("SELECT COUNT(*) FROM Neighbour n WHERE n.toMember = :member ")
+    @Query("SELECT COUNT(*) FROM Neighbour n WHERE n.toMember = :member AND n.status = 0 ")
 	int countByConditions(@Param("member") Member member);
 
-    @Query("SELECT new com.tinyroom.spring.neighbour.dto.NeighbourPageDto2(n.neighbour_id, " +
-    	       "CASE WHEN n.fromMember = :member THEN n.toMember ELSE n.fromMember END, " +
-    	       "n.message) " +
-    	       "FROM Neighbour n " +
-    	       "WHERE (n.fromMember = :member OR n.toMember = :member) " +
-    	       "AND n.status = 1 " +
-    	       "ORDER BY n.neighbour_id DESC")
+    @Query("SELECT new com.tinyroom.spring.neighbour.dto.NeighbourPageDto2(n.neighbour_id, n.fromMember, n.message) " +
+	  		   "FROM Neighbour n " +
+	           "WHERE n.toMember = :member " +
+	           "AND n.status = 1 " +
+	           "ORDER BY n.neighbour_id DESC ")
 	Page<NeighbourPageDto2> findByConditions2(@Param("member") Member member, Pageable pageable);
 
-    @Query("SELECT COUNT(*) FROM Neighbour n WHERE (n.fromMember = :member OR n.toMember = :member) ")
+    @Query("SELECT COUNT(*) FROM Neighbour n WHERE n.toMember = :member AND n.status = 1 ")
 	int countByConditions2(@Param("member")Member member);
 }
