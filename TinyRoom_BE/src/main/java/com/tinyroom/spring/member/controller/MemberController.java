@@ -221,7 +221,7 @@ public class MemberController {
 				@RequestParam("furniture2") int furniture2,
 				@RequestParam("furniture3") int furniture3,
 				@RequestParam("furniture4") int furniture4,
-				@RequestParam("character") int character,
+				@RequestParam("characterId") int characterId,
 				@RequestParam(value="profile_img", required = false) MultipartFile profile_img
 				) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -281,7 +281,7 @@ public class MemberController {
 			room.setFurniture2(furniture2);
 			room.setFurniture3(furniture3);
 			room.setFurniture4(furniture4);
-			room.setCharacter(character);
+			room.setCharacterId(characterId);
 			
 			
 			// MemberService의 회원가입 메서드 실행(member Map 을 인자로 넘김)
