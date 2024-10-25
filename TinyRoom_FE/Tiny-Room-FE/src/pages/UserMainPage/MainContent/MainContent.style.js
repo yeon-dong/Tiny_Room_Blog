@@ -71,3 +71,15 @@ export const BoardFooter = styled.div`
   justify-content: center;
   flex: 0 0 22px;
 `;
+
+export const NoContent = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: var(--gray4);
+  user-select: none;
+`;
