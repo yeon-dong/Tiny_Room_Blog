@@ -66,10 +66,14 @@ function LoginPage() {
     }
   };
 
+  const handleGoToMainPage = () => {
+    navigate("/");
+  };
+
   return (
     <Container>
       <LoginBox>
-        <LoginTextContainer></LoginTextContainer>
+        <LoginTextContainer onClick={() => handleGoToMainPage()} />
         <FormContainer>
           <LoginInput_ID
             type="text"

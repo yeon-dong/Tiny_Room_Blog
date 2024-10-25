@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Dropdown from "../../../components/Dropdown/Dropdown";
 import MainButton from "../../../components/MainButton/MainButton";
 import MyEditor from "../../../components/MyEditor/MyEditor";
@@ -31,6 +31,7 @@ const NewPostContent = () => {
   const isUpdate = location.pathname.split("/").length === 5;
   const postId = isUpdate ? location.pathname.split("/")[4] : -1;
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const at = localStorage.getItem("token");
 
@@ -113,6 +114,7 @@ const NewPostContent = () => {
             headers: { auth_token: at },
           }
         );
+        navigate(`/${id}`);
       } catch (e) {
         alert("글 작성 실패");
       }
