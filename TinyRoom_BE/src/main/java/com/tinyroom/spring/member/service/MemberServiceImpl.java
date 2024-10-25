@@ -186,4 +186,9 @@ public MemberDto getProfile(int id) {
     return entityMemberDto(member);
 }
 
+@Override
+public MemberDto getMemberById(int member_id) {
+	return entityMemberDto(dao.findById(member_id).orElse(null));
+}
+
 }

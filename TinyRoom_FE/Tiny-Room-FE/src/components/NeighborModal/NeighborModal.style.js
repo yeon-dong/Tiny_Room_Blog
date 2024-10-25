@@ -60,7 +60,7 @@ export const NeighborBlogNameText = styled.div`
 export const NeighborNameApplicationText = styled.div`
   font-size: 15px;
   font-weight: normal;
-  margin-bottom: 6px;
+  margin-bottom: 20px;
 `;
 
 export const NeighborBlogApplicationMessage = styled.textarea`
@@ -120,5 +120,6 @@ export const CancelBtn = styled.button`
 `;
 
 export const NeighborNickname = styled.span`
-  color: #3b82f6;
+  color: #ff4a79;
+  font-weight: bold;
 `;

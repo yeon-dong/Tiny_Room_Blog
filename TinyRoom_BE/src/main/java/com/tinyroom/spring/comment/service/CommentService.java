@@ -5,6 +5,7 @@ import java.util.List;
 import com.tinyroom.spring.comment.domain.Comment;
 import com.tinyroom.spring.comment.dto.CommentDto;
 import com.tinyroom.spring.comment.dto.ResponseCommentDto;
+import com.tinyroom.spring.comment.dto.ResponseCommentListDto;
 import com.tinyroom.spring.post.domain.Post;
 import com.tinyroom.spring.post.dto.PostDto;
 
@@ -50,5 +51,9 @@ public interface CommentService {
 
 	public void delete(int comment_id);
 	public int getCount(Post post);
+
+	public List<ResponseCommentListDto> getCommentsList(int postId, int page);
+
+	public int countParent(int postId);
 
 }

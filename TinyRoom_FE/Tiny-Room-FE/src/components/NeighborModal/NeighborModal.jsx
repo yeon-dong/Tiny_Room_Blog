@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BackgroundContainer,
   BtnContainer,
@@ -15,8 +15,31 @@ import {
   NeighborNickname,
   SuccessBtn,
 } from "./NeighborModal.style";
+import axios from "axios";
 
 function NeighborModal({ handleModalClose, nickname, blogData }) {
+  const [applicationMessagePlaceholder, setApplicationMessagePlaceholder] =
+    useState("이웃 신청 메세지를 입력해 주세요.");
+  const [applicationMessage, setApplicationMessage] = useState("");
+
+  const handleApplication = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/neighbour/sendApprove",
+        {
+          to_member_id: blogData.user.userId,
+          message: applicationMessage,
+        },
+        { headers: { auth_token: localStorage.getItem("token") } }
+      );
+      alert(`🍀${nickname}님🍀께 이웃을 신청했습니다!`);
+      handleModalClose(); // 신청 후 모달 닫기
+    } catch (error) {
+      console.error("이웃 신청에 실패했습니다.", error);
+      alert("이웃 신청에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
   return (
     <BackgroundContainer>
       <ModalContainer>
@@ -31,7 +54,19 @@ function NeighborModal({ handleModalClose, nickname, blogData }) {
           <NeighborNickname>{nickname}</NeighborNickname> 님께 이웃을
           신청합니다.
         </NeighborNameApplicationText>
-        <NeighborBlogApplicationMessage placeholder="이웃 신청 메세지를 입력해 주세요." />
+        <NeighborBlogApplicationMessage
+          type="text"
+          id="signup-id"
+          placeholder={applicationMessagePlaceholder}
+          value={applicationMessage}
+          onChange={(e) => setApplicationMessage(e.target.value)}
+          onFocus={() => setApplicationMessagePlaceholder("")}
+          onBlur={() =>
+            setApplicationMessagePlaceholder(
+              "이웃 신청 메세지를 입력해 주세요."
+            )
+          }
+        />
         <NeighborBlogBottomText>
           상대방이 동의하시면 이웃이 맺어집니다.
           <br />
@@ -40,7 +75,7 @@ function NeighborModal({ handleModalClose, nickname, blogData }) {
         </NeighborBlogBottomText>
         <BtnContainer>
           <CancelBtn onClick={() => handleModalClose()}>취소</CancelBtn>
-          <SuccessBtn>작성 완료</SuccessBtn>
+          <SuccessBtn onClick={() => handleApplication()}>작성 완료</SuccessBtn>
         </BtnContainer>
       </ModalContainer>
     </BackgroundContainer>
