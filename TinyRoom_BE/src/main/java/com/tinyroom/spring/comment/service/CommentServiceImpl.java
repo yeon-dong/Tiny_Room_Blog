@@ -8,15 +8,24 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.tinyroom.spring.comment.dao.CommentDao;
 import com.tinyroom.spring.comment.domain.Comment;
 import com.tinyroom.spring.comment.dto.CommentDto;
+import com.tinyroom.spring.comment.dto.ResponseChildren;
 import com.tinyroom.spring.comment.dto.ResponseCommentDto;
+import com.tinyroom.spring.comment.dto.ResponseCommentListDto;
 import com.tinyroom.spring.post.domain.Post;
 import com.tinyroom.spring.post.service.PostService;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @Service
 public class CommentServiceImpl implements CommentService{
 	@Autowired
@@ -97,5 +106,30 @@ public class CommentServiceImpl implements CommentService{
 
         return parentComments; // 부모-자식 구조의 리스트 반환
     }
+
+	@Override
+	public List<ResponseCommentListDto> getCommentsList(int postId, int page) {
+		
+		log.info("################################## getCommentsList 실행 ########################################");
+		
+		Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "date"));
+		Page<ResponseCommentListDto> parentComments = commentDao.findParentComments(postId, pageable);
+
+		log.info("################################## " + parentComments.getContent() + " ########################################");
+		
+	    for (ResponseCommentListDto parent : parentComments.getContent()) {
+	        List<ResponseChildren> children = commentDao.findChildrenComments(parent.getCommentId());
+	        parent.setChildren(children);
+	    }
+		
+		return parentComments.getContent();
+	}
+
+	@Override
+	public int countParent(int postId) {
+		int count = commentDao.countByCondition(postId);
+		
+		return count;
+	}
 
 }
