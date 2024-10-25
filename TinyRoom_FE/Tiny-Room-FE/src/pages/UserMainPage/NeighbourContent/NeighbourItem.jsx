@@ -12,27 +12,25 @@ import { useNavigate } from "react-router-dom";
 const NeighbourItem = ({ neighbour, idx }) => {
   const navigate = useNavigate();
 
-  const member = neighbour.fromMember;
-
   const handleClick = useCallback(() => {
-    navigate(`/${member.member_id}`);
+    navigate(`/${neighbour.user_id}`);
   }, []);
 
   return (
     <Container>
       <Title onClick={handleClick}>
         <BlogName>
-          <span>No. {idx + 1}</span> 블로그 이름
+          <span>No. {idx + 1}</span> {neighbour.blog_name}
         </BlogName>
       </Title>
       <Content onClick={handleClick}>
         <ProfileImage>
           <img
-            src={`http://localhost:8080${member.profile_img}`}
+            src={`http://localhost:8080${neighbour.profile_img}`}
             alt="ProfileImg"
           />
         </ProfileImage>
-        <Description>{member.description}</Description>
+        <Description>{neighbour.description}</Description>
       </Content>
     </Container>
   );
