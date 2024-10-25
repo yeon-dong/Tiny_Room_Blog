@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import {
   BlogName,
   Container,
@@ -6,26 +7,32 @@ import {
   ProfileImage,
   Title,
 } from "./NeighbourItem.style";
+import { useNavigate } from "react-router-dom";
 
-const NeighbourItem = () => {
+const NeighbourItem = ({ neighbour, idx }) => {
+  const navigate = useNavigate();
+
+  const member = neighbour.fromMember;
+
+  const handleClick = useCallback(() => {
+    navigate(`/${member.member_id}`);
+  }, []);
+
   return (
     <Container>
-      <Title>
+      <Title onClick={handleClick}>
         <BlogName>
-          <span>No. 1</span> 블로그 이름
+          <span>No. {idx + 1}</span> 블로그 이름
         </BlogName>
       </Title>
-      <Content>
-        <ProfileImage></ProfileImage>
-        <Description>
-          blog descriptionblog descriptionblog descriptionblog descriptionblog
-          descriptionblog descriptionblog descriptionblog descriptionblog
-          descriptionblog descriptionblog descriptionblog descriptionblog
-          descriptionblog descriptionblog descriptionblog descriptionblog
-          descriptionblog descriptionblog descriptionblog descriptionblog
-          descriptionblog descriptionblog descriptionblog descriptionblog
-          descriptionblog descriptionblog descriptionblog descriptionblog{" "}
-        </Description>
+      <Content onClick={handleClick}>
+        <ProfileImage>
+          <img
+            src={`http://localhost:8080${member.profile_img}`}
+            alt="ProfileImg"
+          />
+        </ProfileImage>
+        <Description>{member.description}</Description>
       </Content>
     </Container>
   );
